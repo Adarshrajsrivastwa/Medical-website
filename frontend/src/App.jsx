@@ -1,4 +1,7 @@
+import React from 'react';
 import { Button } from "@/components/ui/button"
+import PhoneNumber from '@/components/ui/PhoneNumber'; 
+import LoginLink from '@/components/ui/loginlink';
 import {
   InputOTP,
   InputOTPGroup,
@@ -14,7 +17,11 @@ function App() {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen gap-5">
-      <Button variant="ours">Click me</Button>
+      <Label htmlFor="email">Full Name</Label>
+      <Input type="text" placeholder="Enter your name" className="w-40" />
+      <Label htmlFor="email">Enter Phone Number</Label>
+      <PhoneNumber />
+      <Label htmlFor="email">Enter One Time Password</Label>
       <InputOTP maxLength={6}>
         <InputOTPGroup>
           <InputOTPSlot index={0} />
@@ -28,11 +35,14 @@ function App() {
           <InputOTPSlot index={5} />
         </InputOTPGroup>
       </InputOTP>
-      <Label htmlFor="email">Full Name</Label>
-      <Input type="text" placeholder="Enter your name" className="w-40" />
+      
+      <Button variant="ours">Continue</Button>
+      <h3>or</h3>
+      <LoginLink /> 
     </div>
 
   )
 }
 
 export default App
+
