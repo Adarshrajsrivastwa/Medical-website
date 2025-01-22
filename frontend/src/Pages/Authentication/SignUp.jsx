@@ -71,8 +71,16 @@ function SignUp() {
   };
 
   return (
+<<<<<<< HEAD
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <form method="POST" onSubmit={handleSubmit} className="mb-52 flex flex-col items-center gap-5 shadow-md rounded-lg p-6 bg-white">
+=======
+    <div className="flex items-center justify-center h-[85vh] bg-gray-100">
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col items-center gap-5 shadow-md rounded-lg p-6 bg-white"
+      >
+>>>>>>> a23950ce87c907d781716933cae9ae8da82a2cc8
         <h1 className="text-xl font-bold text-[#563393]">Sign Up</h1>
 
         <div className="flex flex-col gap-1 w-80">
