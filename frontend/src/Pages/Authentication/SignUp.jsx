@@ -71,7 +71,6 @@ function SignUp() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
     <div className="flex items-center justify-center h-[89vh] bg-teal-400">
       <form
         onSubmit={handleSubmit}
@@ -142,7 +141,7 @@ function SignUp() {
                     maxLength={6}
                     value={formData.otp}
                     onChange={(e) => setFormData({ ...formData, otp: e.target.value })}
-                  >
+                  />
                   <InputOTP maxLength={6} required>
                     <InputOTPGroup>
                       {[0, 1, 2].map((index) => (
