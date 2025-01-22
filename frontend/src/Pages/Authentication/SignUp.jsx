@@ -15,7 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Link } from "react-router-dom"; 
+import { Link } from "react-router-dom";
 
 function SignUp() {
   const [formData, setFormData] = useState({
@@ -41,13 +41,13 @@ function SignUp() {
       alert("Please enter your email!");
       return;
     }
-    
+
     setLoading(true);
     try {
-      const res = await fetch('/sign-in', {
-        method: 'POST',
+      const res = await fetch("/sign-in", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ email: formData.email }),
       });
@@ -56,31 +56,26 @@ function SignUp() {
         throw new Error("Failed to send OTP");
       }
 
-      setShowModal(true); 
+      setShowModal(true);
     } catch (error) {
-      alert(error.message); 
+      alert(error.message);
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Form submitted with data:", formData);
-    setShowModal(false); 
+    setShowModal(false);
   };
 
   return (
-<<<<<<< HEAD
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <form method="POST" onSubmit={handleSubmit} className="mb-52 flex flex-col items-center gap-5 shadow-md rounded-lg p-6 bg-white">
-=======
-    <div className="flex items-center justify-center h-[85vh] bg-gray-100">
       <form
         onSubmit={handleSubmit}
         className="flex flex-col items-center gap-5 shadow-md rounded-lg p-6 bg-white"
       >
->>>>>>> a23950ce87c907d781716933cae9ae8da82a2cc8
         <h1 className="text-xl font-bold text-[#563393]">Sign Up</h1>
 
         <div className="flex flex-col gap-1 w-80">
@@ -88,7 +83,7 @@ function SignUp() {
             Email
           </Label>
           <Input
-            type="text"
+            type="email"
             placeholder="Enter your Email"
             name="email"
             value={formData.email}
@@ -140,7 +135,11 @@ function SignUp() {
                   <Label htmlFor="otp" className="text-base font-normal">
                     Enter OTP
                   </Label>
-                  <InputOTP maxLength={6}>
+                  <InputOTP
+                    maxLength={6}
+                    value={formData.otp}
+                    onChange={(e) => setFormData({ ...formData, otp: e.target.value })}
+                  >
                     <InputOTPGroup>
                       {[0, 1, 2].map((index) => (
                         <InputOTPSlot key={index} index={index} />
