@@ -1,7 +1,27 @@
 let express = require('express');
 let app = express();
-let sign= require('./route/sign');
+let sign= require('./route/signup');
 let cors = require('cors');
+const cookieParser = require('cookie-parser');
+let dotenv = require('dotenv');
+let mongoose= require('mongoose');
+let session= require('express-session');
+let connectdb= require('./config/db.js');
+
+dotenv.config();
+connectdb();
+
+app.use(express.urlencoded({ extended: true })); 
+app.use(express.json());
+
+app.use(session({
+  secret: process.env.SESSION_SECRET,   
+  resave: false,             
+  saveUninitialized: false,  
+}));
+
+
+app.use(cookieParser());
 
 
 var corsOptions = {
@@ -11,9 +31,7 @@ var corsOptions = {
 
 app.use(cors(corsOptions));
 
-app.use(express.json());  
-
-app.use('/signup', sign);
+app.use('/sign', sign);
 
 app.get('/', (req, res) => {
     res.send("Testing phase");  
