@@ -51,14 +51,14 @@ function SignUp() {
   };
 
   return (
-    <div className="flex items-center justify-center h-[85vh] bg-gray-100">
+    <div className="flex items-center justify-center h-[89vh] bg-teal-400">
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col items-center gap-5 shadow-md rounded-lg p-6 bg-white"
+        className="flex flex-col items-center lg:gap-7 shadow-md rounded-xl lg:p-10 bg-white gap-5 p-6"
       >
-        <h1 className="text-xl font-bold text-[#563393]">Sign Up</h1>
+        <h1 className="text-2xl font-bold text-[#563393]">Sign Up</h1>
 
-        <div className="flex flex-col gap-1 w-80">
+        <div className="flex flex-col lg:gap-2 lg:w-80">
           <Label htmlFor="email" className="text-base font-normal">
             Email
           </Label>
@@ -68,6 +68,7 @@ function SignUp() {
             name="email"
             value={formData.email}
             onChange={handleChange}
+            required
           />
         </div>
 
@@ -93,7 +94,7 @@ function SignUp() {
         {/* Modal */}
         {showModal && (
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="bg-white p-6 rounded-lg shadow-md w-96">
+            <div className="bg-white lg:p-10 rounded-lg shadow-md lg:w-96 p-5">
               <h2 className="text-lg font-bold mb-4 text-[#563393]">Verify OTP</h2>
 
               <div className="flex flex-col gap-3">
@@ -107,6 +108,7 @@ function SignUp() {
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
+                    required
                   />
                 </div>
 
@@ -114,7 +116,7 @@ function SignUp() {
                   <Label htmlFor="otp" className="text-base font-normal">
                     Enter OTP
                   </Label>
-                  <InputOTP maxLength={6}>
+                  <InputOTP maxLength={6} required>
                     <InputOTPGroup>
                       <InputOTPSlot index={0} />
                       <InputOTPSlot index={1} />
@@ -134,6 +136,7 @@ function SignUp() {
                     Select Your Role
                   </Label>
                   <Select
+                    required
                     onValueChange={(value) =>
                       setFormData((prevData) => ({ ...prevData, role: value }))
                     }
@@ -150,7 +153,7 @@ function SignUp() {
                 </div>
               </div>
 
-              <div className="flex items-center justify-end gap-3 mt-4">
+              <div className="flex items-center justify-end lg:gap-4 mt-4 gap-2">
                 <Button
                   type="button"
                   onClick={() => setShowModal(false)}
