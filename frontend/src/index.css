@@ -55,34 +55,14 @@
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%
   }
-  .phone-number {
-    display: flex; /* Use flexbox for horizontal layout */
-    align-items: center; /* Vertically center elements within the container */
-    margin-left: 1rem 0;
-  }
-  
-  .country-code-selector {
-    display: flex;
-    align-items: center;
-    margin-right: 1rem;
-  }
-  
- 
-  
-  
-  .phone-number-input input {
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 0.5rem;
-  }
-
-
 }
+
 @layer base {
   * {
     @apply border-border;
   }
   body {
     @apply bg-background text-foreground;
+     font-family: "Parkinsans", serif;
   }
 }
