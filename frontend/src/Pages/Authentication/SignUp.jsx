@@ -51,10 +51,10 @@ function SignUp() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex items-center justify-center h-[85vh] bg-gray-100">
       <form
         onSubmit={handleSubmit}
-        className="mb-52 flex flex-col items-center gap-5 shadow-md rounded-lg p-6 bg-white"
+        className="flex flex-col items-center gap-5 shadow-md rounded-lg p-6 bg-white"
       >
         <h1 className="text-xl font-bold text-[#563393]">Sign Up</h1>
 
