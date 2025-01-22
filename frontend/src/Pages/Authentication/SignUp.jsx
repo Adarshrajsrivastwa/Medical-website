@@ -15,7 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Link } from "react-router-dom"; // Add the Link import for routing
+import { Link } from "react-router-dom"; 
 
 function SignUp() {
   const [formData, setFormData] = useState({
@@ -25,7 +25,8 @@ function SignUp() {
     role: "",
   });
 
-  const [showModal, setShowModal] = useState(false); // Tracks whether modal is visible
+  const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(false); // To show loading during OTP request
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -35,27 +36,43 @@ function SignUp() {
     }));
   };
 
-  const handleSendOtp = () => {
+  const handleSendOtp = async () => {
     if (!formData.email) {
       alert("Please enter your email!");
       return;
     }
-    console.log("OTP sent to:", formData.email);
-    setShowModal(true); // Show modal
+    
+    setLoading(true);
+    try {
+      const res = await fetch('/sign-in', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: formData.email }),
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to send OTP");
+      }
+
+      setShowModal(true); 
+    } catch (error) {
+      alert(error.message); 
+    } finally {
+      setLoading(false); 
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Form submitted with data:", formData);
-    setShowModal(false); // Close modal on submit
+    setShowModal(false); 
   };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <form
-        onSubmit={handleSubmit}
-        className="mb-52 flex flex-col items-center gap-5 shadow-md rounded-lg p-6 bg-white"
-      >
+      <form method="POST" onSubmit={handleSubmit} className="mb-52 flex flex-col items-center gap-5 shadow-md rounded-lg p-6 bg-white">
         <h1 className="text-xl font-bold text-[#563393]">Sign Up</h1>
 
         <div className="flex flex-col gap-1 w-80">
@@ -76,8 +93,9 @@ function SignUp() {
           onClick={handleSendOtp}
           className="w-40"
           variant="ours"
+          disabled={loading}
         >
-          Send OTP
+          {loading ? "Sending..." : "Send OTP"}
         </Button>
 
         {/* Already have an account link */}
@@ -116,15 +134,15 @@ function SignUp() {
                   </Label>
                   <InputOTP maxLength={6}>
                     <InputOTPGroup>
-                      <InputOTPSlot index={0} />
-                      <InputOTPSlot index={1} />
-                      <InputOTPSlot index={2} />
+                      {[0, 1, 2].map((index) => (
+                        <InputOTPSlot key={index} index={index} />
+                      ))}
                     </InputOTPGroup>
                     <InputOTPSeparator />
                     <InputOTPGroup>
-                      <InputOTPSlot index={3} />
-                      <InputOTPSlot index={4} />
-                      <InputOTPSlot index={5} />
+                      {[3, 4, 5].map((index) => (
+                        <InputOTPSlot key={index} index={index} />
+                      ))}
                     </InputOTPGroup>
                   </InputOTP>
                 </div>
