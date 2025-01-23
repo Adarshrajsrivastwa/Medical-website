@@ -92,6 +92,7 @@ function SignUp() {
       }
     } catch (error) {
       alert(error.message);
+  }
     };
   }
 
