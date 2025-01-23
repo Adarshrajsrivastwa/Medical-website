@@ -23,9 +23,16 @@ function SignUp() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    otp: "",
+    otp: "45",
     role: "",
   });
+
+  const handleOtpChange = (otpValue) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      otp: otpValue,
+    }));
+  };
 
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false); // To show loading during OTP request
@@ -67,8 +74,8 @@ function SignUp() {
     }
   };
 
-  const handleSubmit =async (e) => {
-    console.log(formData.otp);
+  const handleSubmit = async (e) => {
+    console.log("writing");
     e.preventDefault();
     try {
       const res = await fetch("http://localhost:3000/sign/verify-otp", {
@@ -85,7 +92,8 @@ function SignUp() {
       }
     } catch (error) {
       alert(error.message);
-  }
+    }
+  };
   return (
     <div className="flex items-center justify-center h-[89vh] bg-teal-400">
       <form
@@ -153,25 +161,24 @@ function SignUp() {
                   <Label htmlFor="otp" className="text-base font-normal">
                     Enter OTP
                   </Label>
-                  <div className="flex gap-2">
-                    {[...Array(6)].map((_, index) => (
-                      <input
-                        key={index}
-                        type="text"
-                        maxLength={1}
-                        value={formData.otp[index] || ""}
-                        onChange={(e) => {
-                          const otpArray = formData.otp.split("");
-                          otpArray[index] = e.target.value;
-                          setFormData((prevData) => ({
-                            ...prevData,
-                            otp: otpArray.join(""),
-                          }));
-                        }}
-                        className="otp-slot border rounded w-10 h-10 text-center text-lg"
-                      />
-                    ))}
-                  </div>
+                  <InputOTP
+                    maxLength={6}
+                    value={formData.otp}
+                    onChange={(e) => setFormData({ ...formData, otp: e.target.value })}
+                  />
+                  <InputOTP maxLength={6} required>
+                    <InputOTPGroup>
+                      {[0, 1, 2].map((index) => (
+                        <InputOTPSlot key={index} index={index} />
+                      ))}
+                    </InputOTPGroup>
+                    <InputOTPSeparator />
+                    <InputOTPGroup>
+                      {[3, 4, 5].map((index) => (
+                        <InputOTPSlot key={index} index={index} />
+                      ))}
+                    </InputOTPGroup>
+                  </InputOTP>
                 </div>
 
                 <div className="flex flex-col gap-1">
@@ -214,5 +221,6 @@ function SignUp() {
     </div>
   );
 }
+
 
 export default SignUp;
