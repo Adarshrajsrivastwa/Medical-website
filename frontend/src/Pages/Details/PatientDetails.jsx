@@ -27,22 +27,30 @@ function PatientDetails() {
   });
 
   const customStyles = {
-    option: (provided, state) => ({
-      ...provided,
-      backgroundColor: state.isSelected ? '#6d46af' : state.isFocused ? '#e6dcf5' : 'white',
-      color: state.isSelected ? 'white' : 'black',
-      ':hover': {
-        backgroundColor: '#e6dcf5',
-        cursor: 'pointer'
-      }
+    control: (base) => ({
+      ...base,
+      borderColor: "#824edc", // Purple border
+      "&:hover": { borderColor: "#6d46af" },
+      boxShadow: "none",
     }),
-    control: (provided) => ({
-      ...provided,
-      borderColor: '#6d46af',
-      '&:hover': {
-        borderColor: '#6d46af'
-      }
-    })
+    option: (base, { isFocused, isSelected }) => ({
+      ...base,
+      backgroundColor: isSelected
+        ? "#6d46af"
+        : isFocused
+          ? "#e6e0f6"
+          : "white",
+      color: isSelected ? "white" : "#333",
+      cursor: "pointer",
+    }),
+    singleValue: (base) => ({
+      ...base,
+      color: "#6d46af",
+    }),
+    menu: (base) => ({
+      ...base,
+      zIndex: 5,
+    }),
   };
 
   const handleCountryChange = (selectedOption) => {
