@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import axios from 'axios';
 // import { useHistory } from 'react-router-dom';
 // const history = useHistory();
+import { useNavigate } from 'react-router-dom';
 import {
   InputOTP,
   InputOTPGroup,
@@ -35,6 +37,7 @@ function SignUp() {
   };
 
   const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false); // To show loading during OTP request
 
   const handleChange = (e) => {
@@ -45,27 +48,22 @@ function SignUp() {
     }));
   };
 
-
   const handleSendOtp = async () => {
     if (!formData.email) {
       alert("Please enter your email!");
       return;
     }
-
+  
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:3000/sign/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email: formData.email }),
+      const res = await axios.post('http://localhost:3000/sign/signup', {
+        email: formData.email,
       });
-
-      if (!res.ok) {
-        throw new Error("Failed to send OTP");
+  
+      if (res.status !== 200) {
+        throw new Error('Failed to send OTP');
       }
-
+  
       setShowModal(true);
     } catch (error) {
       alert(error.message);
@@ -73,26 +71,29 @@ function SignUp() {
       setLoading(false);
     }
   };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("http://localhost:3000/sign/verify-otp", {
-        method: "POST",
+      const res = await axios.post("http://localhost:3000/sign/verify-otp", formData, {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
       });
-      if (!res.ok) 
-        alert("otp wrong");
-        else 
-        alert("otp verified successfully");
+  
+      if (res.status === 200) {
+        console.log(formData.role);
+        if(formData.role === 'patient')
+        navigate('/patient-detail');
+      } else {
+        alert("OTP wrong");
       }
-    catch (error) {
+    } catch (error) {
       alert(error.message);
     }
   };
+  
   return (
     <div className="flex items-center justify-center h-[89vh] bg-teal-400">
       <form

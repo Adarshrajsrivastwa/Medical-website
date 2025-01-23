@@ -25,11 +25,11 @@ app.post('/signup', async(req, res) => {
 
   let otp = generateOTP();
   let email=req.body.email;
+  console.log(email);
 
   let user= await User.findOne({email: email});
   if(user){
-    user.otp = otp;
-    await user.save();
+    return res.status(400).send('user already exists');
   }
   else{
     let newUser = new User({email: email, otp: otp});
@@ -101,13 +101,14 @@ app.post('/verify-otp',async(req, res) => {
   let otp=req.body.otp;
   let user= await User.findOne({email: email});
   if(user && user.otp === otp){
-    console.log('otp verified successfully');
     res.status(200).send('OTP verified successfully!');
   }
 })
 
 app.post('/login',async(req, res) => {
   let otp=req.body.otp;
+  let email=req.body.email;
+  console.log('otp login successfully');
   let user= await User.findOne({email: email});
   if(user && user.otp === otp){
     res.status(200).send('OTP verified successfully!');

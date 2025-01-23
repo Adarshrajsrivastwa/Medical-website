@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from 'axios';
 import {
   InputOTP,
   InputOTPGroup,
@@ -29,22 +30,30 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("http://localhost:3000/sign/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const res = await axios.post(
+        "http://localhost:3000/sign/login",
+        {
+          email: formData.email,
+          otp: formData.otp
         },
-        body: JSON.stringify(formData),
-      });
-      if (!res.ok) 
-        alert("otp wrong");
-        else 
-        alert("otp verified successfully");
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+  
+      if (res.status !== 200) {
+        alert("OTP wrong");
+      } else {
+        alert("OTP verified successfully");
       }
-    catch (error) {
+    } catch (error) {
       alert(error.message);
     }
   };
+  
+  
 
   const handleOtpChange = (otpValue) => {
     setFormData((prevData) => ({
@@ -58,22 +67,19 @@ function Login() {
       alert("Please enter your email!");
       return;
     }
+
     try {
-      setShowModal(true);
-      const res = await fetch("http://localhost:3000/sign/signin", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email: formData.email }),
+      setShowModal(true); 
+      const res = await axios.post("http://localhost:3000/sign/signin", {
+        email: formData.email
       });
 
-      if (!res.ok) {
-      
-        throw new Error("Failed to send OTP");
+      if (res.status === 200) {
+        alert("OTP sent successfully!");
       }
     } catch (error) {
-      alert(error.message);
+      const errorMessage = error.response ? error.response.data.message : error.message;
+      alert(errorMessage || "Failed to send OTP");
     } 
   };
 
