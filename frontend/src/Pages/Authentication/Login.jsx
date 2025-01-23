@@ -26,6 +26,26 @@ function Login() {
     }));
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch("http://localhost:3000/sign/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      if (!res.ok) 
+        alert("otp wrong");
+        else 
+        alert("otp verified successfully");
+      }
+    catch (error) {
+      alert(error.message);
+    }
+  };
+
   const handleOtpChange = (otpValue) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -33,23 +53,28 @@ function Login() {
     }));
   };
 
-  const handleSendOtp = () => {
+  const handleSendOtp = async () => {
     if (!formData.email) {
       alert("Please enter your email!");
       return;
     }
-    console.log("OTP sent to:", formData.email);
-    setShowModal(true);
-  };
+    try {
+      setShowModal(true);
+      const res = await fetch("http://localhost:3000/sign/signin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: formData.email }),
+      });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (formData.otp.length < 6) {
-      alert("Please enter the complete 6-digit OTP.");
-      return;
-    }
-    console.log("Form submitted with data:", formData);
-    setShowModal(false); // Close modal after submission
+      if (!res.ok) {
+      
+        throw new Error("Failed to send OTP");
+      }
+    } catch (error) {
+      alert(error.message);
+    } 
   };
 
   return (

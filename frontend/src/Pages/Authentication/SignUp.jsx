@@ -75,7 +75,6 @@ function SignUp() {
   };
 
   const handleSubmit = async (e) => {
-    console.log(formData.otp);
     e.preventDefault();
     try {
       const res = await fetch("http://localhost:3000/sign/verify-otp", {
