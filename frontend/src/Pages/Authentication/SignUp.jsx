@@ -75,7 +75,11 @@ function SignUp() {
   };
 
   const handleSubmit = async (e) => {
+<<<<<<< HEAD
     console.log("writing");
+=======
+    console.log(formData.otp);
+>>>>>>> 55004c5054101c22288896e886233fa0e10b916f
     e.preventDefault();
     try {
       const res = await fetch("http://localhost:3000/sign/verify-otp", {
@@ -161,6 +165,7 @@ function SignUp() {
                   <Label htmlFor="otp" className="text-base font-normal">
                     Enter OTP
                   </Label>
+<<<<<<< HEAD
                   <InputOTP
                     maxLength={6}
                     value={formData.otp}
@@ -177,6 +182,19 @@ function SignUp() {
                       {[3, 4, 5].map((index) => (
                         <InputOTPSlot key={index} index={index} />
                       ))}
+=======
+                  <InputOTP maxLength={6} onChange={handleOtpChange} required>
+                    <InputOTPGroup>
+                      <InputOTPSlot index={0} />
+                      <InputOTPSlot index={1} />
+                      <InputOTPSlot index={2} />
+                    </InputOTPGroup>
+                    <InputOTPSeparator />
+                    <InputOTPGroup>
+                      <InputOTPSlot index={3} />
+                      <InputOTPSlot index={4} />
+                      <InputOTPSlot index={5} />
+>>>>>>> 55004c5054101c22288896e886233fa0e10b916f
                     </InputOTPGroup>
                   </InputOTP>
                 </div>
