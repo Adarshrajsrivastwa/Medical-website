@@ -63,9 +63,11 @@ function PatientDetails() {
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 bg-white shadow-2xl rounded-xl">
-      <form className="space-y-6">
-        <h1 className="text-2xl font-bold text-center text-[#6d46af] mb-6">Patient Details</h1>
+    <div className="w-11/12 max-w-md mx-auto p-4 sm:p-6 bg-white shadow-2xl rounded-xl">
+      <form className="space-y-4 sm:space-y-6">
+        <h1 className="text-xl sm:text-2xl font-bold text-center text-[#6d46af] mb-4 sm:mb-6">
+          Patient Details
+        </h1>
 
         {/* Phone Number */}
         <div className="space-y-2">
@@ -77,12 +79,13 @@ function PatientDetails() {
             country={"in"}
             value={phone}
             onChange={(phone) => setPhone(phone)}
+            required
           />
         </div>
 
-        {/* Gender and Date of Birth in one row */}
-        <div className="grid grid-cols-2 gap-4">
-          <div className="space-y-2">
+        {/* Gender and Date of Birth */}
+        <div className="flex flex-col sm:grid sm:grid-cols-2 gap-4 md:gap-0">
+          <div className="space-y-2 md:w-fit">
             <Label htmlFor="gender" className="text-sm font-medium">Gender</Label>
             <Select
               styles={customStyles}
@@ -94,6 +97,7 @@ function PatientDetails() {
               value={formData.gender}
               onChange={(selectedOption) => setFormData((prev) => ({ ...prev, gender: selectedOption }))}
               placeholder="Select Gender"
+              required
             />
           </div>
           <div className="space-y-2">
@@ -107,7 +111,7 @@ function PatientDetails() {
                     !date && "text-gray-500"
                   )}
                 >
-                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  <CalendarIcon className="h-4 w-4" />
                   {date ? format(date, "PPP") : <span>Pick a date</span>}
                 </Button>
               </PopoverTrigger>
@@ -117,6 +121,7 @@ function PatientDetails() {
                   selected={date}
                   onSelect={setDate}
                   initialFocus
+                  required
                 />
               </PopoverContent>
             </Popover>
@@ -124,7 +129,7 @@ function PatientDetails() {
         </div>
 
         {/* Weight and Height */}
-        <div className="grid grid-cols-2 gap-4">
+        <div className="flex flex-col sm:grid sm:grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label htmlFor="weight" className="text-sm font-medium">Weight (KG)</Label>
             <Input
@@ -166,13 +171,14 @@ function PatientDetails() {
             onChange={(selectedOption) => setFormData((prev) => ({ ...prev, bloodGroup: selectedOption }))}
             placeholder="Select Blood Group"
             className="mb-2"
+            required
           />
         </div>
 
         {/* Location */}
         <div className="space-y-2">
           <Label className="text-sm font-medium">Location</Label>
-          <div className="grid grid-cols-2 gap-4 mb-2">
+          <div className="flex flex-col sm:grid sm:grid-cols-2 gap-4 mb-2">
             <Select
               styles={customStyles}
               options={Country.getAllCountries().map((country) => ({
@@ -182,6 +188,7 @@ function PatientDetails() {
               value={formData.country}
               onChange={handleCountryChange}
               placeholder="Select Country"
+              required
             />
             {formData.country && (
               <Select
@@ -193,10 +200,11 @@ function PatientDetails() {
                 value={formData.state}
                 onChange={handleStateChange}
                 placeholder="Select State"
+                required
               />
             )}
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="flex flex-col sm:grid sm:grid-cols-2 gap-4">
             {formData.state && (
               <Select
                 styles={customStyles}
@@ -207,15 +215,18 @@ function PatientDetails() {
                 value={formData.city}
                 onChange={handleCityChange}
                 placeholder="Select City"
+                required
               />
             )}
             <Input
-              type="text"
+              type="number"
               placeholder="Pin Code"
               name="pinCode"
               value={formData.pinCode}
               onChange={handleInputChange}
               className="w-full"
+              maxLength={4}
+              required
             />
           </div>
         </div>
