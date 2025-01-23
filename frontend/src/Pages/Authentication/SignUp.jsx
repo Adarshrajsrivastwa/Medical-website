@@ -23,7 +23,7 @@ function SignUp() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    otp: "45",
+    otp: "",
     role: "",
   });
 
@@ -75,11 +75,7 @@ function SignUp() {
   };
 
   const handleSubmit = async (e) => {
-<<<<<<< HEAD
-    console.log("writing");
-=======
     console.log(formData.otp);
->>>>>>> 55004c5054101c22288896e886233fa0e10b916f
     e.preventDefault();
     try {
       const res = await fetch("http://localhost:3000/sign/verify-otp", {
@@ -89,12 +85,12 @@ function SignUp() {
         },
         body: JSON.stringify(formData),
       });
-
-
-      if (!res.ok) {
+      if (!res.ok) 
         alert("otp wrong");
+        else 
+        alert("otp verified successfully");
       }
-    } catch (error) {
+    catch (error) {
       alert(error.message);
     }
   };
@@ -165,24 +161,6 @@ function SignUp() {
                   <Label htmlFor="otp" className="text-base font-normal">
                     Enter OTP
                   </Label>
-<<<<<<< HEAD
-                  <InputOTP
-                    maxLength={6}
-                    value={formData.otp}
-                    onChange={(e) => setFormData({ ...formData, otp: e.target.value })}
-                  />
-                  <InputOTP maxLength={6} required>
-                    <InputOTPGroup>
-                      {[0, 1, 2].map((index) => (
-                        <InputOTPSlot key={index} index={index} />
-                      ))}
-                    </InputOTPGroup>
-                    <InputOTPSeparator />
-                    <InputOTPGroup>
-                      {[3, 4, 5].map((index) => (
-                        <InputOTPSlot key={index} index={index} />
-                      ))}
-=======
                   <InputOTP maxLength={6} onChange={handleOtpChange} required>
                     <InputOTPGroup>
                       <InputOTPSlot index={0} />
@@ -194,7 +172,6 @@ function SignUp() {
                       <InputOTPSlot index={3} />
                       <InputOTPSlot index={4} />
                       <InputOTPSlot index={5} />
->>>>>>> 55004c5054101c22288896e886233fa0e10b916f
                     </InputOTPGroup>
                   </InputOTP>
                 </div>
@@ -239,6 +216,5 @@ function SignUp() {
     </div>
   );
 }
-
 
 export default SignUp;
