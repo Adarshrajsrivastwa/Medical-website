@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+// import { useHistory } from 'react-router-dom';
+// const history = useHistory();
 import {
   InputOTP,
   InputOTPGroup,
@@ -36,6 +38,7 @@ function SignUp() {
     }));
   };
 
+
   const handleSendOtp = async () => {
     if (!formData.email) {
       alert("Please enter your email!");
@@ -44,7 +47,7 @@ function SignUp() {
 
     setLoading(true);
     try {
-      const res = await fetch("/sign/signup", {
+      const res = await fetch("http://localhost:3000/sign/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -64,11 +67,26 @@ function SignUp() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit =async (e) => {
+    console.log(formData.otp);
     e.preventDefault();
-    console.log("Form submitted with data:", formData);
-    setShowModal(false);
+    try {
+      const res = await fetch("http://localhost:3000/sign/verify-otp", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+
+      if (!res.ok) {
+        alert("otp wrong");
+      }
+    } catch (error) {
+      alert(error.message);
   };
+}
 
   return (
     <div className="flex items-center justify-center h-[89vh] bg-teal-400">
@@ -183,7 +201,6 @@ function SignUp() {
               <div className="flex items-center justify-end lg:gap-4 mt-4 gap-2">
                 <Button
                   type="button"
-                  onClick={() => setShowModal(false)}
                   variant="destructive"
                 >
                   Cancel
