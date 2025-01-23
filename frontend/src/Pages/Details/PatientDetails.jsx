@@ -1,9 +1,234 @@
-import React from 'react'
+import React, { useState } from "react";
+import { Country, State, City } from "country-state-city";
+import { Label } from "@/Components/ui/label";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
+import { format } from "date-fns";
+import { Calendar as CalendarIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Input } from "@/Components/ui/input";
+import Select from "react-select";
 
 function PatientDetails() {
+  const [phone, setPhone] = useState("");
+  const [date, setDate] = useState(null);
+  const [formData, setFormData] = useState({
+    country: null,
+    state: null,
+    city: null,
+    pinCode: "",
+    gender: null,
+    weight: "",
+    height: "",
+    bloodGroup: null,
+  });
+
+  const customStyles = {
+    option: (provided, state) => ({
+      ...provided,
+      backgroundColor: state.isSelected ? '#6d46af' : state.isFocused ? '#e6dcf5' : 'white',
+      color: state.isSelected ? 'white' : 'black',
+      ':hover': {
+        backgroundColor: '#e6dcf5',
+        cursor: 'pointer'
+      }
+    }),
+    control: (provided) => ({
+      ...provided,
+      borderColor: '#6d46af',
+      '&:hover': {
+        borderColor: '#6d46af'
+      }
+    })
+  };
+
+  const handleCountryChange = (selectedOption) => {
+    setFormData((prev) => ({ ...prev, country: selectedOption, state: null, city: null }));
+  };
+
+  const handleStateChange = (selectedOption) => {
+    setFormData((prev) => ({ ...prev, state: selectedOption, city: null }));
+  };
+
+  const handleCityChange = (selectedOption) => {
+    setFormData((prev) => ({ ...prev, city: selectedOption }));
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
   return (
-    <div>PatientDetails</div>
-  )
+    <div className="max-w-md mx-auto p-6 bg-white shadow-2xl rounded-xl">
+      <form className="space-y-6">
+        <h1 className="text-2xl font-bold text-center text-[#6d46af] mb-6">Patient Details</h1>
+
+        {/* Phone Number */}
+        <div className="space-y-2">
+          <Label htmlFor="phoneNumber" className="text-sm font-medium">
+            Phone Number
+          </Label>
+          <PhoneInput
+            inputClassName="!w-full !py-2 !px-3 !border !rounded-md focus:!border-[#6d46af]"
+            country={"in"}
+            value={phone}
+            onChange={(phone) => setPhone(phone)}
+          />
+        </div>
+
+        {/* Gender and Date of Birth in one row */}
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="gender" className="text-sm font-medium">Gender</Label>
+            <Select
+              styles={customStyles}
+              options={[
+                { value: "male", label: "Male" },
+                { value: "female", label: "Female" },
+                { value: "other", label: "Other" },
+              ]}
+              value={formData.gender}
+              onChange={(selectedOption) => setFormData((prev) => ({ ...prev, gender: selectedOption }))}
+              placeholder="Select Gender"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label className="text-sm font-medium">Date of Birth</Label>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant={"outline"}
+                  className={cn(
+                    "w-full justify-start text-left font-normal text-[#6d46af] border-[#6d46af]",
+                    !date && "text-gray-500"
+                  )}
+                >
+                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  {date ? format(date, "PPP") : <span>Pick a date</span>}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0">
+                <Calendar
+                  mode="single"
+                  selected={date}
+                  onSelect={setDate}
+                  initialFocus
+                />
+              </PopoverContent>
+            </Popover>
+          </div>
+        </div>
+
+        {/* Weight and Height */}
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="weight" className="text-sm font-medium">Weight (KG)</Label>
+            <Input
+              type="number"
+              placeholder="Enter Weight"
+              name="weight"
+              value={formData.weight}
+              onChange={handleInputChange}
+              className="w-full hover:border-[#6d46af] border-[#824edc]"
+              required
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="height" className="text-sm font-medium">Height (CM)</Label>
+            <Input
+              type="number"
+              placeholder="Enter Height"
+              name="height"
+              value={formData.height}
+              onChange={handleInputChange}
+              className="w-full"
+              required
+            />
+          </div>
+        </div>
+
+        {/* Blood Group */}
+        <div className="space-y-2">
+          <Label htmlFor="bloodGroup" className="text-sm font-medium">Blood Group</Label>
+          <Select
+            styles={customStyles}
+            options={[
+              { value: "a+", label: "A+" },
+              { value: "b+", label: "B+" },
+              { value: "ab+", label: "AB+" },
+              { value: "o+", label: "O+" },
+            ]}
+            value={formData.bloodGroup}
+            onChange={(selectedOption) => setFormData((prev) => ({ ...prev, bloodGroup: selectedOption }))}
+            placeholder="Select Blood Group"
+            className="mb-2"
+          />
+        </div>
+
+        {/* Location */}
+        <div className="space-y-2">
+          <Label className="text-sm font-medium">Location</Label>
+          <div className="grid grid-cols-2 gap-4 mb-2">
+            <Select
+              styles={customStyles}
+              options={Country.getAllCountries().map((country) => ({
+                value: country.isoCode,
+                label: country.name,
+              }))}
+              value={formData.country}
+              onChange={handleCountryChange}
+              placeholder="Select Country"
+            />
+            {formData.country && (
+              <Select
+                styles={customStyles}
+                options={State.getStatesOfCountry(formData.country.value).map((state) => ({
+                  value: state.isoCode,
+                  label: state.name,
+                }))}
+                value={formData.state}
+                onChange={handleStateChange}
+                placeholder="Select State"
+              />
+            )}
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            {formData.state && (
+              <Select
+                styles={customStyles}
+                options={City.getCitiesOfState(formData.country.value, formData.state.value).map((city) => ({
+                  value: city.name,
+                  label: city.name,
+                }))}
+                value={formData.city}
+                onChange={handleCityChange}
+                placeholder="Select City"
+              />
+            )}
+            <Input
+              type="text"
+              placeholder="Pin Code"
+              name="pinCode"
+              value={formData.pinCode}
+              onChange={handleInputChange}
+              className="w-full"
+            />
+          </div>
+        </div>
+
+        <Button
+          type="submit"
+          className="w-full bg-[#6d46af] hover:bg-[#5a3a8f] text-white"
+        >
+          Submit Details
+        </Button>
+      </form>
+    </div>
+  );
 }
 
-export default PatientDetails
+export default PatientDetails;
