@@ -92,10 +92,8 @@ function SignUp() {
       }
     } catch (error) {
       alert(error.message);
-      }
-    };
-  }
-
+    }
+  };
   return (
     <div className="flex items-center justify-center h-[89vh] bg-teal-400">
       <form
