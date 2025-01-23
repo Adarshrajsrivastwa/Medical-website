@@ -133,7 +133,7 @@ function PatientDetails() {
               name="weight"
               value={formData.weight}
               onChange={handleInputChange}
-              className="w-full"
+              className="w-full hover:border-[#6d46af] border-[#824edc]"
               required
             />
           </div>
