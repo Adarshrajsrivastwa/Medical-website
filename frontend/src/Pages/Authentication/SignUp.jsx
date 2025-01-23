@@ -153,24 +153,25 @@ function SignUp() {
                   <Label htmlFor="otp" className="text-base font-normal">
                     Enter OTP
                   </Label>
-                  <InputOTP
-                    maxLength={6}
-                    value={formData.otp}
-                    onChange={(e) => setFormData({ ...formData, otp: e.target.value })}
-                  />
-                  <InputOTP maxLength={6} required>
-                    <InputOTPGroup>
-                      {[0, 1, 2].map((index) => (
-                        <InputOTPSlot key={index} index={index} />
-                      ))}
-                    </InputOTPGroup>
-                    <InputOTPSeparator />
-                    <InputOTPGroup>
-                      {[3, 4, 5].map((index) => (
-                        <InputOTPSlot key={index} index={index} />
-                      ))}
-                    </InputOTPGroup>
-                  </InputOTP>
+                  <div className="flex gap-2">
+                    {[...Array(6)].map((_, index) => (
+                      <input
+                        key={index}
+                        type="text"
+                        maxLength={1}
+                        value={formData.otp[index] || ""}
+                        onChange={(e) => {
+                          const otpArray = formData.otp.split("");
+                          otpArray[index] = e.target.value;
+                          setFormData((prevData) => ({
+                            ...prevData,
+                            otp: otpArray.join(""),
+                          }));
+                        }}
+                        className="otp-slot border rounded w-10 h-10 text-center text-lg"
+                      />
+                    ))}
+                  </div>
                 </div>
 
                 <div className="flex flex-col gap-1">
