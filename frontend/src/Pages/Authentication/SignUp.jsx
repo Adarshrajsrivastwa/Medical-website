@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from 'axios';
 // import { useHistory } from 'react-router-dom';
 // const history = useHistory();
+import { useNavigate } from 'react-router-dom';
 import {
   InputOTP,
   InputOTPGroup,
@@ -36,6 +37,7 @@ function SignUp() {
   };
 
   const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false); // To show loading during OTP request
 
   const handleChange = (e) => {
@@ -81,7 +83,9 @@ function SignUp() {
       });
   
       if (res.status === 200) {
-        alert("OTP verified successfully");
+        console.log(formData.role);
+        if(formData.role === 'patient')
+        navigate('/patient-detail');
       } else {
         alert("OTP wrong");
       }
