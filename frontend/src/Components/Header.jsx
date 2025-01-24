@@ -1,16 +1,60 @@
 import React from 'react'
+import { User, Bell, LogIn, UserPlus } from 'lucide-react'
 
-function Header() {
+function Header({ isLoggedIn, user }) {
     return (
-        <div className='flex flex-row bg-[#563393] text-white'>
-            {/* Right */}
-            <div className='flex flex-row items-center'>
-                <img src="../Public/image.png" alt="LOGO" className='w-20' />
-                <h1>CareSpaceX</h1>
+        <div className='flex justify-between items-center bg-white text-[#563393] p-4 shadow-sm'>
+            {/* Left - Logo Section */}
+            <div className='flex items-center space-x-4'>
+                <img
+                    src="../Public/image.png"
+                    alt="LOGO"
+                    className='w-16 h-16 object-contain'
+                />
+                <h1 className='text-xl font-bold'>CareSpaceX</h1>
             </div>
-            {/* Left */}
-            <div>
 
+            {/* Right - Auth Section */}
+            <div>
+                {isLoggedIn ? (
+                    <div className='flex items-center space-x-3'>
+                        {/* Hide notification and profile on mobile */}
+                        <div className='hidden md:flex items-center space-x-3'>
+                            {/* Notification Icon */}
+                            <div className='cursor-pointer hover:bg-purple-100 p-2 rounded-full relative'>
+                                <Bell className='w-6 h-6' />
+                                <span className='absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center'>
+                                    3
+                                </span>
+                            </div>
+
+                            {/* Profile */}
+                            {user.profilePhoto ? (
+                                <img
+                                    src={user.profilePhoto}
+                                    alt="Profile"
+                                    className='w-10 h-10 rounded-full object-cover'
+                                />
+                            ) : (
+                                <div className='bg-purple-200 text-[#563393] rounded-full w-10 h-10 flex items-center justify-center'>
+                                    <User className='w-6 h-6' />
+                                </div>
+                            )}
+                            <span className='font-medium'>{user.name}</span>
+                        </div>
+                    </div>
+                ) : (
+                    <div className='flex space-x-4'>
+                        <button className='flex items-center bg-transparent border border-[#563393] text-[#563393] px-4 py-2 rounded-md hover:bg-purple-50'>
+                            <LogIn className='mr-2 w-5 h-5' />
+                            Login
+                        </button>
+                        <button className='flex items-center bg-[#563393] text-white px-4 py-2 rounded-md hover:bg-purple-700'>
+                            <UserPlus className='mr-2 w-5 h-5' />
+                            Sign Up
+                        </button>
+                    </div>
+                )}
             </div>
         </div>
     )
