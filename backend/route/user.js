@@ -19,7 +19,7 @@ let userschema = new mongoose.Schema({
     gender:{type:String},
     bloodGroup:{type:String},
     phone:{type:String},
-    date: {type: Date, default: Date.now}
+
 });
 
 

@@ -1,8 +1,8 @@
 let express = require('express');
 const bodyParser = require('body-parser');
-const User=require('../models/user');
+const User = require('../models/user');
 const Hospital = require('../models/hospital');
-const Doctor=require('../models/doctor');
+const Doctor = require('../models/doctor');
 
 let app = express();
 
@@ -10,22 +10,23 @@ app.use(bodyParser.json());
 
 app.post('/userdetail', async (req, res) => {
     try {
-        const { role, email, phone, country, city, state, pincode, weight, height, bloodGroup, dob } = req.body;
-        email = req.body.email
+        const { role, email, phone, country, city, state, pinCode, weight, height, bloodGroup, date,gender } = req.body;
         if (role === 'patient') {
             let user = await User.findOne({ email: email });
             if (!user) {
                 return res.status(404).send("User not found");
             }
+            console.log(state.label);
             user.phone = phone;
-            user.country = country;
-            user.city = city;
-            user.state = state;
-            user.pincode = pincode;
+            user.country = country.label;
+            user.city = city.label;
+            user.state = state.label;
+            user.pincode = pinCode;
             user.weight = weight;
             user.height = height;
-            user.bloodGroup = bloodGroup;
-            user.dob = dob;
+            user.bloodGroup = bloodGroup.value;
+            user.dob = date;
+            user.gender = gender.value;
             await user.save();
             return res.status(200).send("Data saved successfully");
         } else {

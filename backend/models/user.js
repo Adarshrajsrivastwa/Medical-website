@@ -1,16 +1,35 @@
 const mongoose = require('mongoose');
 let connectdb= require('../config/db');
-const { model } = mongoose; 
+const { model } = mongoose;
 
 let userschema = new mongoose.Schema({
-    name: {type: String, unique: true},
-    email: {type: String, required: true, unique: true},
-    role: {type: String, default: 'user'},
-    otp: {type: String, default: ''},
-    otp_expiry: {type: Date},
-    is_verified: {type: Boolean, default: false},
-    date: {type: Date, default: Date.now}
-});
-
-
-module.exports = model ('User',userschema);
+    name: { type: String, unique: true, default: "" },
+    email: { type: String, required: true, unique: true },
+    role: { type: String, default: 'user' },
+    otp: { type: String, default: '' },
+    otp_expiry: { type: Date },
+    is_verified: { type: Boolean, default: false },
+    date: { type: Date, default: Date.now },
+      phoneNumber: { type: String },
+      gender: { type: String, enum: ['male', 'female', 'other'] },
+      dob: { type: Date },
+      weight: { type: Number },
+      height: { type: Number },
+      bloodGroup: { 
+        type: String, 
+        enum: ['a+', 'b+', 'ab+', 'o+'] 
+      },
+    //   location: {
+    //     country: { type: String },
+    //     state: { type: String },
+    //     city: { type: String },
+    //     pinCode: { type: String },
+    //   },
+    country: { type: String },
+        state: { type: String },
+        city: { type: String },
+        pinCode: { type: String },
+    });
+  
+  module.exports = model('User', userschema);
+  

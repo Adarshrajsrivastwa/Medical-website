@@ -87,6 +87,7 @@ function PatientDetails() {
       phone: phone,
       date: date,
     })
+    console.log(formData.pinCode);
     try {
       const res = await axios.post("http://localhost:3000/detail/userdetail", formData, {
         headers: {
