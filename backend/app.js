@@ -7,6 +7,7 @@ let dotenv = require('dotenv');
 let mongoose= require('mongoose');
 let session= require('express-session');
 let connectdb= require('./config/db.js');
+let details= require('./route/detail');
 
 dotenv.config();
 connectdb();
@@ -32,6 +33,8 @@ var corsOptions = {
 app.use(cors(corsOptions));
 
 app.use('/sign', sign);
+
+app.use('/detail', details);
 
 app.get('/', (req, res) => {
     res.send("Testing phase");  

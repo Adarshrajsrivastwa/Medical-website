@@ -2,6 +2,8 @@ const nodemailer = require('nodemailer');
 let express = require('express');
 const bodyParser = require('body-parser');
 const User=require('../models/user');
+const Hospital = require('../models/hospital');
+const Doctor=require('../models/doctor');
 
 let app = express();
 app.use(bodyParser.json()); 
@@ -27,7 +29,14 @@ app.post('/signup', async(req, res) => {
   let email=req.body.email;
   console.log(email);
 
-  let user= await User.findOne({email: email});
+  let user;if (req.body.role === 'patient') {
+    user = await User.findOne({ email: req.body.email });
+  } else if (req.body.role === 'doctor') {
+    user = await Doctor.findOne({ email: req.body.email });
+  } else if (req.body.role === 'hospital') {
+    user = await Hospital.findOne({ email: req.body.email });
+  }
+
   if(user){
     return res.status(400).send('user already exists');
   }
@@ -107,7 +116,6 @@ app.post('/verify-otp',async(req, res) => {
 
 app.post('/login',async(req, res) => {
   let otp=req.body.otp;
-  let email=req.body.email;
   console.log('otp login successfully');
   let user= await User.findOne({email: email});
   if(user && user.otp === otp){

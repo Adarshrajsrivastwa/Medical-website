@@ -11,6 +11,8 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Input } from "@/Components/ui/input";
 import Select from "react-select";
+import Cookies from 'js-cookie';
+import axios from 'axios';
 
 function PatientDetails() {
   const [phone, setPhone] = useState("");
@@ -24,6 +26,10 @@ function PatientDetails() {
     weight: "",
     height: "",
     bloodGroup: null,
+    email:"",
+    role: null,
+    phone:"",
+    date: null,
   });
 
   const customStyles = {
@@ -70,9 +76,41 @@ function PatientDetails() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleSubmit =async (e) => {
+    e.preventDefault();
+    const emailFromCookie = Cookies.get('email');
+    const role = Cookies.get('role');
+    setFormData({
+      ...formData,
+      email: emailFromCookie,
+      role: role,
+      phone: phone,
+      date: date,
+    })
+    try {
+      const res = await axios.post("http://localhost:3000/detail/userdetail", formData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (res.status === 200) {
+        alert("Form submitted successfully");
+      } else {
+        alert("Failed to submit form");
+      }
+    }
+      catch (err) {
+        console.error(err);
+        alert("Failed to submit form");
+        return;
+      }
+
+  }
+
+
   return (
     <div className="w-11/12 max-w-md mx-auto p-4 sm:p-6 bg-white shadow-2xl rounded-xl">
-      <form className="space-y-4 sm:space-y-6">
+      <form className="space-y-4 sm:space-y-6" onSubmit={handleSubmit}>
         <h1 className="text-xl sm:text-2xl font-bold text-center text-[#6d46af] mb-4 sm:mb-6">
           Patient Details
         </h1>
