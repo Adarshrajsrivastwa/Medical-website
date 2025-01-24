@@ -20,6 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Link } from "react-router-dom";
+import Cookies from "js-cookie";
 
 function SignUp() {
   const [formData, setFormData] = useState({
@@ -53,11 +54,14 @@ function SignUp() {
       alert("Please enter your email!");
       return;
     }
-  
+    Cookies.set('email', formData.email, { expires: 1/24 });  
+    Cookies.set('role',formData.role, { expires:1/24 });
     setLoading(true);
     try {
-      const res = await axios.post('http://localhost:3000/sign/signup', {
-        email: formData.email,
+      const res = await axios.post("http://localhost:3000/sign/signup", formData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
   
       if (res.status !== 200) {
@@ -75,6 +79,7 @@ function SignUp() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(formData.role);
     try {
       const res = await axios.post("http://localhost:3000/sign/verify-otp", formData, {
         headers: {
@@ -115,6 +120,26 @@ function SignUp() {
             required
           />
         </div>
+        <div className="flex flex-col gap-1">
+                  <Label htmlFor="role" className="text-base font-normal">
+                    Select Your Role
+                  </Label>
+                  <Select
+                    required
+                    onValueChange={(value) =>
+                      setFormData((prevData) => ({ ...prevData, role: value }))
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select Your Role" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="doctor">Doctor</SelectItem>
+                      <SelectItem value="patient">Patient</SelectItem>
+                      <SelectItem value="hospital">Hospital</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
 
         <Button
           type="button"

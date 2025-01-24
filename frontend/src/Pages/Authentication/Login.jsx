@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from 'axios';
+import Cookies from 'js-cookie';
 import {
   InputOTP,
   InputOTPGroup,
@@ -67,7 +68,7 @@ function Login() {
       alert("Please enter your email!");
       return;
     }
-
+    Cookies.set('email', formData.email, { expires: 1/24 });  
     try {
       setShowModal(true); 
       const res = await axios.post("http://localhost:3000/sign/signin", {
