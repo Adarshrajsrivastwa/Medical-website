@@ -44,12 +44,11 @@ const Sidebar = ({ userRole, onLogout }) => {
                 className={`fixed left-0 top-0 h-full w-64 bg-white text-[#563393] 
                     transform transition-transform duration-300 ease-in-out z-40 
                     ${isOpen ? 'translate-x-0' : '-translate-x-full'} 
-                    md:relative md:translate-x-0 shadow-lg`}
+                    md:relative md:translate-x-0 shadow-lg overflow-y-auto`}
             >
-                <div className="flex flex-col h-full">
-
+                <div className="flex flex-col justify-between h-full">
                     {/* Scrollable Menu */}
-                    <div className="flex-grow overflow-y-auto p-4">
+                    <div className="flex-shrink p-4">
                         <ul className="space-y-2">
                             {menuItems[userRole]?.map((item, index) => (
                                 <li key={index}>
@@ -67,10 +66,10 @@ const Sidebar = ({ userRole, onLogout }) => {
                     </div>
 
                     {/* Logout Button */}
-                    <div className="p-4 border-t md:mt-72">
+                    <div className="p-4 border-t mt-auto">
                         <button
                             onClick={onLogout}
-                            className="w-full flex items-center px-4 py-2 rounded-md hover:bg-purple-100 transition-colors duration-200 text-red-600 hover:bg-red-50"
+                            className="w-full flex items-center px-4 py-2 rounded-md transition-colors duration-200 text-red-600 hover:bg-red-50"
                         >
                             <LogOut className="mr-3 w-5 h-5" />
                             Logout

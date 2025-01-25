@@ -3,7 +3,7 @@ import { User, Bell, LogIn, UserPlus } from 'lucide-react'
 
 function Header({ isLoggedIn, user }) {
     return (
-        <div className='flex justify-between items-center bg-white text-[#563393] p-4 shadow-sm'>
+        <div className='flex justify-between items-center bg-white text-[#563393] p-4 shadow-md'>
             {/* Left - Logo Section */}
             <div className='flex items-center space-x-4'>
                 <img
