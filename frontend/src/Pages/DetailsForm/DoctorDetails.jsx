@@ -7,6 +7,7 @@ import Select from "react-select";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/Components/ui/input";
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 function DoctorDetails() {
   const [formData, setFormData] = useState({
@@ -21,6 +22,8 @@ function DoctorDetails() {
     state: null,
     city: null,
     pinCode: "",
+    role:"",
+    email:"",
   });
 
   const customStyles = {
@@ -104,6 +107,13 @@ function DoctorDetails() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const emailFromCookie = Cookies.get('email');
+        const role = Cookies.get('role');
+        setFormData({
+          ...formData,
+          email: emailFromCookie,
+          role: role,
+        })
     console.log(formData.certificate);
     try {
       const res = await axios.post("http://localhost:3000/detail/doctordetail", formData, {
