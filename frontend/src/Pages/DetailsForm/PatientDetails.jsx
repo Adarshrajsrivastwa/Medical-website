@@ -61,7 +61,7 @@ function PatientDetails() {
       ...prev,
       country: selectedOption,
       state: null,
-      city: null
+      city: null,
     }));
   };
 
@@ -69,14 +69,14 @@ function PatientDetails() {
     setFormData((prev) => ({
       ...prev,
       state: selectedOption,
-      city: null
+      city: null,
     }));
   };
 
   const handleCityChange = (selectedOption) => {
     setFormData((prev) => ({
       ...prev,
-      city: selectedOption
+      city: selectedOption,
     }));
   };
 
@@ -84,27 +84,23 @@ function PatientDetails() {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const emailFromCookie = Cookies.get('email');
-    const role = Cookies.get('role');
+    const roleFromCookie = Cookies.get('role');  // Ensure 'role' is fetched correctly
 
     const submissionData = {
       ...formData,
       email: emailFromCookie,
-      role: role,
+      role: roleFromCookie,  // Ensure role is passed
       phone: phone,
       date: date,
-<<<<<<< HEAD
-    })
-=======
     };
 
->>>>>>> 83e117cb47586211b26719b7281352383a2b05f2
     try {
       const res = await axios.post("http://localhost:3000/detail/userdetail", submissionData, {
         headers: {

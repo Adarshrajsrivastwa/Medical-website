@@ -100,6 +100,7 @@ function HospitalDetails() {
       alert("Pin Code must be exactly 6 digits.");
       return;
     }
+    console.log("working");
      const emailFromCookie = Cookies.get('email');
         const role = Cookies.get('role');
         setFormData({
@@ -110,7 +111,7 @@ function HospitalDetails() {
         try {
           const res = await axios.post("http://localhost:3000/detail/hospitaldetail", formData, {
             headers: {
-              "Content-Type": "application/json",
+              "Content-Type": "multipart/form-data",
             },
           });
           if (res.status === 200) {
