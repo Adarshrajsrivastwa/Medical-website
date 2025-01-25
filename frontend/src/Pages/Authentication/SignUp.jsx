@@ -204,26 +204,7 @@ function SignUp() {
                   </InputOTP>
                 </div>
 
-                <div className="flex flex-col gap-1">
-                  <Label htmlFor="role" className="text-base font-normal">
-                    Select Your Role
-                  </Label>
-                  <Select
-                    required
-                    onValueChange={(value) =>
-                      setFormData((prevData) => ({ ...prevData, role: value }))
-                    }
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select Your Role" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="doctor">Doctor</SelectItem>
-                      <SelectItem value="patient">Patient</SelectItem>
-                      <SelectItem value="hospital">Hospital</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+                
               </div>
 
               <div className="flex items-center justify-end lg:gap-4 mt-4 gap-2">
