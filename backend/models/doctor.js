@@ -2,9 +2,7 @@ const mongoose = require('mongoose');
 let connectdb= require('../config/db');
 const { model } = mongoose; 
 
-const { Schema } = mongoose;
-
-const doctorSchema = new Schema(
+const doctorSchema = new mongoose.Schema(
   {
     name: { type: String, unique: true, default: "" },
     email: { type: String, required: true, unique: true },

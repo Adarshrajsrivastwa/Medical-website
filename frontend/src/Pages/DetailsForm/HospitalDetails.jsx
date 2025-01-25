@@ -6,6 +6,8 @@ import "react-phone-input-2/lib/style.css";
 import Select from "react-select";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/Components/ui/input";
+import Cookies from 'js-cookie';
+import axios from 'axios';
 
 function HospitalDetails() {
   const [formData, setFormData] = useState({
@@ -16,6 +18,8 @@ function HospitalDetails() {
     pinCode: "",
     certificate: null,
     specializations: [],
+    role:"",
+    email:"",
   });
 
   const customStyles = {
@@ -90,17 +94,36 @@ function HospitalDetails() {
     setFormData((prev) => ({ ...prev, city: selectedOption }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     if (!/^[0-9]{6}$/.test(formData.pinCode)) {
       alert("Pin Code must be exactly 6 digits.");
       return;
     }
-    // if (!/^[0-9]{10}$/.test(formData.phone)) {
-    //   alert("Phone number must be exactly 10 digits.");
-    //   return;
-    // }
-    console.log(formData);
+     const emailFromCookie = Cookies.get('email');
+        const role = Cookies.get('role');
+        setFormData({
+          ...formData,
+          email: emailFromCookie,
+          role: role,
+        })
+        try {
+          const res = await axios.post("http://localhost:3000/detail/hospitaldetail", formData, {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+          if (res.status === 200) {
+            alert("Form submitted successfully");
+          } else {
+            alert("Failed to submit form");
+          }
+        }
+          catch (err) {
+            console.error(err);
+            alert("Failed to submit form");
+            return;
+          }
   };
 
   return (

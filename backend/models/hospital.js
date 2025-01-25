@@ -2,11 +2,44 @@ const mongoose = require('mongoose');
 let connectdb= require('../config/db');
 const { model } = mongoose; 
 
-    let userschema = new mongoose.Schema({
-        name: {type: String, required: true},
-        email: {type: String, required: true, unique: true},
-        role: {type: String, default: 'hospital'},
-        date: {type: Date, default: Date.now}
-    });
+const HospitalDetailsSchema = new mongoose.Schema({
+    name: { type: String, unique: true, default: "" },
+    email: { type: String, required: true, unique: true },
+    role: { type: String, default: 'user' },
+    otp: { type: String, default: '' },
+    otp_expiry: { type: Date },
+    is_verified: { type: Boolean, default: false },
+  phone: {
+    type: String,
+  },
+  certificate: {
+    type: String,
+  },
+  specialization:[{
+    type:String, 
+  }],
+  country: {
+    type: String,
+  },
+  state: {
+    type: String,
+  },
+  city: {
+    type: String,
+  },
+  pinCode: {
+    type: String,
+  },
+  created_at: {
+    type: Date,
+    default: Date.now,
+  },
+  updated_at: {
+    type: Date,
+    default: Date.now,
+  },
+});
 
-    module.exports = model('Hospital', userschema);
+const HospitalDetails = mongoose.model('hospitals', HospitalDetailsSchema);
+
+module.exports = HospitalDetails;

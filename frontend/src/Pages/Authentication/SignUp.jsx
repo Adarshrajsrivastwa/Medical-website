@@ -39,7 +39,7 @@ function SignUp() {
 
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false); // To show loading during OTP request
+  const [loading, setLoading] = useState(false);
 
   
 
@@ -56,8 +56,6 @@ function SignUp() {
       alert("Please enter your email!");
       return;
     }
-    console.log(formData.role);
-
     Cookies.set('email', formData.email, { expires: 1/24 });  
     Cookies.set('role',formData.role, { expires:1/24 });
     setLoading(true);
@@ -67,11 +65,11 @@ function SignUp() {
           "Content-Type": "application/json",
         },
       });
+      console.log(res.status);
   
       if (res.status !== 200) {
         throw new Error('Failed to send OTP');
       }
-  
       setShowModal(true);
     } catch (error) {
       alert(error.message);
@@ -91,10 +89,15 @@ function SignUp() {
       });
   
       if (res.status === 200) {
+        console.log(formData.role)
         if(formData.role === 'patient')
         navigate('/patient-detail-form');
       else if(formData.role === 'doctor')
         navigate('/doctor-detail-form');
+      else if(formData.role === 'hospital'){
+        console.log(formData.role)
+      navigate('/hospital-detail-form');
+      }
     }
     }
     catch (error) {

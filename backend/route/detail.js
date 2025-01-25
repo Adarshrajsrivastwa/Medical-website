@@ -79,5 +79,37 @@ app.post('/doctordetail', upload.single('certificate'), async (req, res) => {
     }
 });
 
+app.post('/hospitaldetail', upload.single('certificate'), async (req, res) => {
+    try {
+        const { phone, email, country, state, city, pinCode, role,specialization} = req.body;
+        const certificate = req.file? req.file.path : null;
+        if (!certificate) {
+            return res.status(400).send('No certificate file uploaded');
+        }
+        if (role === 'hospital') {
+            let user = await Hospital.findOne({ email: email });
+            if (!user) {
+                return res.status(404).send('User not found');
+            }
+            user.phone = phone,
+            user.country = country.label;
+            user.state = state.label;
+            user.city = city.label;
+            user.pinCode = pinCode;
+            user.specialization = specialization;
+            user.certificate = certificate;
+            await user.save();
+            return res.status(200).send('Data saved successfully');
+        } else {
+            return res.status(400).send('Invalid role');
+        }
+    
+    }
+    catch (error) {
+        console.error('Error updating hospital details:', error);
+        return res.status(500).send('Internal server error');
+    }
+});
+
 
 module.exports = app;
