@@ -26,14 +26,13 @@ function DoctorDetails() {
     email:"",
   });
 
-
-
   const customStyles = {
     control: (base) => ({
       ...base,
-      borderColor: "#824edc", // Purple border
+      borderColor: "#824edc",
       "&:hover": { borderColor: "#6d46af" },
       boxShadow: "none",
+      overflowY: 'auto',
     }),
     option: (base, { isFocused, isSelected }) => ({
       ...base,
@@ -52,6 +51,31 @@ function DoctorDetails() {
     menu: (base) => ({
       ...base,
       zIndex: 5,
+    }),
+    // New styles to handle multi-select overflow
+    multiValue: (base) => ({
+      ...base,
+      backgroundColor: "#e6e0f6",
+      color: "#6d46af",
+      margin: '2px',
+    }),
+    multiValueLabel: (base) => ({
+      ...base,
+      color: "#6d46af",
+    }),
+    multiValueRemove: (base) => ({
+      ...base,
+      color: "#6d46af",
+      ':hover': {
+        backgroundColor: "#824edc",
+        color: 'white',
+      },
+    }),
+    valueContainer: (base) => ({
+      ...base,
+      flexWrap: 'wrap',
+      maxHeight: '40px',
+      overflowY: 'auto',
     }),
   };
 
@@ -76,7 +100,7 @@ function DoctorDetails() {
         return;
       }
       setFormData((prev) => ({ ...prev, certificate: file }));
-      
+
     }
   };
 
@@ -100,7 +124,7 @@ function DoctorDetails() {
       if (res.status !== 200) {
         alert('Failed to send OTP');
       }
-        else
+      else
         alert('Form submitted successfully');
     } catch (error) {
       alert(error.message);
@@ -207,7 +231,7 @@ function DoctorDetails() {
               onChange={(selectedOptions) => handleSelectChange("language", selectedOptions)}
               placeholder="Select Languages"
               required
-              className="md:w-max md:pr-5"
+              className="md:w-[222px] md:max-h-[30px] md:pr-5"
             />
           </div>
           <div className="space-y-2">

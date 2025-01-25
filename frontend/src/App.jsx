@@ -19,27 +19,30 @@ function App() {
 
   return (
     <Router>
-      <div className="flex flex-col min-h-screen">
-        <Header />
-        <div className="flex flex-1">
-          <Sidebar userRole={userRole} />
-          <div className="flex-1 p-4">
-            <Routes>
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/doctor-detail-form" element={<DoctorDetails />} />
-              <Route path="/patient-detail-form" element={<PatientDetails />} />
-              <Route path="/hospital-detail-form" element={<HospitalDetails />} />
-              <Route path="/patient-detail" element={<Profile />} />
-              <Route path="/doctor-appointment" element={<DoctorAppointment />} />
-              <Route path="/bed-booking" element={<BedBooking />} />
-              <Route path="/order-medicine" element={<OrderMedicine />} />
-              <Route path="/history" element={<History />} />
-
-            </Routes>
-          </div>
+      <div className="h-screen flex flex-col">
+        <Header className="h-16 shrink-0" />
+        <div className="flex flex-1 overflow-hidden">
+          <Sidebar
+            userRole={userRole}
+            className="w-64 overflow-y-auto border-r"
+          />
+          <main className="flex-1 overflow-y-auto relative">
+            <div className="p-4">
+              <Routes>
+                <Route path="/signup" element={<SignUp />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/doctor-detail-form" element={<DoctorDetails />} />
+                <Route path="/patient-detail-form" element={<PatientDetails />} />
+                <Route path="/hospital-detail-form" element={<HospitalDetails />} />
+                <Route path="/patient-detail" element={<Profile />} />
+                <Route path="/doctor-appointment" element={<DoctorAppointment />} />
+                <Route path="/bed-booking" element={<BedBooking />} />
+                <Route path="/order-medicine" element={<OrderMedicine />} />
+                <Route path="/history" element={<History />} />
+              </Routes>
+            </div>
+          </main>
         </div>
-        <Footer />
       </div>
     </Router>
   );

@@ -3,16 +3,13 @@ import { Country, State, City } from "country-state-city";
 import { Label } from "@/Components/ui/label";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
-import { format } from "date-fns";
-import { Calendar as CalendarIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Input } from "@/Components/ui/input";
 import Select from "react-select";
 import Cookies from 'js-cookie';
 import axios from 'axios';
+import { DatePicker } from "@/Components/DatePicker";
+// Assume this is the new DatePicker component
 
 function PatientDetails() {
   const [phone, setPhone] = useState("");
@@ -26,16 +23,16 @@ function PatientDetails() {
     weight: "",
     height: "",
     bloodGroup: null,
-    email:"",
+    email: "",
     role: null,
-    phone:"",
+    phone: "",
     date: null,
   });
 
   const customStyles = {
     control: (base) => ({
       ...base,
-      borderColor: "#824edc", // Purple border
+      borderColor: "#824edc",
       "&:hover": { borderColor: "#6d46af" },
       boxShadow: "none",
     }),
@@ -60,53 +57,71 @@ function PatientDetails() {
   };
 
   const handleCountryChange = (selectedOption) => {
-    setFormData((prev) => ({ ...prev, country: selectedOption, state: null, city: null }));
+    setFormData((prev) => ({
+      ...prev,
+      country: selectedOption,
+      state: null,
+      city: null
+    }));
   };
 
   const handleStateChange = (selectedOption) => {
-    setFormData((prev) => ({ ...prev, state: selectedOption, city: null }));
+    setFormData((prev) => ({
+      ...prev,
+      state: selectedOption,
+      city: null
+    }));
   };
 
   const handleCityChange = (selectedOption) => {
-    setFormData((prev) => ({ ...prev, city: selectedOption }));
+    setFormData((prev) => ({
+      ...prev,
+      city: selectedOption
+    }));
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value
+    }));
   };
 
-  const handleSubmit =async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const emailFromCookie = Cookies.get('email');
     const role = Cookies.get('role');
-    setFormData({
+
+    const submissionData = {
       ...formData,
       email: emailFromCookie,
       role: role,
       phone: phone,
       date: date,
+<<<<<<< HEAD
     })
+=======
+    };
+
+>>>>>>> 83e117cb47586211b26719b7281352383a2b05f2
     try {
-      const res = await axios.post("http://localhost:3000/detail/userdetail", formData, {
+      const res = await axios.post("http://localhost:3000/detail/userdetail", submissionData, {
         headers: {
           "Content-Type": "application/json",
         },
       });
+
       if (res.status === 200) {
         alert("Form submitted successfully");
       } else {
         alert("Failed to submit form");
       }
+    } catch (err) {
+      console.error(err);
+      alert("Failed to submit form");
     }
-      catch (err) {
-        console.error(err);
-        alert("Failed to submit form");
-        return;
-      }
-
-  }
-
+  };
 
   return (
     <div className="w-11/12 max-w-md mx-auto p-4 sm:p-6 bg-white shadow-2xl rounded-xl">
@@ -146,32 +161,11 @@ function PatientDetails() {
               required
             />
           </div>
-          <div className="space-y-2">
-            <Label className="text-sm font-medium">Date of Birth</Label>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant={"outline"}
-                  className={cn(
-                    "w-full justify-start text-left font-normal text-[#6d46af] border-[#6d46af]",
-                    !date && "text-gray-500"
-                  )}
-                >
-                  <CalendarIcon className="h-4 w-4" />
-                  {date ? format(date, "PPP") : <span>Pick a date</span>}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0">
-                <Calendar
-                  mode="single"
-                  selected={date}
-                  onSelect={setDate}
-                  initialFocus
-                  required
-                />
-              </PopoverContent>
-            </Popover>
-          </div>
+          <DatePicker
+            value={date}
+            onChange={setDate}
+            required={true}
+          />
         </div>
 
         {/* Weight and Height */}
@@ -271,7 +265,7 @@ function PatientDetails() {
               value={formData.pinCode}
               onChange={handleInputChange}
               className="w-full"
-              maxLength={4}
+              maxLength={6}
               required
             />
           </div>
