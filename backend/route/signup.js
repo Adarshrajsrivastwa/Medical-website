@@ -27,9 +27,9 @@ app.post('/signup', async(req, res) => {
 
   let otp = generateOTP();
   let email=req.body.email;
-  console.log(email);
 
-  let user;if (req.body.role === 'patient') {
+  let user;
+  if (req.body.role === 'patient') {
     user = await User.findOne({ email: req.body.email });
   } else if (req.body.role === 'doctor') {
     user = await Doctor.findOne({ email: req.body.email });
@@ -41,9 +41,15 @@ app.post('/signup', async(req, res) => {
     return res.status(400).send('user already exists');
   }
   else{
+    if(req.body.role === 'patient') {
     let newUser = new User({email: email, otp: otp});
     await newUser.save();
   }
+  else if(req.body.role === 'doctor') {
+    let newUser = new Doctor({email: email, otp: otp});
+    await newUser.save();
+  }
+}
   let mailOptions = {
     from: {
       name: 'CareSpaceX',
@@ -108,10 +114,19 @@ app.post('/signin', async (req, res) => {
 app.post('/verify-otp',async(req, res) => {
   let email=req.body.email;
   let otp=req.body.otp;
+
+  if(req.body.role==='patient'){
   let user= await User.findOne({email: email});
   if(user && user.otp === otp){
     res.status(200).send('OTP verified successfully!');
   }
+}
+else if(req.body.role==='doctor'){
+  let user= await Doctor.findOne({email: email});
+  if(user && user.otp === otp){
+    res.status(200).send('OTP verified successfully!');
+  }
+}
 })
 
 app.post('/login',async(req, res) => {

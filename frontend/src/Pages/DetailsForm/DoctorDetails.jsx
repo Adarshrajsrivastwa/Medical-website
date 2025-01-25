@@ -6,6 +6,7 @@ import "react-phone-input-2/lib/style.css";
 import Select from "react-select";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/Components/ui/input";
+import axios from 'axios';
 
 function DoctorDetails() {
   const [formData, setFormData] = useState({
@@ -21,6 +22,8 @@ function DoctorDetails() {
     city: null,
     pinCode: "",
   });
+
+
 
   const customStyles = {
     control: (base) => ({
@@ -58,7 +61,7 @@ function DoctorDetails() {
     setFormData((prev) => ({ ...prev, [field]: selectedOption }));
   };
 
-  const handleFileChange = (e) => {
+  const handleFileChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
       if (file.type !== "application/pdf") {
@@ -70,13 +73,28 @@ function DoctorDetails() {
         return;
       }
       setFormData((prev) => ({ ...prev, certificate: file }));
+      
     }
   };
 
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
+    console.log(formData.certificate);
+    try {
+      const res = await axios.post("http://localhost:3000/detail/doctordetail", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      if (res.status !== 200) {
+        alert('Failed to send OTP');
+      }
+        else
+        alert('Form submitted successfully');
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   const handleCountryChange = (selectedOption) => {

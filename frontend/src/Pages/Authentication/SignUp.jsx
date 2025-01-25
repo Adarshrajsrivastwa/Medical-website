@@ -41,6 +41,8 @@ function SignUp() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false); // To show loading during OTP request
 
+  
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -54,6 +56,8 @@ function SignUp() {
       alert("Please enter your email!");
       return;
     }
+    console.log(formData.role);
+
     Cookies.set('email', formData.email, { expires: 1/24 });  
     Cookies.set('role',formData.role, { expires:1/24 });
     setLoading(true);
@@ -76,10 +80,9 @@ function SignUp() {
     }
   };
   
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData.role);
     try {
       const res = await axios.post("http://localhost:3000/sign/verify-otp", formData, {
         headers: {
@@ -88,13 +91,13 @@ function SignUp() {
       });
   
       if (res.status === 200) {
-        console.log(formData.role);
         if(formData.role === 'patient')
-        navigate('/patient-detail');
-      } else {
-        alert("OTP wrong");
-      }
-    } catch (error) {
+        navigate('/patient-detail-form');
+      else if(formData.role === 'doctor')
+        navigate('/doctor-detail-form');
+    }
+    }
+    catch (error) {
       alert(error.message);
     }
   };

@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const User = require('../models/user');
 const Hospital = require('../models/hospital');
 const Doctor = require('../models/doctor');
+const upload=require('../config/multer');
 
 let app = express();
 
@@ -16,7 +17,6 @@ app.post('/userdetail', async (req, res) => {
             if (!user) {
                 return res.status(404).send("User not found");
             }
-            console.log(state.label);
             user.phone = phone;
             user.country = country.label;
             user.city = city.label;
@@ -37,5 +37,11 @@ app.post('/userdetail', async (req, res) => {
         return res.status(500).send("Internal server error");
     }
 });
+
+app.post('/doctordetail',upload.single('certificate'), async (req, res) =>{
+    
+    return res.status(200).send("working")
+    
+})
 
 module.exports = app;
