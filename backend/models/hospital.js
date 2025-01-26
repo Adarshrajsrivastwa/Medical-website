@@ -30,6 +30,10 @@ const HospitalDetailsSchema = new mongoose.Schema({
   pinCode: {
     type: String,
   },
+  status:{
+    type: String,
+    default: 'pending'
+  },
   created_at: {
     type: Date,
     default: Date.now,

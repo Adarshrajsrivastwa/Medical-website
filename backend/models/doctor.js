@@ -40,6 +40,10 @@ const doctorSchema = new mongoose.Schema(
     pinCode: {
       type: String,
     },
+    status:{
+      type: String,
+      default: 'pending'
+    },
     languages: [{
       type: String,
     }]
