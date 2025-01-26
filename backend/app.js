@@ -8,6 +8,7 @@ let mongoose= require('mongoose');
 let session= require('express-session');
 let connectdb= require('./config/db.js');
 let details= require('./route/detail');
+let loading= require('./route/doctorsearch');
 
 dotenv.config();
 connectdb();
@@ -33,8 +34,8 @@ var corsOptions = {
 app.use(cors(corsOptions));
 
 app.use('/sign', sign);
-
 app.use('/detail', details);
+app.use('/loading', loading);
 
 app.get('/', (req, res) => {
     res.send("Testing phase");  

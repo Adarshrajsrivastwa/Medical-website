@@ -114,13 +114,14 @@ function DoctorDetails() {
           email: emailFromCookie,
           role: role,
         })
-    console.log(formData.certificate);
     try {
       const res = await axios.post("http://localhost:3000/detail/doctordetail", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
+      console.log(res);
+
       if (res.status !== 200) {
         alert('Failed to send OTP');
       }

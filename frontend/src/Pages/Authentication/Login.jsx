@@ -43,10 +43,13 @@ function Login() {
           },
         }
       );
-  
+      console.log(res);
       if (res.status !== 200) {
         alert("OTP wrong");
       } else {
+        Cookies.set('city', res.data.city, { expires: 1/24 });
+        Cookies.set('state', res.data.state, { expires:1/24});
+        Cookies.set('country', res.data.country, { expires:1/24});
         alert("OTP verified successfully");
       }
     } catch (error) {
