@@ -20,9 +20,9 @@ const Page = () => {
   const [doctors, setDoctors] = useState([]); 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedDoctor, setSelectedDoctor] = useState(null);
 
   useEffect(() => {
-
     const fetchDoctors = async () => {
       try {
         const city = Cookies.get('city');
@@ -46,8 +46,7 @@ const Page = () => {
         setLoading(false);
       }
     };
-    
-  
+
     fetchDoctors();
   }, []);
 
@@ -73,7 +72,10 @@ const DoctorAppointment = ({ doctors }) => {
   }, 500);
 
   const handleBookNow = (doctor) => {
+    console.log(doctor)
     setSelectedDoctor(doctor);
+    console.log(`${doctor.charges}`);
+    Cookies.set('price',doctor.charges);
     setIsModalOpen(true);
   };
 
@@ -126,12 +128,12 @@ const DoctorAppointment = ({ doctors }) => {
                   <strong>Charges:</strong> {doctor.charges}
                 </p>
                 <p className="text-sm flex items-center" style={{ color: "#563393" }}>
-                <MapPin size={16} className="mr-2" />
-                 <strong>Location:</strong> {`${doctor.hospital}, ${doctor.city},${doctor.state}, ${doctor.country}`}
-</p>
+                  <MapPin size={16} className="mr-2" />
+                  <strong>Location:</strong> {`${doctor.hospital}, ${doctor.city}, ${doctor.state}, ${doctor.country}`}
+                </p>
               </div>
               <Button
-                onClick={() => handleBookNow(doctor)}
+                onClick={() => handleBookNow(doctor)} 
                 className="w-full flex items-center justify-center hover:bg-[#6F4BA3]"
                 style={{ backgroundColor: "#563393", color: "white" }}
               >

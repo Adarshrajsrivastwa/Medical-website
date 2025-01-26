@@ -9,6 +9,7 @@ let session= require('express-session');
 let connectdb= require('./config/db.js');
 let details= require('./route/detail');
 let loading= require('./route/doctorsearch');
+let payment= require('./route/payment');
 
 dotenv.config();
 connectdb();
@@ -36,6 +37,7 @@ app.use(cors(corsOptions));
 app.use('/sign', sign);
 app.use('/detail', details);
 app.use('/loading', loading);
+app.use('/payment', payment);
 
 app.get('/', (req, res) => {
     res.send("Testing phase");  

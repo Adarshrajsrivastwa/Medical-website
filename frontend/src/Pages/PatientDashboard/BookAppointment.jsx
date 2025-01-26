@@ -16,6 +16,8 @@ import {
     SelectValue
 } from "@/components/ui/select";
 import { Calendar, Clock, FileText } from "lucide-react";
+import Cookies from 'js-cookie'; // Ensure you have this import if using Cookies
+import axios from 'axios'; // Import axios
 
 const BookAppointment = ({
     isOpen,
@@ -26,28 +28,109 @@ const BookAppointment = ({
     const [formData, setFormData] = useState({
         issue: "",
         date: "",
-        timeSlot: ""
+        timeSlot: "",
+        price: "",
+        currency: "INR"
     });
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setFormData(prev => ({
+        setFormData((prev) => ({
             ...prev,
-            [name]: value
+            [name]: value,
         }));
     };
 
     const handleTimeSlotChange = (value) => {
-        setFormData(prev => ({
+        setFormData((prev) => ({
             ...prev,
-            timeSlot: value
+            timeSlot: value,
+            price: Cookies.get("price"), // Correct price update from Cookies
         }));
     };
 
-    const handleSubmit = (e) => {
+    const loadRazorpayScripts = () => {
+        return new Promise((resolve, reject) => {
+            // Load Razorpay script
+            const razorpayScript = document.createElement('script');
+            razorpayScript.src = 'https://checkout.razorpay.com/v1/checkout.js';
+            razorpayScript.onload = () => resolve(true);
+            razorpayScript.onerror = () => reject('Failed to load Razorpay SDK.');
+            document.body.appendChild(razorpayScript);
+
+            // Load Axios script (only if not already included in the page)
+            const axiosScript = document.createElement('script');
+            axiosScript.src = 'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js';
+            document.body.appendChild(axiosScript);
+        });
+    };
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Booking submitted:", formData);
+
+        setFormData((prev) => ({
+            ...prev,
+            price: Cookies.get("price"),
+        }));
+
         onClose();
+
+        try {
+            const res = await loadRazorpayScripts();
+            if (!res) {
+                alert('Failed to load Razorpay SDK. Check your internet connection.');
+                return;
+            }
+
+            const response = await axios.post('http://localhost:3000/payment/create/orderId', formData);
+            console.log(response);
+            console.log(response);
+            const { amount, currency, id } = response.data;
+
+
+            const options = {
+                key:'rzp_test_mPrfMJIy2Vcxb5', // Ensure this is populated correctly
+                amount: amount,
+                currency: currency,
+                name: "CarespaceX",
+                description: "Messenger of Health",
+                order_id: id,
+                handler: async function (response) {
+                    try {
+                        const verifyResponse = await axios.post('http://localhost:3000/payment/api/payment/verify', {
+                            razorpayOrderId: response.razorpay_order_id,
+                            razorpayPaymentId: response.razorpay_payment_id,
+                            signature: response.razorpay_signature
+                        });
+                        alert('Payment verified successfully');
+                    } catch (error) {
+                        console.error('Payment verification failed:', error);
+                        alert('Payment verification failed');
+                    }
+                },
+                prefill: {
+                    name: "ABC",
+                    email: "ABC@gmail.com",
+                    contact: "1111111111"
+                },
+                notes: {
+                    address: "Razorpay Corporate Office"
+                },
+                theme: {
+                    color: "#000099"
+                }
+            };
+
+            const rzp1 = new Razorpay(options);
+            rzp1.on('payment.failed', function (response) {
+                alert('Payment Failed');
+            });
+            rzp1.open();
+
+        } catch (error) {
+            console.error('Error during payment creation:', error);
+            alert('Error during payment creation. Please try again.');
+        }
     };
 
     return (
@@ -118,8 +201,12 @@ const BookAppointment = ({
                                     <SelectValue placeholder="Select Time Slot" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="morning" className="focus:bg-[#E6D6F7]">Morning (8 AM - 12 PM)</SelectItem>
-                                    <SelectItem value="evening" className="focus:bg-[#E6D6F7]">Evening (4 PM - 8 PM)</SelectItem>
+                                    <SelectItem value="morning" className="focus:bg-[#E6D6F7]">
+                                        Morning (8 AM - 12 PM)
+                                    </SelectItem>
+                                    <SelectItem value="evening" className="focus:bg-[#E6D6F7]">
+                                        Evening (4 PM - 8 PM)
+                                    </SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
