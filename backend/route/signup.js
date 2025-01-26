@@ -137,7 +137,7 @@ app.post('/verify-otp',async(req, res) => {
   user.name=req.body.name;
   await user.save();
   if(user && user.otp === otp){
-    res.status(200).send('OTP verified successfully!');
+    res.status(200).send('your registration has been successfully');
   }
 }
 else if(req.body.role==='doctor'){
@@ -145,7 +145,7 @@ else if(req.body.role==='doctor'){
   user.name=req.body.name;
   await user.save();
   if(user && user.otp === otp){
-    res.status(200).send('OTP verified successfully!');
+    res.status(200).send('your profile is under review');
   }
 }
 else
@@ -154,7 +154,7 @@ else
   user.name=req.body.name;
   await user.save();
   if(user && user.otp === otp){
-    res.status(200).send('OTP verified successfully!');
+    res.status(200).send('your profile is under review');
   }
 }
 })
@@ -179,7 +179,7 @@ app.post('/login', async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    if (user.otp === otp) {
+    if (user.otp === otp   && user.status === 'approved') {
       return res.status(200).send(user);
     } else {
       return res.status(401).json({ message: 'Invalid OTP' });

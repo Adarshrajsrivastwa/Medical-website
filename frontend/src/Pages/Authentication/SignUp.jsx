@@ -89,14 +89,12 @@ function SignUp() {
       });
   
       if (res.status === 200) {
-        console.log(formData.role)
         if(formData.role === 'patient')
         navigate('/patient-detail-form');
       else if(formData.role === 'doctor')
-        navigate('/doctor-detail-form');
+        alert("your profile is under review")
       else if(formData.role === 'hospital'){
-        console.log(formData.role)
-      navigate('/hospital-detail-form');
+        alert("your profile is under review")
       }
     }
     }

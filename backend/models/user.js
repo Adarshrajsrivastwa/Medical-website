@@ -19,6 +19,10 @@ let userschema = new mongoose.Schema({
         type: String, 
         enum: ['a+', 'b+', 'ab+', 'o+'] 
       },
+      status:{
+        type: String,
+        default: 'approved'
+      },
     //   location: {
     //     country: { type: String },
     //     state: { type: String },
