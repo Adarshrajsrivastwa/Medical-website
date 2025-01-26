@@ -17,7 +17,7 @@ const mockData = {
       id: 1,
       doctor: 'Dr. Smith',
       date: '2024-01-15',
-      time: '10:00 AM',
+      timeSlot: 'Morning',
       location: 'Cardiology Clinic',
       status: 'Approved'
     },
@@ -25,7 +25,7 @@ const mockData = {
       id: 2,
       doctor: 'Dr. Johnson',
       date: '2024-02-05',
-      time: '02:30 PM',
+      timeSlot: 'Evening',
       location: 'Orthopedic Center',
       status: 'Pending'
     },
@@ -78,7 +78,7 @@ function History() {
                 {type === 'appointments' && (
                   <>
                     <p className="font-semibold text-[#563393]">{item.doctor}</p>
-                    <p className="text-sm text-gray-600">{item.date} at {item.time}</p>
+                    <p className="text-sm text-gray-600">{item.date} | {item.timeSlot}</p>
                     <p className="text-sm text-gray-500">{item.location}</p>
                   </>
                 )}
