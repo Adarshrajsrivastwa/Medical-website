@@ -27,7 +27,7 @@ function App() {
             className="w-64 overflow-y-auto border-r"
           />
           <main className="flex-1 overflow-y-auto relative">
-            <div className="p-4">
+            <div className="">
               <Routes>
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/login" element={<Login />} />

@@ -18,8 +18,8 @@ function HospitalDetails() {
     pinCode: "",
     certificate: null,
     specializations: [],
-    role:"",
-    email:"",
+    role: "",
+    email: "",
   });
 
   const customStyles = {
@@ -46,6 +46,31 @@ function HospitalDetails() {
     menu: (base) => ({
       ...base,
       zIndex: 5,
+    }),
+    // New styles to handle multi-select overflow
+    multiValue: (base) => ({
+      ...base,
+      backgroundColor: "#e6e0f6",
+      color: "#6d46af",
+      margin: '2px',
+    }),
+    multiValueLabel: (base) => ({
+      ...base,
+      color: "#6d46af",
+    }),
+    multiValueRemove: (base) => ({
+      ...base,
+      color: "#6d46af",
+      ':hover': {
+        backgroundColor: "#824edc",
+        color: 'white',
+      },
+    }),
+    valueContainer: (base) => ({
+      ...base,
+      flexWrap: 'wrap',
+      maxHeight: '40px',
+      overflowY: 'auto',
     }),
   };
 
@@ -94,37 +119,37 @@ function HospitalDetails() {
     setFormData((prev) => ({ ...prev, city: selectedOption }));
   };
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!/^[0-9]{6}$/.test(formData.pinCode)) {
       alert("Pin Code must be exactly 6 digits.");
       return;
     }
     console.log("working");
-     const emailFromCookie = Cookies.get('email');
-        const role = Cookies.get('role');
-        setFormData({
-          ...formData,
-          email: emailFromCookie,
-          role: role,
-        })
-        try {
-          const res = await axios.post("http://localhost:3000/detail/hospitaldetail", formData, {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          });
-          if (res.status === 200) {
-            alert("Form submitted successfully");
-          } else {
-            alert("Failed to submit form");
-          }
-        }
-          catch (err) {
-            console.error(err);
-            alert("Failed to submit form");
-            return;
-          }
+    const emailFromCookie = Cookies.get('email');
+    const role = Cookies.get('role');
+    setFormData({
+      ...formData,
+      email: emailFromCookie,
+      role: role,
+    })
+    try {
+      const res = await axios.post("http://localhost:3000/detail/hospitaldetail", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      if (res.status === 200) {
+        alert("Form submitted successfully");
+      } else {
+        alert("Failed to submit form");
+      }
+    }
+    catch (err) {
+      console.error(err);
+      alert("Failed to submit form");
+      return;
+    }
   };
 
   return (
@@ -145,6 +170,7 @@ function HospitalDetails() {
             value={formData.phone}
             onChange={(phone) => setFormData((prev) => ({ ...prev, phone }))}
             required
+            className="w-full hover:border-[#6d46af] border-[#824edc] text-[#6d46af]"
           />
         </div>
 
@@ -185,6 +211,7 @@ function HospitalDetails() {
             onChange={(selectedOptions) => handleSelectChange("specializations", selectedOptions)}
             placeholder="Select Specializations"
             required
+            className="w-full hover:border-[#6d46af] border-[#824edc] text-[#6d46af]"
           />
         </div>
 
@@ -237,7 +264,7 @@ function HospitalDetails() {
               name="pinCode"
               value={formData.pinCode}
               onChange={handleInputChange}
-              className="w-full"
+              className="w-full hover:border-[#6d46af] border-[#824edc] text-[#6d46af]"
               required
             />
           </div>
