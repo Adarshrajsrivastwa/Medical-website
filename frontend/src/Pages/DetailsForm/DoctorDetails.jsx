@@ -108,6 +108,14 @@ function DoctorDetails() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const emailFromCookie = Cookies.get('email');
+<<<<<<< HEAD
+        const role = Cookies.get('role');
+        setFormData({
+          ...formData,
+          email: emailFromCookie,
+          role: role,
+        })
+=======
     const role = Cookies.get('role');
     setFormData({
       ...formData,
@@ -115,12 +123,15 @@ function DoctorDetails() {
       role: role,
     })
     console.log(formData.certificate);
+>>>>>>> 420048ee84be2a1c3d8ae4e4a7f1237cd5db7f14
     try {
       const res = await axios.post("http://localhost:3000/detail/doctordetail", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
+      console.log(res);
+
       if (res.status !== 200) {
         alert('Failed to send OTP');
       }

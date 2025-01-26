@@ -129,12 +129,16 @@ app.post('/verify-otp',async(req, res) => {
 
   if(req.body.role==='patient'){
   let user= await User.findOne({email: email});
+  user.name=req.body.name;
+  await user.save();
   if(user && user.otp === otp){
     res.status(200).send('OTP verified successfully!');
   }
 }
 else if(req.body.role==='doctor'){
   let user= await Doctor.findOne({email: email});
+  user.name=req.body.name;
+  await user.save();
   if(user && user.otp === otp){
     res.status(200).send('OTP verified successfully!');
   }
@@ -142,18 +146,36 @@ else if(req.body.role==='doctor'){
 else
 {
   let user= await Hospital.findOne({email: email});
+  user.name=req.body.name;
+  await user.save();
   if(user && user.otp === otp){
     res.status(200).send('OTP verified successfully!');
   }
 }
 })
+app.post('/login', async (req, res) => {
+  try {
+    let otp = req.body.otp;
+    let email = req.body.email;
 
-app.post('/login',async(req, res) => {
-  let otp=req.body.otp;
-  console.log('otp login successfully');
-  let user= await User.findOne({email: email});
-  if(user && user.otp === otp){
-    res.status(200).send('OTP verified successfully!');
+    if (!otp || !email) {
+      return res.status(400).json({ message: 'OTP and Email are required' });
+    }
+
+    let user = await User.findOne({ email: email });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    if (user.otp === otp) {
+      return res.status(200).send(user);
+    } else {
+      return res.status(401).json({ message: 'Invalid OTP' });
+    }
+  } catch (error) {
+    return res.status(500).json({ message: 'Internal server error' });
   }
-})
+});
+
 module.exports = app;
