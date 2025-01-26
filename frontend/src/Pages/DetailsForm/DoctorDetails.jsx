@@ -128,7 +128,7 @@ function DoctorDetails() {
         alert('Failed to send OTP');
       }
       else
-        alert('Form submitted successfully');
+        alert('your profile is under review');
     } catch (error) {
       alert(error.message);
     }

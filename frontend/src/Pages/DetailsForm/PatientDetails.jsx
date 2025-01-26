@@ -9,11 +9,13 @@ import Select from "react-select";
 import Cookies from 'js-cookie';
 import axios from 'axios';
 import { DatePicker } from "@/Components/DatePicker";
+import { useNavigate } from 'react-router-dom';
 // Assume this is the new DatePicker component
 
 function PatientDetails() {
   const [phone, setPhone] = useState("");
   const [date, setDate] = useState(null);
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     country: null,
     state: null,
@@ -109,7 +111,7 @@ function PatientDetails() {
       });
 
       if (res.status === 200) {
-        alert("Form submitted successfully");
+        navigate('/patient-profile');
       } else {
         alert("Failed to submit form");
       }

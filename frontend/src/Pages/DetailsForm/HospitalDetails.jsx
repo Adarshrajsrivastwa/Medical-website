@@ -140,7 +140,7 @@ function HospitalDetails() {
         },
       });
       if (res.status === 200) {
-        alert("Form submitted successfully");
+        alert("your profile is under review");
       } else {
         alert("Failed to submit form");
       }

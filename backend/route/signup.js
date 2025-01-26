@@ -166,7 +166,6 @@ app.post('/login', async (req, res) => {
     if (!otp || !email) {
       return res.status(400).json({ message: 'OTP and Email are required' });
     }
-
     let user ;
     if(req.body.role==='patient')
     user =await User.findOne({ email: email });
@@ -178,7 +177,7 @@ app.post('/login', async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
-
+    console.log(user.status)
     if (user.otp === otp   && user.status === 'approved') {
       return res.status(200).send(user);
     } else {

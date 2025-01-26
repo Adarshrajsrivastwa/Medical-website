@@ -11,7 +11,8 @@ let app = express();
 app.post('/new', async (req, res) => {
   try {
     const { city, state, country } = req.body;
-    const doctors = await Doctor.find({ city, state, country });
+    const doctors = await Doctor.find();
+    if(doctors.city===city && doctors.state===state && doctors.country===country) 
     res.json({ doctors });
   } catch (err) {
     console.log(err);

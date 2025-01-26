@@ -92,9 +92,9 @@ function SignUp() {
         if(formData.role === 'patient')
         navigate('/patient-detail-form');
       else if(formData.role === 'doctor')
-        alert("your profile is under review")
+        navigate('/doctor-detail-form');
       else if(formData.role === 'hospital'){
-        alert("your profile is under review")
+        navigate('/hospital-detail-form');
       }
     }
     }
