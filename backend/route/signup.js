@@ -28,8 +28,6 @@ app.post('/signup', async (req, res) => {
     const otp = generateOTP();
     const email = req.body.email;
     let user;
-
-    // Check if user exists based on role
     switch (req.body.role) {
       case 'patient':
         user = await User.findOne({ email });
@@ -91,9 +89,16 @@ app.post('/signup', async (req, res) => {
 app.post('/signin', async (req, res) => {
   let otp = generateOTP(); 
   let email = req.body.email;
-  try {
-    let user = await User.findOne({ email: email });
-
+  console.log(req.body.role)
+  try{
+    let user ;
+    if(req.body.role==='patient')
+    user =await User.findOne({ email: email });
+    else if (req.body.role==='doctor')
+      user = await Doctor.findOne({ email: email });
+    else if(req.body.role==='hospital')
+      user = await Hospital.findOne({ email: email });
+    
     if (user) {
       user.otp = otp;
       await user.save();
@@ -162,7 +167,13 @@ app.post('/login', async (req, res) => {
       return res.status(400).json({ message: 'OTP and Email are required' });
     }
 
-    let user = await User.findOne({ email: email });
+    let user ;
+    if(req.body.role==='patient')
+    user =await User.findOne({ email: email });
+    else if (req.body.role==='doctor')
+      user = await Doctor.findOne({ email: email });
+    else if(req.body.role==='hospital')
+      user = await Hospital.findOne({ email: email });
 
     if (!user) {
       return res.status(404).json({ message: 'User not found' });

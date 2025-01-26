@@ -1,24 +1,35 @@
 import React, { useState } from "react";
+
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { Link } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSeparator,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
 
 function Login() {
   const [formData, setFormData] = useState({
     email: "",
     otp: "",
+    role:"",
   });
 
   const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -35,7 +46,8 @@ function Login() {
         "http://localhost:3000/sign/login",
         {
           email: formData.email,
-          otp: formData.otp
+          otp: formData.otp,
+          role: formData.role
         },
         {
           headers: {
@@ -51,6 +63,16 @@ function Login() {
         Cookies.set('state', res.data.state, { expires:1/24});
         Cookies.set('country', res.data.country, { expires:1/24});
         alert("OTP verified successfully");
+        if(formData.role == 'patient') {
+          navigate("/patient-profile");
+        }
+        else if(formData.role == 'doctor') {
+          navigate("/doctor-profile");
+        }
+        else {
+          navigate("/hospital-profile");
+        }
+
       }
     } catch (error) {
       alert(error.message);
@@ -67,6 +89,7 @@ function Login() {
   };
 
   const handleSendOtp = async () => {
+    console.log(formData.role);
     if (!formData.email) {
       alert("Please enter your email!");
       return;
@@ -74,9 +97,7 @@ function Login() {
     Cookies.set('email', formData.email, { expires: 1/24 });  
     try {
       setShowModal(true); 
-      const res = await axios.post("http://localhost:3000/sign/signin", {
-        email: formData.email
-      });
+      const res = await axios.post("http://localhost:3000/sign/signin",formData);
 
       if (res.status === 200) {
         alert("OTP sent successfully!");
@@ -110,6 +131,27 @@ function Login() {
             aria-label="Email input field"
           />
         </div>
+
+        <div className="flex flex-col gap-1">
+                  <Label htmlFor="role" className="text-base font-normal">
+                    Select Your Role
+                  </Label>
+                  <Select
+                    required
+                    onValueChange={(value) =>
+                      setFormData((prevData) => ({ ...prevData, role: value }))
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select Your Role" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="doctor">Doctor</SelectItem>
+                      <SelectItem value="patient">Patient</SelectItem>
+                      <SelectItem value="hospital">Hospital</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
 
         <Button
           type="button"
