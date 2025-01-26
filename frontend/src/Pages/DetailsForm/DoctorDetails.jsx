@@ -22,8 +22,8 @@ function DoctorDetails() {
     state: null,
     city: null,
     pinCode: "",
-    role:"",
-    email:"",
+    role: "",
+    email: "",
   });
 
   const customStyles = {
@@ -108,12 +108,12 @@ function DoctorDetails() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const emailFromCookie = Cookies.get('email');
-        const role = Cookies.get('role');
-        setFormData({
-          ...formData,
-          email: emailFromCookie,
-          role: role,
-        })
+    const role = Cookies.get('role');
+    setFormData({
+      ...formData,
+      email: emailFromCookie,
+      role: role,
+    })
     console.log(formData.certificate);
     try {
       const res = await axios.post("http://localhost:3000/detail/doctordetail", formData, {
@@ -170,6 +170,7 @@ function DoctorDetails() {
             value={formData.phone}
             onChange={(phone) => setFormData((prev) => ({ ...prev, phone }))}
             required
+            className="w-full hover:border-[#6d46af] border-[#824edc] text-[#6d46af]"
           />
         </div>
 
@@ -244,7 +245,7 @@ function DoctorDetails() {
               name="charges"
               value={formData.charges}
               onChange={handleInputChange}
-              className="w-full"
+              className="w-full hover:border-[#6d46af] border-[#824edc] text-[#6d46af]"
               required
             />
           </div>
@@ -261,7 +262,7 @@ function DoctorDetails() {
             name="hospital"
             value={formData.hospital}
             onChange={handleInputChange}
-            className="w-full"
+            className="w-full hover:border-[#6d46af] border-[#824edc] text-[#6d46af]"
           />
         </div>
 
@@ -332,7 +333,7 @@ function DoctorDetails() {
               name="pinCode"
               value={formData.pinCode}
               onChange={handleInputChange}
-              className="w-full"
+              className="w-full hover:border-[#6d46af] border-[#824edc] text-[#6d46af]"
               required
             />
           </div>

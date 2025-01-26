@@ -137,6 +137,7 @@ function PatientDetails() {
             value={phone}
             onChange={(phone) => setPhone(phone)}
             required
+            className="w-full hover:border-[#6d46af] border-[#824edc] text-[#6d46af]"
           />
         </div>
 
@@ -174,7 +175,7 @@ function PatientDetails() {
               name="weight"
               value={formData.weight}
               onChange={handleInputChange}
-              className="w-full hover:border-[#6d46af] border-[#824edc]"
+              className="w-full hover:border-[#6d46af] border-[#824edc] text-[#6d46af]"
               required
             />
           </div>
@@ -186,7 +187,7 @@ function PatientDetails() {
               name="height"
               value={formData.height}
               onChange={handleInputChange}
-              className="w-full"
+              className="w-full hover:border-[#6d46af] border-[#824edc] text-[#6d46af]"
               required
             />
           </div>
@@ -260,7 +261,7 @@ function PatientDetails() {
               name="pinCode"
               value={formData.pinCode}
               onChange={handleInputChange}
-              className="w-full"
+              className="w-full hover:border-[#6d46af] border-[#824edc] text-[#6d46af]"
               maxLength={6}
               required
             />
