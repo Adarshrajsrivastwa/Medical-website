@@ -7,16 +7,16 @@ const Sidebar = ({ userRole, onLogout }) => {
 
     const menuItems = {
         patient: [
-            { path: "/patient-detail", label: "My Profile", icon: "👤" },
+            { path: "/patient-profile", label: "My Profile", icon: "👤" },
             { path: "/doctor-appointment", label: "Doctor Appointment", icon: "🩺" },
             { path: "/bed-booking", label: "Bed Booking", icon: "🛏️" },
             { path: "/order-medicine", label: "Order Medicine", icon: "💊" },
             { path: "/history", label: "History", icon: "📋" },
         ],
         doctor: [
-            { path: "/doctor-detail", label: "My Profile", icon: "👨‍⚕️" },
-            { path: "/patients-list", label: "Patients List", icon: "📋" },
-            { path: "/schedule", label: "Schedule", icon: "📅" },
+            { path: "/doctor-profile", label: "My Profile", icon: "👤" },
+            { path: "/patients-history", label: "Patients History", icon: "🩺" },
+            { path: "/appointment-management", label: "Appointment Management", icon: "🕒" },
         ],
         hospital: [
             { path: "/hospital-detail", label: "Hospital Info", icon: "🏥" },
