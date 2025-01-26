@@ -1,9 +1,161 @@
-import React from 'react'
+import React, { useState } from 'react';
+import {
+  Calendar,
+  Stethoscope,
+  Bed,
+  Pill,
+  CheckCircle,
+  Clock
+} from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Badge } from '@/components/ui/badge';
+
+const mockData = {
+  appointments: [
+    {
+      id: 1,
+      doctor: 'Dr. Smith',
+      date: '2024-01-15',
+      time: '10:00 AM',
+      location: 'Cardiology Clinic',
+      status: 'Approved'
+    },
+    {
+      id: 2,
+      doctor: 'Dr. Johnson',
+      date: '2024-02-05',
+      time: '02:30 PM',
+      location: 'Orthopedic Center',
+      status: 'Pending'
+    },
+  ],
+  bedBookings: [
+    {
+      id: 1,
+      hospitalName: 'Central City Hospital',
+      location: 'Cardiology Ward',
+      status: 'Approved'
+    },
+    {
+      id: 2,
+      hospitalName: 'Metropolitan Medical Center',
+      location: 'Orthopedics Ward',
+      status: 'Pending'
+    },
+  ],
+  medicines: [
+    { id: 1, name: 'Aspirin', quantity: 30, orderDate: '2024-01-10', status: 'Delivered' },
+    { id: 2, name: 'Antibiotics', quantity: 15, orderDate: '2024-02-01', status: 'Processing' },
+  ]
+};
+
+const getStatusIcon = (status) => {
+  switch (status) {
+    case 'Approved': return <CheckCircle className="text-green-500" />;
+    case 'Pending': return <Clock className="text-yellow-500" />;
+    case 'Delivered': return <CheckCircle className="text-green-500" />;
+    case 'Processing': return <Clock className="text-yellow-500" />;
+    default: return null;
+  }
+};
 
 function History() {
+  const [activeTab, setActiveTab] = useState('appointments');
+
+  const renderHistoryCards = (data, type) => (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {data.map((item) => (
+        <Card key={item.id} className="flex items-center bg-white shadow-md">
+          <div className="p-4">
+            {type === 'appointments' && <Stethoscope className="text-[#563393] w-10 h-10" />}
+            {type === 'bedBookings' && <Bed className="text-[#563393] w-10 h-10" />}
+            {type === 'medicines' && <Pill className="text-[#563393] w-10 h-10" />}
+          </div>
+          <CardContent className="flex-grow p-4">
+            <div className="flex justify-between items-center">
+              <div>
+                {type === 'appointments' && (
+                  <>
+                    <p className="font-semibold text-[#563393]">{item.doctor}</p>
+                    <p className="text-sm text-gray-600">{item.date} at {item.time}</p>
+                    <p className="text-sm text-gray-500">{item.location}</p>
+                  </>
+                )}
+                {type === 'bedBookings' && (
+                  <>
+                    <p className="font-semibold text-[#563393]">{item.hospitalName}</p>
+                    <p className="text-sm text-gray-500">{item.location}</p>
+                  </>
+                )}
+                {type === 'medicines' && (
+                  <>
+                    <p className="font-semibold text-[#563393]">{item.name}</p>
+                    <p className="text-sm text-gray-600">
+                      Quantity: {item.quantity} | Order Date: {item.orderDate}
+                    </p>
+                  </>
+                )}
+              </div>
+              <div className="flex items-center">
+                {getStatusIcon(item.status)}
+                <Badge className="ml-2">{item.status}</Badge>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  );
+
   return (
-    <div>History</div>
-  )
+    <div className="w-full rounded-none">
+      <CardHeader className="">
+        <CardTitle className="text-[#563393] flex items-center">
+          <Calendar className="mr-2" /> Your History
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="grid grid-cols-3 bg-[#563393]/10 mb-4 w-full md:h-11">
+            <TabsTrigger
+              value="appointments"
+              className="text-[#563393] text-sm sm:text-base font-semibold data-[state=active]:bg-[#563393] data-[state=active]:text-white flex items-center justify-center rounded-sm"
+            >
+              <Stethoscope className="mr-1 sm:mr-2 w-4 h-4 sm:w-5 sm:h-5" />
+              <span className="truncate">Appointments</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="bedBookings"
+              className="text-[#563393] text-sm sm:text-base font-semibold data-[state=active]:bg-[#563393] data-[state=active]:text-white flex items-center justify-center rounded-sm"
+            >
+              <Bed className="mr-1 sm:mr-2 w-4 h-4 sm:w-5 sm:h-5" />
+              <span className="truncate">Bed Bookings</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="medicines"
+              className="text-[#563393] text-sm sm:text-base font-semibold data-[state=active]:bg-[#563393] data-[state=active]:text-white flex items-center justify-center rounded-sm"
+            >
+              <Pill className="mr-1 sm:mr-2 w-4 h-4 sm:w-5 sm:h-5" />
+              <span className="truncate">Medicine Orders</span>
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="appointments">
+            {renderHistoryCards(mockData.appointments, 'appointments')}
+          </TabsContent>
+
+          <TabsContent value="bedBookings">
+            {renderHistoryCards(mockData.bedBookings, 'bedBookings')}
+          </TabsContent>
+
+          <TabsContent value="medicines">
+            {renderHistoryCards(mockData.medicines, 'medicines')}
+          </TabsContent>
+        </Tabs>
+      </CardContent>
+    </div>
+  );
 }
 
-export default History
+export default History;
