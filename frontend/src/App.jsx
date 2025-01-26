@@ -7,15 +7,17 @@ import PatientDetails from "./Pages/DetailsForm/PatientDetails";
 import HospitalDetails from "./Pages/DetailsForm/HospitalDetails";
 import Header from "./Components/Header";
 import Footer from "./Components/Footer";
-import Sidebar from "./Pages/Sidebar";
-import Profile from "./Pages/PatientDashboard/Profile";
+import Sidebar from "./Components/Sidebar";
+import PatientProfile from "./Pages/PatientDashboard/Profile";
 import DoctorAppointment from "./Pages/PatientDashboard/DoctorAppointment";
 import BedBooking from "./Pages/PatientDashboard/BedBooking";
 import OrderMedicine from "./Pages/PatientDashboard/OrderMedicine";
 import History from "./Pages/PatientDashboard/History";
+import DoctorProfile from "./Pages/DoctorDashboard/Profile";
+import AppointmentManagement from "./Pages/DoctorDashboard/AppointmentManagement";
 
 function App() {
-  const [userRole, setUserRole] = useState("patient");
+  const [userRole, setUserRole] = useState("doctor");
 
   return (
     <Router>
@@ -31,14 +33,19 @@ function App() {
               <Routes>
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/login" element={<Login />} />
+                {/* Details Form */}
                 <Route path="/doctor-detail-form" element={<DoctorDetails />} />
                 <Route path="/patient-detail-form" element={<PatientDetails />} />
                 <Route path="/hospital-detail-form" element={<HospitalDetails />} />
-                <Route path="/patient-detail" element={<Profile />} />
+                {/* Patient Dashboard */}
+                <Route path="/patient-profile" element={<PatientProfile />} />
                 <Route path="/doctor-appointment" element={<DoctorAppointment />} />
                 <Route path="/bed-booking" element={<BedBooking />} />
                 <Route path="/order-medicine" element={<OrderMedicine />} />
                 <Route path="/history" element={<History />} />
+                {/* Doctor Dashboard */}
+                <Route path="/doctor-profile" element={<DoctorProfile />} />
+                <Route path="/appointment-management" element={<AppointmentManagement />} />
               </Routes>
             </div>
           </main>
