@@ -17,7 +17,7 @@ import DoctorProfile from "./Pages/DoctorDashboard/Profile";
 import AppointmentManagement from "./Pages/DoctorDashboard/AppointmentManagement";
 
 function App() {
-  const [userRole, setUserRole] = useState("doctor");
+  const [userRole, setUserRole] = useState("patient");
 
   return (
     <Router>
