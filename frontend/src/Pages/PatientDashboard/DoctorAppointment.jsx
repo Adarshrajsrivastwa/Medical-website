@@ -14,10 +14,10 @@ import {
 import BookAppointmentModal from "./BookAppointment";
 import axios from "axios";
 import Cookies from 'js-cookie';
-import debounce from 'lodash.debounce'; 
+import debounce from 'lodash.debounce';
 
 const Page = () => {
-  const [doctors, setDoctors] = useState([]); 
+  const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
@@ -29,9 +29,9 @@ const Page = () => {
         const state = Cookies.get('state');
         const country = Cookies.get('country');
         const response = await axios.post(
-          "http://localhost:3000/loading/new", 
+          "http://localhost:3000/loading/new",
           { city, state, country },
-          { 
+          {
             headers: {
               "Content-Type": "application/json",
             },
@@ -75,7 +75,7 @@ const DoctorAppointment = ({ doctors }) => {
     console.log(doctor)
     setSelectedDoctor(doctor);
     console.log(`${doctor.charges}`);
-    Cookies.set('price',doctor.charges);
+    Cookies.set('price', doctor.charges);
     setIsModalOpen(true);
   };
 
@@ -133,12 +133,12 @@ const DoctorAppointment = ({ doctors }) => {
                 </p>
               </div>
               <Button
-                onClick={() => handleBookNow(doctor)} 
+                onClick={() => handleBookNow(doctor)}
                 className="w-full flex items-center justify-center hover:bg-[#6F4BA3]"
                 style={{ backgroundColor: "#563393", color: "white" }}
               >
                 <Calendar size={16} className="mr-2" />
-                Book Now
+                Book Appointment
                 <ArrowRight size={16} className="ml-2" />
               </Button>
             </CardContent>

@@ -15,8 +15,9 @@ const Sidebar = ({ userRole, onLogout }) => {
         ],
         doctor: [
             { path: "/doctor-profile", label: "My Profile", icon: "👤" },
-            { path: "/patients-history", label: "Patients History", icon: "🩺" },
+            { path: "/patients-history", label: "Medicine Help", icon: "💊" },
             { path: "/appointment-management", label: "Appointment Management", icon: "🕒" },
+            { path: "/patients-history", label: "Patients History", icon: "🩺" },
         ],
         hospital: [
             { path: "/hospital-detail", label: "Hospital Info", icon: "🏥" },
