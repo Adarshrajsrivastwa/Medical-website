@@ -12,13 +12,23 @@ app.post('/new', async (req, res) => {
   try {
     const { city, state, country } = req.body;
     const doctors = await Doctor.find();
-    if(doctors.city===city && doctors.state===state && doctors.country===country) 
-    res.json({ doctors });
+    const filteredDoctors = doctors.filter(
+      (doctor) =>
+        doctor.city === city &&
+        doctor.state === state &&
+        doctor.country === country
+    );
+    if (filteredDoctors.length > 0) {
+      res.json({ doctors: filteredDoctors });
+    } else {
+      res.status(404).send("No doctors found in this location.");
+    }
   } catch (err) {
     console.log(err);
     res.status(500).send("Something went wrong!");
   }
 });
+
 
 
 

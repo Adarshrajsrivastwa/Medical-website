@@ -28,6 +28,7 @@ const Page = () => {
         const city = Cookies.get('city');
         const state = Cookies.get('state');
         const country = Cookies.get('country');
+        console.log(city, state, country);
         const response = await axios.post(
           "http://localhost:3000/loading/new",
           { city, state, country },
@@ -76,6 +77,7 @@ const DoctorAppointment = ({ doctors }) => {
     setSelectedDoctor(doctor);
     console.log(`${doctor.charges}`);
     Cookies.set('price', doctor.charges);
+    Cookies.set('doctor',doctor.name);
     setIsModalOpen(true);
   };
 

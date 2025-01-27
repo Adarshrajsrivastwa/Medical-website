@@ -31,7 +31,9 @@ const BookAppointment = ({
         date: "",
         timeSlot: "",
         price: "",
-        currency: "INR"
+        currency: "INR",
+        doctor: "",
+
     });
 
     const handleInputChange = (e) => {
@@ -47,6 +49,7 @@ const BookAppointment = ({
             ...prev,
             timeSlot: value,
             price: Cookies.get("price"),
+            doctor: Cookies.get("doctor"),
         }));
     };
 
@@ -70,6 +73,7 @@ const BookAppointment = ({
         setFormData((prev) => ({
             ...prev,
             price: Cookies.get("price"),
+            doctor: Cookies.get("doctor"),
         }));
 
         onClose();
@@ -96,7 +100,8 @@ const BookAppointment = ({
                         const verifyResponse = await axios.post('http://localhost:3000/payment/api/payment/verify', {
                             razorpayOrderId: response.razorpay_order_id,
                             razorpayPaymentId: response.razorpay_payment_id,
-                            signature: response.razorpay_signature
+                            signature: response.razorpay_signature,
+                            formData
                         });
                         alert('Payment verified successfully');
                     } catch (error) {

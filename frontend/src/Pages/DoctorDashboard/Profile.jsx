@@ -5,6 +5,5 @@ function Profile() {
     <div>Profile</div>
   )
 }
-//dgd
 
 export default Profile
