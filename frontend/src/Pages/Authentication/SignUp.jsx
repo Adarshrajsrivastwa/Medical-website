@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect,useState } from "react";
 import axios from 'axios';
 // import { useHistory } from 'react-router-dom';
 // const history = useHistory();
@@ -29,6 +29,7 @@ function SignUp() {
     otp: "",
     role: "",
   });
+
 
   const handleOtpChange = (otpValue) => {
     setFormData((prevData) => ({
