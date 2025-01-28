@@ -17,6 +17,7 @@ import DoctorProfile from "./Pages/DoctorDashboard/Profile";
 import AppointmentManagement from "./Pages/DoctorDashboard/AppointmentManagement";
 import ChatWithDoctor from "./Pages/PatientDashboard/ChatWithDoctor";
 import ChatWithPatient from "./Pages/DoctorDashboard/ChatWithPatient";
+import Home from "./Pages/Home";
 
 function App() {
   const [userRole, setUserRole] = useState("doctor");
@@ -24,7 +25,8 @@ function App() {
   return (
     <Router>
       <div className="h-screen flex flex-col">
-        <Header className="h-16 shrink-0" />
+        <Header className="h-16 shrink-0 top-0 fixed" />
+        {/* <Home /> */}
         <div className="flex flex-1 overflow-hidden">
           <Sidebar
             userRole={userRole}
