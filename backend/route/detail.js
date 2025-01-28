@@ -81,11 +81,11 @@ app.post('/doctordetail', upload.single('certificate'), async (req, res) => {
 
 app.post('/hospitaldetail', upload.single('certificate'), async (req, res) => {
     try {
-        const { phone, email, country, state, city, pinCode, role,specializations} = req.body;
+        const { phone, email, country, state, city, pinCode, role,specializations, bedCharge} = req.body;
         // console.log(phone, email, country, state, city, pinCode, role, specializations)
        
         const certificate = req.file? req.file.path : null;
-        console.log(certificate);
+        console.log( bedCharge);
         if (!certificate) {
             return res.status(400).send('No certificate file uploaded');
         }
@@ -102,6 +102,7 @@ app.post('/hospitaldetail', upload.single('certificate'), async (req, res) => {
             user.pinCode = pinCode;
             user.specialization = specializations.label;
             user.certificate = certificate;
+            user.charges =  bedCharge;
             await user.save();
             return res.status(200).send('Data saved successfully');
         } else {

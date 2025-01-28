@@ -68,10 +68,11 @@ const BookHospitalBed = ({ hospitals }) => {
   const handleSearchChange = debounce((e) => {
     setSearchTerm(e.target.value);
   }, 500);
+  
 
   const handleBookBed = (hospital) => {
     setSelectedHospital(hospital);
-    Cookies.set('price', hospital.pricePerNight);
+    Cookies.set('Charges', hospital.charges);
     Cookies.set('hospital', hospital.name);
     setIsModalOpen(true);
   };
@@ -123,7 +124,7 @@ const BookHospitalBed = ({ hospitals }) => {
                 </p>
                 <p className="text-sm flex items-center" style={{ color: "#563393" }}>
                   <DollarSign size={16} className="mr-2" />
-                  <strong>Price per night:</strong> ₹{hospital.pricePerNight}
+                  <strong>Price per night:</strong> ₹{hospital.charges}
                 </p>
                 <p className="text-sm flex items-center" style={{ color: "#563393" }}>
                   <MapPin size={16} className="mr-2" />

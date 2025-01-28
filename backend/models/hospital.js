@@ -18,6 +18,9 @@ const HospitalDetailsSchema = new mongoose.Schema({
   specialization:[{
     type:String, 
   }],
+  charges: {
+    type: Number,
+  },
   country: {
     type: String,
   },

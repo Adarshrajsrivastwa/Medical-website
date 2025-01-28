@@ -56,8 +56,6 @@ app.post('/signup', async (req, res) => {
      {
       newUser = new Hospital({ email, otp });
     }
-
-    // Save the new user to the database
     await newUser.save();
 
     // Email options
