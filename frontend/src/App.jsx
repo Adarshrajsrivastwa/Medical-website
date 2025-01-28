@@ -15,9 +15,11 @@ import OrderMedicine from "./Pages/PatientDashboard/OrderMedicine";
 import History from "./Pages/PatientDashboard/History";
 import DoctorProfile from "./Pages/DoctorDashboard/Profile";
 import AppointmentManagement from "./Pages/DoctorDashboard/AppointmentManagement";
+import ChatWithDoctor from "./Pages/PatientDashboard/ChatWithDoctor";
+import ChatWithPatient from "./Pages/DoctorDashboard/ChatWithPatient";
 
 function App() {
-  const [userRole, setUserRole] = useState("patient");
+  const [userRole, setUserRole] = useState("doctor");
 
   return (
     <Router>
@@ -42,10 +44,12 @@ function App() {
                 <Route path="/doctor-appointment" element={<DoctorAppointment />} />
                 <Route path="/bed-booking" element={<BedBooking />} />
                 <Route path="/order-medicine" element={<OrderMedicine />} />
+                <Route path="/chat-with-doctor" element={<ChatWithDoctor />} />
                 <Route path="/history" element={<History />} />
                 {/* Doctor Dashboard */}
                 <Route path="/doctor-profile" element={<DoctorProfile />} />
                 <Route path="/appointment-management" element={<AppointmentManagement />} />
+                <Route path="/chat-with-patient" element={<ChatWithPatient />} />
               </Routes>
             </div>
           </main>

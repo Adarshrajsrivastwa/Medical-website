@@ -7,17 +7,19 @@ const Sidebar = ({ userRole, onLogout }) => {
 
     const menuItems = {
         patient: [
-            { path: "/patient-profile", label: "My Profile", icon: "👤" },
-            { path: "/doctor-appointment", label: "Doctor Appointment", icon: "🩺" },
-            { path: "/bed-booking", label: "Bed Booking", icon: "🛏️" },
-            { path: "/order-medicine", label: "Order Medicine", icon: "💊" },
-            { path: "/history", label: "History", icon: "📋" },
+            { path: "/patient-profile", label: "My Profile", icon: "🧑‍💼" },
+            { path: "/doctor-appointment", label: "Doctor Appointment", icon: "📅" },
+            { path: "/bed-booking", label: "Bed Booking", icon: "🏥" },
+            { path: "/order-medicine", label: "Order Medicine", icon: "📦" },
+            { path: "/history", label: "History", icon: "🕰️" },
+            { path: "/chat-with-doctor", label: "Chat with Doctor", icon: "💬" },
         ],
         doctor: [
-            { path: "/doctor-profile", label: "My Profile", icon: "👤" },
-            { path: "/patients-history", label: "Medicine Help", icon: "💊" },
-            { path: "/appointment-management", label: "Appointment Management", icon: "🕒" },
-            { path: "/patients-history", label: "Patients History", icon: "🩺" },
+            { path: "/doctor-profile", label: "My Profile", icon: "🩺" },
+            { path: "/patients-history", label: "Medicine Help", icon: "🧪" },
+            { path: "/appointment-management", label: "Appointment Management", icon: "📋" },
+            { path: "/patients-history", label: "Patients History", icon: "📜" },
+            { path: "/chat-with-patient", label: "Chat with Patient", icon: "💬" },
         ],
         hospital: [
             { path: "/hospital-detail", label: "Hospital Info", icon: "🏥" },
