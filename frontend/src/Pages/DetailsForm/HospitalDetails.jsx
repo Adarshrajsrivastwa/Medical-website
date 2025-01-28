@@ -10,6 +10,7 @@ import Cookies from 'js-cookie';
 import axios from 'axios';
 
 function HospitalDetails() {
+  // Initial state
   const [formData, setFormData] = useState({
     phone: "",
     country: null,
@@ -20,8 +21,10 @@ function HospitalDetails() {
     specializations: [],
     role: "",
     email: "",
+    bedCharge: "",
   });
 
+  // Custom styles for Select components
   const customStyles = {
     control: (base) => ({
       ...base,
@@ -47,7 +50,6 @@ function HospitalDetails() {
       ...base,
       zIndex: 5,
     }),
-    // New styles to handle multi-select overflow
     multiValue: (base) => ({
       ...base,
       backgroundColor: "#e6e0f6",
@@ -74,15 +76,18 @@ function HospitalDetails() {
     }),
   };
 
+  // Handle regular input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Handle select input changes
   const handleSelectChange = (field, selectedOption) => {
     setFormData((prev) => ({ ...prev, [field]: selectedOption }));
   };
 
+  // Handle file upload
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -98,6 +103,7 @@ function HospitalDetails() {
     }
   };
 
+  // Handle country selection
   const handleCountryChange = (selectedOption) => {
     setFormData((prev) => ({
       ...prev,
@@ -107,6 +113,7 @@ function HospitalDetails() {
     }));
   };
 
+  // Handle state selection
   const handleStateChange = (selectedOption) => {
     setFormData((prev) => ({
       ...prev,
@@ -115,40 +122,57 @@ function HospitalDetails() {
     }));
   };
 
+  // Handle city selection
   const handleCityChange = (selectedOption) => {
     setFormData((prev) => ({ ...prev, city: selectedOption }));
   };
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Validate pin code
     if (!/^[0-9]{6}$/.test(formData.pinCode)) {
       alert("Pin Code must be exactly 6 digits.");
       return;
     }
-    console.log("working");
+
+    // Validate bed charge
+    if (formData.bedCharge && (isNaN(formData.bedCharge) || formData.bedCharge <= 0)) {
+      alert("Please enter a valid bed charge amount.");
+      return;
+    }
+
+    // Get data from cookies
     const emailFromCookie = Cookies.get('email');
     const role = Cookies.get('role');
-    setFormData({
-      ...formData,
+
+    // Update formData with cookie values
+    setFormData(prev => ({
+      ...prev,
       email: emailFromCookie,
       role: role,
-    })
+    }));
+
     try {
-      const res = await axios.post("http://localhost:3000/detail/hospitaldetail", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const res = await axios.post(
+        "http://localhost:3000/detail/hospitaldetail",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
       if (res.status === 200) {
-        alert("your profile is under review");
+        alert("Your profile is under review");
       } else {
         alert("Failed to submit form");
       }
-    }
-    catch (err) {
+    } catch (err) {
       console.error(err);
       alert("Failed to submit form");
-      return;
     }
   };
 
@@ -174,7 +198,25 @@ function HospitalDetails() {
           />
         </div>
 
-        {/* Certificate */}
+        {/* Bed Charge */}
+        <div className="space-y-2">
+          <Label htmlFor="bedCharge" className="text-sm font-medium">
+            Bed Charge (INR per day)
+          </Label>
+          <Input
+            type="number"
+            name="bedCharge"
+            placeholder="Enter bed charge"
+            value={formData.bedCharge}
+            onChange={handleInputChange}
+            min="0"
+            step="1"
+            className="w-full hover:border-[#6d46af] border-[#824edc] text-[#6d46af]"
+            required
+          />
+        </div>
+
+        {/* Certificate Upload */}
         <div className="space-y-2">
           <Label htmlFor="certificate" className="text-sm font-medium">
             Upload Certification (PDF only)
@@ -215,10 +257,11 @@ function HospitalDetails() {
           />
         </div>
 
-        {/* Location */}
+        {/* Location Fields */}
         <div className="space-y-2">
           <Label className="text-sm font-medium">Location</Label>
           <div className="flex flex-col sm:grid sm:grid-cols-2 gap-4">
+            {/* Country Select */}
             <Select
               styles={customStyles}
               options={Country.getAllCountries().map((country) => ({
@@ -230,6 +273,7 @@ function HospitalDetails() {
               placeholder="Select Country"
               required
             />
+            {/* State Select */}
             {formData.country && (
               <Select
                 styles={customStyles}
@@ -245,6 +289,7 @@ function HospitalDetails() {
             )}
           </div>
           <div className="flex flex-col sm:grid sm:grid-cols-2 gap-4">
+            {/* City Select */}
             {formData.state && (
               <Select
                 styles={customStyles}
@@ -258,6 +303,7 @@ function HospitalDetails() {
                 required
               />
             )}
+            {/* Pin Code Input */}
             <Input
               type="number"
               placeholder="Pin Code"
