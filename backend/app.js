@@ -56,7 +56,7 @@ io.on('connection', (socket) => {
     console.log('A user connected');
 
     socket.on('sendMessage', (msg) => {
-        console.log('Received message: ');
+        console.log(msg);
     });
 
     socket.on('disconnect', () => {

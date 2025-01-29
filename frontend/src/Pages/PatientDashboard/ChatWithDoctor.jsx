@@ -56,11 +56,10 @@ const ChatWithDoctor = () => {
         if (selectedDoctor) {
             const newMessage = {
                 text: message,
-                sender: 'patient',
-                recipient: selectedDoctor.id,
+                sender: Cookies.get('email'),
+                recipient: selectedDoctor.email,
                 timestamp: new Date().toISOString(),
             };
-            console.log(newMessage);
 
             socket.emit('sendMessage', newMessage);
             setMessages((prevMessages) => [...prevMessages, newMessage]); 
