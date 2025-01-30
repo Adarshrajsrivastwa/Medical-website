@@ -10,9 +10,9 @@ let details = require('./route/detail');
 let loading = require('./route/doctorsearch');
 let payment = require('./route/payment');
 const hospital = require('./route/bed');
-
 const http = require('http');
 const server = http.createServer(app);
+const Chart=require('./models/chat.js');
 const io = require('socket.io')(server, {
     cors: {
         origin: 'http://localhost:5173',  
@@ -52,11 +52,28 @@ app.use('/hospital', hospital);
 app.get('/', (req, res) => {
     res.send("Testing phase");
 });
+
 io.on('connection', (socket) => {
     console.log('A user connected');
 
-    socket.on('sendMessage', (msg) => {
+    socket.on('sendMessage', async (msg) => {
         console.log(msg);
+        try {
+            const { sender, recipient, timestamp, text } = msg;
+            console.log(text);
+            
+            const newMessage = new Chart({
+                sender,
+                recipient,
+                timestamp,
+                message: text.text,
+            });
+            await newMessage.save();
+            socket.emit('messageStatus', { success: true, message: 'Message saved successfully' });
+        } catch (error) {
+            console.error('Error saving message:', error);
+            socket.emit('messageStatus', { success: false, message: 'Failed to save message' });
+        }
     });
 
     socket.on('disconnect', () => {
@@ -64,7 +81,6 @@ io.on('connection', (socket) => {
     });
 });
 
-// Start the server
 server.listen(3000, () => {
     console.log('Server is running on port 3000');
 });
