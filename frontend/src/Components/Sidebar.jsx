@@ -22,9 +22,10 @@ const Sidebar = ({ userRole, onLogout }) => {
             { path: "/chat-with-patient", label: "Chat with Patient", icon: "💬" },
         ],
         hospital: [
-            { path: "/hospital-detail", label: "Hospital Info", icon: "🏥" },
-            { path: "/manage-beds", label: "Manage Beds", icon: "🛏️" },
-            { path: "/staff", label: "Staff", icon: "👥" },
+            { path: "/hospital-profile", label: "My Profile", icon: "👤" },
+            { path: "/inventory-management", label: "Inventory Management", icon: "📦" },
+            { path: "/bed-management", label: "Bed Management", icon: "🛏️" },
+            { path: "/get-inventory", label: "Get Inventory", icon: "📋" },
         ],
     };
 
