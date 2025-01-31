@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Send } from 'lucide-react';
 
-const ChatInterface = ({ recipient, initialMessages = [], onSendMessage }) => {
+const ChatInterface = ({ recipient, initialMessages = {}, onSendMessage }) => {
     const [messages, setMessages] = useState(initialMessages);
     const [newMessage, setNewMessage] = useState('');
     const messagesEndRef = useRef(null);

@@ -4,7 +4,7 @@ const { model } = mongoose;
 
 const doctorSchema = new mongoose.Schema(
   {
-    name: { type: String, unique: true, default: "" },
+    name: { type: String, unique: true, default: "doctor" },
     email: { type: String, required: true, unique: true },
     role: { type: String, default: 'doctor' },
     otp: { type: String, default: '' },

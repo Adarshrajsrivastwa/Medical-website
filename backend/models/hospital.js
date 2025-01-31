@@ -3,7 +3,7 @@ let connectdb= require('../config/db');
 const { model } = mongoose; 
 
 const HospitalDetailsSchema = new mongoose.Schema({
-    name: { type: String, unique: true, default: "" },
+    name: { type: String, unique: true, default: "hospital" },
     email: { type: String, required: true, unique: true },
     role: { type: String, default: 'user' },
     otp: { type: String, default: '' },
