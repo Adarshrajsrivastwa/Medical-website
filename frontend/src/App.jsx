@@ -21,6 +21,7 @@ import Home from "./Pages/Home";
 import HospitalProfile from "./Pages/HospitalDashboard/Profile";
 import InventoryManagement from "./Pages/HospitalDashboard/InventoryManagement";
 import GetInventory from "./Pages/HospitalDashboard/GetInventory";
+import BedManagement from "./Pages/HospitalDashboard/BedManagement";
 
 function App() {
   const [userRole, setUserRole] = useState("hospital");
@@ -58,7 +59,7 @@ function App() {
                 {/* Hospital Dashboard */}
                 <Route path="/hospital-profile" element={<HospitalProfile />} />
                 <Route path="/inventory-management" element={<InventoryManagement />} />
-                <Route path="/bed-management" element={<HospitalProfile />} />
+                <Route path="/bed-management" element={<BedManagement />} />
                 <Route path="/get-inventory" element={<GetInventory />} />
               </Routes>
             </div>

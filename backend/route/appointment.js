@@ -1,11 +1,10 @@
 const nodemailer = require('nodemailer');
 let express = require('express');
 const bodyParser = require('body-parser');
-const User=require('../models/user');
+const User = require('../models/user');
 const Hospital = require('../models/hospital');
-const Doctor=require('../models/doctor');
+const Doctor = require('../models/doctor');
 const appointment = require('../models/appointment');
-const react = require('react');
 
 let app = express();
 
@@ -14,9 +13,9 @@ app.post('/appointment', async (req, res) => {
     console.log(email);
     try {
         let user = await appointment.find({ doctor: email });
-        if(user.status === 'pending')
+        if (user.status === 'pending')
 
-        res.json(user);
+            res.json(user);
     } catch (err) {
         console.error(err);
         res.status(500).send('Error retrieving appointments');
@@ -26,7 +25,7 @@ app.post('/appointment', async (req, res) => {
 
 app.post('/update', async (req, res) => {
     try {
-        const { approval, unique } = req.body; 
+        const { approval, unique } = req.body;
         const id = unique;
         const user = await appointment.findOne({ _id: id });
 
@@ -46,4 +45,4 @@ app.post('/update', async (req, res) => {
 });
 
 
-module.exports =app;
+module.exports = app;
