@@ -37,7 +37,9 @@ const Profile = () => {
     setHospital(prev => ({
       ...prev,
       ...editedValues,
-      specializations: editedValues.specializations.split(",").map(spec => spec.trim()).filter(spec => spec !== "")
+      specializations: editedValues.specializations.split(",")
+        .map(spec => spec.trim()) // trim spaces around specializations
+        .filter(spec => spec !== "") // remove empty entries
     }));
     setIsEditing(false);
   };
