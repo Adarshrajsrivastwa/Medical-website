@@ -18,9 +18,12 @@ import AppointmentManagement from "./Pages/DoctorDashboard/AppointmentManagement
 import ChatWithDoctor from "./Pages/PatientDashboard/ChatWithDoctor";
 import ChatWithPatient from "./Pages/DoctorDashboard/ChatWithPatient";
 import Home from "./Pages/Home";
+import HospitalProfile from "./Pages/HospitalDashboard/Profile";
+import InventoryManagement from "./Pages/HospitalDashboard/InventoryManagement";
+import GetInventory from "./Pages/HospitalDashboard/GetInventory";
 
 function App() {
-  const [userRole, setUserRole] = useState("doctor");
+  const [userRole, setUserRole] = useState("hospital");
 
   return (
     <Router>
@@ -52,6 +55,11 @@ function App() {
                 <Route path="/doctor-profile" element={<DoctorProfile />} />
                 <Route path="/appointment-management" element={<AppointmentManagement />} />
                 <Route path="/chat-with-patient" element={<ChatWithPatient />} />
+                {/* Hospital Dashboard */}
+                <Route path="/hospital-profile" element={<HospitalProfile />} />
+                <Route path="/inventory-management" element={<InventoryManagement />} />
+                <Route path="/bed-management" element={<HospitalProfile />} />
+                <Route path="/get-inventory" element={<GetInventory />} />
               </Routes>
             </div>
           </main>
