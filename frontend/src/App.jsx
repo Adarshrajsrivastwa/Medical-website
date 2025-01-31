@@ -23,7 +23,7 @@ import InventoryManagement from "./Pages/HospitalDashboard/InventoryManagement";
 import GetInventory from "./Pages/HospitalDashboard/GetInventory";
 
 function App() {
-  const [userRole, setUserRole] = useState("doctor");
+  const [userRole, setUserRole] = useState("hospital");
 
   return (
     <Router>
