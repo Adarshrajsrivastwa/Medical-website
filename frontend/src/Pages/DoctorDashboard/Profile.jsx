@@ -60,7 +60,7 @@ const DoctorProfile = () => {
       <Card className="w-full border border-purple-100">
         <CardHeader className="space-y-1 pb-4">
           <CardTitle className="text-3xl font-bold text-[#563393]">
-            Doctor Profile
+            My Profile
           </CardTitle>
         </CardHeader>
 
