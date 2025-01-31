@@ -31,6 +31,15 @@ const ChatWithDoctor = () => {
                   },
                 }
               );
+            //   const response = await axios.post(
+            //     "http://localhost:3000/history/chat",
+            //     { sender:"adarsh6205840092@gmail.com" , recipient:"srivastwaadarsh@gmail.com" },
+            //     {
+            //       headers: {
+            //         "Content-Type": "application/json",
+            //       },
+            //     }
+            //   );
               console.log(response);
               setDoctors(response.data.doctors);
               setLoading(false);
@@ -114,6 +123,7 @@ const ChatWithDoctor = () => {
                             timestamp: new Date().toISOString(),
                         }, ...messages]}
                         onSendMessage={sendMessage}
+                        
                     />
                 ) : (
                     <div className="h-full flex items-center justify-center text-purple-400">
