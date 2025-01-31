@@ -6,13 +6,16 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { PlusCircle, Trash2 } from 'lucide-react';
+import Cookies from 'js-cookie';
+import axios from 'axios';
 
 const InventoryManagement = () => {
     const [inventories, setInventories] = useState([]);
     const [newInventory, setNewInventory] = useState({
         type: '',
         name: '',
-        quantity: ''
+        quantity: '',
+        email:'',
     });
 
     const inventoryTypes = [
@@ -21,13 +24,36 @@ const InventoryManagement = () => {
         'Medical Equipment'
     ];
 
-    const handleAddInventory = () => {
+    const handleAddInventory = async() => {
         if (!newInventory.type || !newInventory.name || !newInventory.quantity) {
             return;
         }
 
+        newInventory.email = Cookies.get('email');
+        try{
+        const response = await axios.post(
+            "http://localhost:3000/add/inventory",
+            {newInventory},
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+        console.log(response);
+
+        if(response.status==200) {
         setInventories([...inventories, { ...newInventory, id: Date.now() }]);
         setNewInventory({ type: '', name: '', quantity: '' });
+        }
+        else {
+            alert("Failed to add new inventory");
+        }   
+    }
+    catch(error) {
+        console.error(error);
+        alert("Failed to add new inventory");
+    }
     };
 
     const handleDeleteInventory = (id) => {
