@@ -1,48 +1,69 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Check, X, Clock, UserPlus, ExpandIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import axios from 'axios';
+import Cookie from 'js-cookie';
 
 const AppointmentManagement = () => {
-  const [appointments, setAppointments] = useState([
-    {
-      id: 1,
-      patientName: 'John Doe',
-      issue: 'Comprehensive periodic health check-up including full body screening, detailed blood work analysis, cardiovascular risk assessment, and holistic wellness consultation. Patient requires thorough examination of recent symptoms and comprehensive preventive health strategy.',
-      date: '2024-02-15',
-      timeSlot: 'Morning',
-      status: 'Pending'
-    },
-    {
-      id: 2,
-      patientName: 'Jane Smith',
-      issue: 'Dental Consultation',
-      date: '2024-02-16',
-      timeSlot: 'Evening',
-      status: 'Pending'
-    }
-  ]);
+  const [appointments, setAppointments] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const [selectedIssue, setSelectedIssue] = useState(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
+  // Fetch appointments data
+  useEffect(() => {
+    const fetchAppointments = async () => {
+      try {
+        const email = Cookie.get('email');
+        const response = await axios.post(
+          "http://localhost:3000/list/appointment",
+          { email },
+          { headers: { "Content-Type": "application/json" } }
+        );
+        setAppointments(response.data);
+        console.log(response)
+        setLoading(false);
+      } catch (err) {
+        console.error(err);
+        setError("Something went wrong while fetching the appointments.");
+        setLoading(false);
+      }
+    };
+
+    fetchAppointments();
+  }, []);
+
   const handleAppointmentAction = (id, action) => {
-    setAppointments(appointments.map(appointment =>
-      appointment.id === id
-        ? { ...appointment, status: action === 'accept' ? 'Confirmed' : 'Declined' }
-        : appointment
-    ));
+    setAppointments(prevAppointments =>
+      prevAppointments.map(appointment =>
+        appointment.data.id === id
+          ? { ...appointment, status: action === 'accept' ? 'Confirmed' : 'Declined' }
+          : appointment
+      )
+    );
   };
 
+  // Truncate text to a max length
+  
   const truncateText = (text, maxLength = 100) => {
     return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
   };
 
+  // Open dialog with full issue description
   const openIssueDialog = (issue) => {
     setSelectedIssue(issue);
     setIsDialogOpen(true);
   };
+
+  // Render loading state
+  if (loading) return <div className="loading">Loading appointments...</div>;
+
+  // Render error state
+  if (error) return <div className="error">{error}</div>;
 
   return (
     <>
@@ -67,6 +88,7 @@ const AppointmentManagement = () => {
                     <button
                       onClick={() => openIssueDialog(appointment.issue)}
                       className="ml-2 text-[#563393] hover:underline"
+                      aria-label="View full issue description"
                     >
                       <ExpandIcon className="h-4 w-4" />
                     </button>
@@ -76,10 +98,15 @@ const AppointmentManagement = () => {
                   <Clock className="mr-2 h-4 w-4" />
                   {appointment.date} | {appointment.timeSlot} Slot
                 </div>
-                <div className={`text-xs sm:text-sm font-medium mt-1
-                  ${appointment.status === 'Pending' ? 'text-yellow-600' :
-                    appointment.status === 'Confirmed' ? 'text-green-600' : 'text-red-600'}
-                `}>
+                <div
+                  className={`text-xs sm:text-sm font-medium mt-1 ${
+                    appointment.status === 'Pending'
+                      ? 'text-yellow-600'
+                      : appointment.status === 'Confirmed'
+                      ? 'text-green-600'
+                      : 'text-red-600'
+                  }`}
+                >
                   {appointment.status}
                 </div>
               </div>
@@ -89,6 +116,7 @@ const AppointmentManagement = () => {
                     variant="outline"
                     className="w-full sm:w-auto text-[#563393] border-[#563393] hover:bg-[#cab2f479] hover:text-[#563393]"
                     onClick={() => handleAppointmentAction(appointment.id, 'accept')}
+                    aria-label="Accept appointment"
                   >
                     <Check className="mr-2 h-4 w-4" />
                     Accept
@@ -97,6 +125,7 @@ const AppointmentManagement = () => {
                     variant="outline"
                     className="w-full sm:w-auto text-red-600 border-red-600 hover:bg-red-50 hover:text-red-500"
                     onClick={() => handleAppointmentAction(appointment.id, 'decline')}
+                    aria-label="Decline appointment"
                   >
                     <X className="mr-2 h-4 w-4" />
                     Decline
