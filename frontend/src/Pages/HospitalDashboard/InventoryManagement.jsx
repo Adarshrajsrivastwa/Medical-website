@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -11,42 +11,42 @@ import axios from 'axios';
 
 const InventoryManagement = () => {
     const [inventories, setInventories] = useState([]);
-     const [loading, setLoading] = useState(true);
-      const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-      useEffect(() => {
+    useEffect(() => {
         const fetchAppointments = async () => {
-          try {
-            const email = Cookies.get('email');
-            const response = await axios.post(
-              "http://localhost:3000/add/collect",
-              { email },
-              { headers: { "Content-Type": "application/json" } }
-            );
-            console.log(response);
-            setInventories(response.data);
-            setLoading(false);
-          } catch (err) {
-            console.error(err);
-            setError("Something went wrong while fetching the appointments.");
-            setLoading(false);
-          }
+            try {
+                const email = Cookies.get('email');
+                const response = await axios.post(
+                    "http://localhost:3000/add/collect",
+                    { email },
+                    { headers: { "Content-Type": "application/json" } }
+                );
+                console.log(response);
+                setInventories(response.data);
+                setLoading(false);
+            } catch (err) {
+                console.error(err);
+                setError("Something went wrong while fetching the appointments.");
+                setLoading(false);
+            }
         };
-    
+
         fetchAppointments();
-      }, []);
+    }, []);
 
-      if (loading) return <div className="loading">Loading appointments...</div>;
+    if (loading) return <div className="loading">Loading appointments...</div>;
 
-  // Render error state
-  if (error) return <div className="error">{error}</div>;
+    // Render error state
+    if (error) return <div className="error">{error}</div>;
 
 
     const [newInventory, setNewInventory] = useState({
         type: '',
         name: '',
         quantity: '',
-        email:'',
+        email: '',
     });
 
     const inventoryTypes = [
@@ -55,36 +55,36 @@ const InventoryManagement = () => {
         'Medical Equipment'
     ];
 
-    const handleAddInventory = async() => {
+    const handleAddInventory = async () => {
         if (!newInventory.type || !newInventory.name || !newInventory.quantity) {
             return;
         }
 
         newInventory.email = Cookies.get('email');
-        try{
-        const response = await axios.post(
-            "http://localhost:3000/add/inventory",
-            {newInventory},
-            {
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            }
-        );
-        console.log(response);
+        try {
+            const response = await axios.post(
+                "http://localhost:3000/add/inventory",
+                { newInventory },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+            console.log(response);
 
-        if(response.status==200) {
-        setInventories([...inventories, { ...newInventory, id: Date.now() }]);
-        setNewInventory({ type: '', name: '', quantity: '' });
+            if (response.status == 200) {
+                setInventories([...inventories, { ...newInventory, id: Date.now() }]);
+                setNewInventory({ type: '', name: '', quantity: '' });
+            }
+            else {
+                alert("Failed to add new inventory");
+            }
         }
-        else {
+        catch (error) {
+            console.error(error);
             alert("Failed to add new inventory");
-        }   
-    }
-    catch(error) {
-        console.error(error);
-        alert("Failed to add new inventory");
-    }
+        }
     };
 
     const handleDeleteInventory = (id) => {
