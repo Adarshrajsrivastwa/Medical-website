@@ -2,51 +2,51 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { MessageSquare } from 'lucide-react';
 import ChatInterface from "@/Components/ChatInterface";
-import io from 'socket.io-client'; 
-import axios from 'axios'; 
+import io from 'socket.io-client';
+import axios from 'axios';
 import Cookies from 'js-cookie';
 
-const socket = io('http://localhost:3000'); 
+const socket = io('http://localhost:3000');
 
 const ChatWithDoctor = () => {
     const [selectedDoctor, setSelectedDoctor] = useState(null);
     const [messages, setMessages] = useState([]);
-    const [doctors, setDoctors] = useState([]); 
-    const [loading, setLoading] = useState(true); 
-    const [error, setError] = useState(null); 
+    const [doctors, setDoctors] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchDoctors = async () => {
             try {
-              const city = Cookies.get('city');
-              const state = Cookies.get('state');
-              const country = Cookies.get('country');
-              console.log(city, state, country);
-              const response = await axios.post(
-                "http://localhost:3000/loading/new",
-                { city, state, country },
-                {
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                }
-              );
-            //   const response = await axios.post(
-            //     "http://localhost:3000/history/chat",
-            //     { sender:"adarsh6205840092@gmail.com" , recipient:"srivastwaadarsh@gmail.com" },
-            //     {
-            //       headers: {
-            //         "Content-Type": "application/json",
-            //       },
-            //     }
-            //   );
-              console.log(response);
-              setDoctors(response.data.doctors);
-              setLoading(false);
+                const city = Cookies.get('city');
+                const state = Cookies.get('state');
+                const country = Cookies.get('country');
+                console.log(city, state, country);
+                const response = await axios.post(
+                    "http://localhost:3000/loading/new",
+                    { city, state, country },
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    }
+                );
+                //   const response = await axios.post(
+                //     "http://localhost:3000/history/chat",
+                //     { sender:"adarsh6205840092@gmail.com" , recipient:"srivastwaadarsh@gmail.com" },
+                //     {
+                //       headers: {
+                //         "Content-Type": "application/json",
+                //       },
+                //     }
+                //   );
+                console.log(response);
+                setDoctors(response.data.doctors);
+                setLoading(false);
             } catch (err) {
-              console.log(err);
-              setError("Something went wrong!");
-              setLoading(false);
+                console.log(err);
+                setError("Something went wrong!");
+                setLoading(false);
             }
         };
 
@@ -71,7 +71,7 @@ const ChatWithDoctor = () => {
             };
 
             socket.emit('sendMessage', newMessage);
-            setMessages((prevMessages) => [...prevMessages, newMessage]); 
+            setMessages((prevMessages) => [...prevMessages, newMessage]);
         }
     };
 
@@ -123,7 +123,7 @@ const ChatWithDoctor = () => {
                             timestamp: new Date().toISOString(),
                         }, ...messages]}
                         onSendMessage={sendMessage}
-                        
+
                     />
                 ) : (
                     <div className="h-full flex items-center justify-center text-purple-400">

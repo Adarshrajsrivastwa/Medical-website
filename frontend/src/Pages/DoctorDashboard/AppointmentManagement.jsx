@@ -48,6 +48,7 @@ const AppointmentManagement = () => {
     );
     let unique=appointments[0]._id;
 
+<<<<<<< HEAD
     const response = await axios.post(
       "http://localhost:3000/list/update",
       { unique,approval },
@@ -60,6 +61,8 @@ const AppointmentManagement = () => {
   };
   
 
+=======
+>>>>>>> 67155978fceb58ce0eb07b61881f24bc019e7406
 
   const truncateText = (text, maxLength = 100) => {
     return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;

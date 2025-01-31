@@ -53,21 +53,12 @@ const UserProfile = () => {
     <div className="h-fit p-3">
       <Card className="w-full border border-purple-100">
         <CardHeader className="space-y-1 pb-4">
-          <CardTitle className="text-3xl font-bold text-center text-[#563393]">
-            Profile Details
+          <CardTitle className="text-3xl font-bold text-[#563393]">
+            My Profile
           </CardTitle>
         </CardHeader>
 
         <CardContent className="px-3 py-2">
-          <div className="flex flex-col items-center mb-6">
-            <img
-              src={user.photoUrl}
-              alt="Profile"
-              className="w-28 h-28 rounded-full object-cover shadow-md border-2 border-[#563393]"
-            />
-            <h2 className="mt-3 text-2xl font-semibold text-[#563393]">{user.name}</h2>
-          </div>
-
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mx-auto">
             {/* Info Cards */}
             {[

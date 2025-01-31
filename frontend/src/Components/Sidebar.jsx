@@ -23,8 +23,8 @@ const Sidebar = ({ userRole, onLogout }) => {
         ],
         hospital: [
             { path: "/hospital-profile", label: "My Profile", icon: "👤" },
-            { path: "/inventory-management", label: "Inventory Management", icon: "📦" },
             { path: "/bed-management", label: "Bed Management", icon: "🛏️" },
+            { path: "/inventory-management", label: "Inventory Management", icon: "📦" },
             { path: "/get-inventory", label: "Get Inventory", icon: "📋" },
         ],
     };
