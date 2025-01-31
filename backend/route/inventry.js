@@ -1,37 +1,38 @@
-let express= require('express');
-const bodyParser = require('body-parser');
-const User = require('../models/user');
-const Hospital = require('../models/hospital');
-const Doctor = require('../models/doctor');
-const upload=require('../config/multer');
-const user = require('../models/user');
-const inventry=require('../models/inventry');
+const express = require('express');
+const inventry = require('../models/inventry');
 
 let app = express();
+
+app.use(express.json());
+
 app.post('/inventory', async (req, res) => {
     try {
-    //   const Hospital = req.body.newInventory.email;
-    //   const type = req.body.newInventory.type;
-    //   const name = req.body.newInventory.name;
-    //   const quantity = req.body.newInventory.quantity;
-
-
-         console.log(req.body.newInventory)
-
-        const newUser = new inventry({
+        const newItem = new inventry({
           Hospital: req.body.newInventory.email,
           type: req.body.newInventory.type,
           name: req.body.newInventory.name,
           quantity: req.body.newInventory.quantity,
         });
-        await newUser.save();
-        return res.status(200).json({ message: 'User created and item added successfully.' });
-      }
-    catch (error) {
-      console.log(error);
-      return res.status(500).json({ message: 'Server error. Please try again later.' });
+
+        await newItem.save();
+        return res.status(200).json({ message: 'Item added to inventory successfully.' });
+    } catch (error) {
+        return res.status(500).json({ message: 'Server error. Please try again later.' });
     }
-  });
-  
+});
+
+app.post('/collect', async (req, res) => {
+    try {
+        const userItems = await inventry.find({ Hospital: req.body.email });
+        
+        if (!userItems || userItems.length === 0) {
+            return res.status(404).json({ message: 'No inventory found for this hospital.' });
+        }
+
+        return res.status(200).json({ items: userItems });
+    } catch (error) {
+        return res.status(500).json({ message: 'Server error. Please try again later.' });
+    }
+});
 
 module.exports = app;
