@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { User, Mail, Phone, MapPin, Languages, Stethoscope, Coins, Building2 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-const DoctorProfile = () => {
+const Profile = () => {
   const [doctor, setDoctor] = useState({
     name: "Dr. Sarah Johnson",
     email: "sarah.johnson@healthcare.com",
@@ -135,4 +135,4 @@ const DoctorProfile = () => {
   );
 };
 
-export default DoctorProfile;
+export default Profile;
