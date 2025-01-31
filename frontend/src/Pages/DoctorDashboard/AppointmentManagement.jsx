@@ -45,7 +45,7 @@ const AppointmentManagement = () => {
     );
   };
 
-  
+
   const truncateText = (text, maxLength = 100) => {
     return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
   };
@@ -96,13 +96,12 @@ const AppointmentManagement = () => {
                   {appointment.date} | {appointment.timeSlot} Slot
                 </div>
                 <div
-                  className={`text-xs sm:text-sm font-medium mt-1 ${
-                    appointment.status === 'Pending'
+                  className={`text-xs sm:text-sm font-medium mt-1 ${appointment.status === 'Pending'
                       ? 'text-yellow-600'
                       : appointment.status === 'Confirmed'
-                      ? 'text-green-600'
-                      : 'text-red-600'
-                  }`}
+                        ? 'text-green-600'
+                        : 'text-red-600'
+                    }`}
                 >
                   {appointment.status}
                 </div>
