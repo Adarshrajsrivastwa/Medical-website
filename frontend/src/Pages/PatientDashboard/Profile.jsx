@@ -1,34 +1,63 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { User, Mail, Phone, MapPin, Calendar, Weight, Ruler, Droplet, Check, X } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import axios from "axios";
+import Cookies from 'js-cookie';
 
-const UserProfile = () => {
-  const [user, setUser] = useState({
-    name: "John Doe",
-    email: "john.doe@example.com",
-    phone: "+1 (555) 123-4567",
-    gender: "Male",
-    dob: "1990-05-15",
-    weight: 75,
-    height: 175,
-    bloodGroup: "O+",
-    location: "New York, NY",
-    photoUrl: "/api/placeholder/150/150"
-  });
-
+const Profile = () => {
+  const [user, setUser] = useState(null); // Initialize user as null
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editedValues, setEditedValues] = useState({
-    phone: user.phone,
-    weight: user.weight,
-    height: user.height
+    phone: '',
+    weight: '',
+    height: ''
   });
+
+  // Fetch user data on component mount
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        let email = Cookies.get('email');
+        const response = await axios.post(
+          "http://localhost:3000/profile/user",
+          { email },
+          { headers: { "Content-Type": "application/json", }, }
+        );
+        console.log(response);
+        setUser(response.data[0]); 
+        setLoading(false);
+      } catch (err) {
+        console.log(err);
+        setError("Something went wrong!");
+        setLoading(false);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
+  // Update editedValues state when user data changes
+  useEffect(() => {
+    if (user) {
+      setEditedValues({
+        phone: user.phone || '',
+        weight: user.weight || '',
+        height: user.height || ''
+      });
+    }
+  }, [user]);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
 
   const handleEdit = () => {
     setIsEditing(true);
     setEditedValues({
-      phone: user.phone,
-      weight: user.weight,
-      height: user.height
+      phone: user.phone || '',
+      weight: user.weight || '',
+      height: user.height || ''
     });
   };
 
@@ -43,9 +72,9 @@ const UserProfile = () => {
   const handleCancel = () => {
     setIsEditing(false);
     setEditedValues({
-      phone: user.phone,
-      weight: user.weight,
-      height: user.height
+      phone: user.phone || '',
+      weight: user.weight || '',
+      height: user.height || ''
     });
   };
 
@@ -62,14 +91,14 @@ const UserProfile = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mx-auto">
             {/* Info Cards */}
             {[
-              { icon: Mail, label: 'Email', value: user.email },
-              { icon: Phone, label: 'Phone', value: user.phone, editable: true },
-              { icon: User, label: 'Gender', value: user.gender },
-              { icon: Calendar, label: 'Date of Birth', value: user.dob },
-              { icon: Weight, label: 'Weight(KG)', value: `${user.weight} kg`, editable: true, type: 'number', field: 'weight' },
-              { icon: Ruler, label: 'Height(CM)', value: `${user.height} cm`, editable: true, type: 'number', field: 'height' },
-              { icon: Droplet, label: 'Blood Group', value: user.bloodGroup },
-              { icon: MapPin, label: 'Location', value: user.location }
+              { icon: Mail, label: 'Email', value: user?user.email : "N/A" },
+              { icon: Phone, label: 'Phone', value: user?user.phone : "N/A", editable: true },
+              { icon: User, label: 'Gender', value: user?user.gender : "N/A" },
+              { icon: Calendar, label: 'Date of Birth', value: user?user.dob : "N/A" },
+              { icon: Weight, label: 'Weight(KG)', value: `${user?user.weight : "N/A"} kg`, editable: true, field: 'weight' },
+              { icon: Ruler, label: 'Height(CM)', value: `${user?user.height : "N/A"} cm`, editable: true, field: 'height' },
+              { icon: Droplet, label: 'Blood Group', value: user?user.bloodGroup : "N/A" },
+              { icon: MapPin, label: 'Location', value: user?user.location : "N/A" }
             ].map((item, index) => (
               <div key={index} className="flex items-center gap-4 p-4 bg-white rounded-lg border border-purple-100 shadow-sm hover:border-[#563393] transition-colors">
                 <div className="bg-purple-50 p-3 rounded-lg">
@@ -80,11 +109,11 @@ const UserProfile = () => {
                   {isEditing && item.editable ? (
                     <input
                       required
-                      type={item.type || 'text'}
-                      value={item.field ? editedValues[item.field] : editedValues[item.label.toLowerCase()]}
+                      type="text"
+                      value={editedValues[item.field || item.label.toLowerCase()]}
                       onChange={(e) => setEditedValues(prev => ({
                         ...prev,
-                        [item.field || item.label.toLowerCase()]: item.type === 'number' ? parseFloat(e.target.value) : e.target.value
+                        [item.field || item.label.toLowerCase()]: e.target.value
                       }))}
                       className="text-base font-medium text-[#563393] border border-purple-200 rounded px-2 py-1 w-full focus:outline-none focus:border-[#563393]"
                     />
@@ -130,4 +159,4 @@ const UserProfile = () => {
   );
 };
 
-export default UserProfile;
+export default Profile;
