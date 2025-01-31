@@ -15,6 +15,7 @@ const server = http.createServer(app);
 const Chart=require('./models/chat.js');
 const chat = require('./route/chat.js');
 const list=require('./route/appointment.js');
+const profile = require('./route/profile.js');
 const io = require('socket.io')(server, {
     cors: {
         origin: 'http://localhost:5173',  
@@ -52,6 +53,8 @@ app.use('/payment', payment);
 app.use('/hospital', hospital);
 app.use('/history', chat);
 app.use('/list', list);
+app.use('/profile', profile);
+
 
 app.get('/', (req, res) => {
     res.send("Testing phase");
