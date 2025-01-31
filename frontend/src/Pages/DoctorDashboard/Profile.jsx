@@ -1,66 +1,52 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { User, Mail, Phone, MapPin, Languages, Stethoscope, Coins, Building2 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 
 const Profile = () => {
-  const [doctor, setDoctor] = useState([]);
-
+  const [doctor, setDoctor] = useState(null);
   const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+  const [error, setError] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedValues, setEditedValues] = useState({});
 
   useEffect(() => {
-    const fetchHospitals = async () => {
-      const email=Cookies.get('email');
+    const fetchDoctorData = async () => {
+      const email = Cookies.get('email');
       try {
-  
         const response = await axios.post(
-          "http://localhost:3000/profile/doctor", 
+          "http://localhost:3000/profile/doctor",
           { email },
           { headers: { "Content-Type": "application/json" } }
         );
-        console.log(response.data[0]);
         setDoctor(response.data[0]);
+        setEditedValues({
+          phone: response.data[0].phone,
+          consultationFee: response.data[0].consultationFee,
+          hospital: response.data[0].hospital,
+          location: response.data[0].location,
+          languages: response.data[0].languages.join(", ")
+        });
         setLoading(false);
       } catch (err) {
         setError("Failed to fetch doctor. Please try again later.");
         setLoading(false);
       }
     };
-    fetchHospitals();
+    fetchDoctorData();
   }, []);
-
-
-  if (loading) return <div>Loading hospitals...</div>;
-  if (error) return <div>{error}</div>;
-
-  const [isEditing, setIsEditing] = useState(false);
-  const [editedValues, setEditedValues] = useState({
-    // phone: doctor.phone,
-    // consultationFee: doctor.consultationFee,
-    // hospital: doctor.hospital,
-    // location: doctor.location,
-    // languages: doctor.languages
-    name:doctor.name
-  });
 
   const handleEdit = () => {
     setIsEditing(true);
-    setEditedValues({
-      phone: doctor.phone,
-      consultationFee: doctor.consultationFee,
-      hospital: doctor.hospital,
-      location: doctor.location,
-      languages: doctor.languages.join(", ")
-    });
   };
 
   const handleSave = () => {
     setDoctor(prev => ({
       ...prev,
       ...editedValues,
-      languages: editedValues.languages}));
+      languages: editedValues.languages.split(", ").map(lang => lang.trim()) // Split back into array
+    }));
     setIsEditing(false);
   };
 
@@ -74,6 +60,9 @@ const Profile = () => {
       languages: doctor.languages.join(", ")
     });
   };
+
+  if (loading) return <div>Loading hospitals...</div>;
+  if (error) return <div>{error}</div>;
 
   return (
     <div className="h-fit p-3">
