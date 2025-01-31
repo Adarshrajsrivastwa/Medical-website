@@ -17,12 +17,14 @@ const AppointmentManagement = () => {
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
+        console.log(appointments);
         const email = Cookie.get('email');
         const response = await axios.post(
           "http://localhost:3000/list/appointment",
           { email },
           { headers: { "Content-Type": "application/json" } }
         );
+        console.log(response);
         setAppointments(response.data);
         setLoading(false);
       } catch (err) {
@@ -35,14 +37,25 @@ const AppointmentManagement = () => {
     fetchAppointments();
   }, []);
 
-  const handleAppointmentAction = (id, action) => {
+  const handleAppointmentAction = async(id, action) => {
+    const approval = action === 'accept' ? 'confirmed' : 'Declined';
     setAppointments(prevAppointments =>
       prevAppointments.map(appointment =>
-        appointment.data.id === id
-          ? { ...appointment, status: action === 'accept' ? 'Confirmed' : 'Declined' }
+        appointment.id === id
+          ? { ...appointment, status } 
           : appointment
       )
     );
+    let unique=appointments[0]._id;
+    const response = await axios.post(
+      "http://localhost:3000/list/update",
+      { unique,approval },
+      { headers: { "Content-Type": "application/json" } }
+    );
+    if(response.status==200)
+      alert("Appointment status updated successfully");
+    else
+    alert("Failed to update appointment status");
   };
 
 
