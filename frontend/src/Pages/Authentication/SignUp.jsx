@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from 'axios';
 // import { useHistory } from 'react-router-dom';
 // const history = useHistory();
@@ -42,7 +42,7 @@ function SignUp() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
-  
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -57,8 +57,8 @@ function SignUp() {
       alert("Please enter your email!");
       return;
     }
-    Cookies.set('email', formData.email, { expires: 1/24 });  
-    Cookies.set('role',formData.role, { expires:1/24 });
+    Cookies.set('email', formData.email, { expires: 1 / 24 });
+    Cookies.set('role', formData.role, { expires: 1 / 24 });
     setLoading(true);
     try {
       const res = await axios.post("http://localhost:3000/sign/signup", formData, {
@@ -67,7 +67,7 @@ function SignUp() {
         },
       });
       console.log(res.status);
-  
+
       if (res.status !== 200) {
         throw new Error('Failed to send OTP');
       }
@@ -78,8 +78,8 @@ function SignUp() {
       setLoading(false);
     }
   };
-  
-  
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -88,24 +88,24 @@ function SignUp() {
           "Content-Type": "application/json",
         },
       });
-  
+
       if (res.status === 200) {
-        if(formData.role === 'patient')
-        navigate('/patient-detail-form');
-      else if(formData.role === 'doctor')
-        navigate('/doctor-detail-form');
-      else if(formData.role === 'hospital'){
-        navigate('/hospital-detail-form');
+        if (formData.role === 'patient')
+          navigate('/patient-detail-form');
+        else if (formData.role === 'doctor')
+          navigate('/doctor-detail-form');
+        else if (formData.role === 'hospital') {
+          navigate('/hospital-detail-form');
+        }
       }
-    }
     }
     catch (error) {
       alert(error.message);
     }
   };
-  
+
   return (
-    <div className="flex items-center justify-center h-[89vh] bg-teal-400">
+    <div className="flex items-center justify-center h-[89vh] bg-gray-100">
       <form
         onSubmit={handleSubmit}
         className="flex flex-col items-center lg:gap-7 shadow-md rounded-xl lg:p-10 bg-white gap-5 p-6"
@@ -126,25 +126,25 @@ function SignUp() {
           />
         </div>
         <div className="flex flex-col gap-1">
-                  <Label htmlFor="role" className="text-base font-normal">
-                    Select Your Role
-                  </Label>
-                  <Select
-                    required
-                    onValueChange={(value) =>
-                      setFormData((prevData) => ({ ...prevData, role: value }))
-                    }
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select Your Role" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="doctor">Doctor</SelectItem>
-                      <SelectItem value="patient">Patient</SelectItem>
-                      <SelectItem value="hospital">Hospital</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+          <Label htmlFor="role" className="text-base font-normal">
+            Select Your Role
+          </Label>
+          <Select
+            required
+            onValueChange={(value) =>
+              setFormData((prevData) => ({ ...prevData, role: value }))
+            }
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Select Your Role" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="doctor">Doctor</SelectItem>
+              <SelectItem value="patient">Patient</SelectItem>
+              <SelectItem value="hospital">Hospital</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
 
         <Button
           type="button"
@@ -206,7 +206,7 @@ function SignUp() {
                   </InputOTP>
                 </div>
 
-                
+
               </div>
 
               <div className="flex items-center justify-end lg:gap-4 mt-4 gap-2">
