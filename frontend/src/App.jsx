@@ -24,7 +24,7 @@ import GetInventory from "./Pages/HospitalDashboard/GetInventory";
 import BedManagement from "./Pages/HospitalDashboard/BedManagement";
 
 function App() {
-  const [userRole, setUserRole] = useState("doctor");
+  const [userRole, setUserRole] = useState("hospital");
 
   return (
     <Router>

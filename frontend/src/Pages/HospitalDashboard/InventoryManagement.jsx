@@ -8,7 +8,11 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { PlusCircle, Trash2 } from 'lucide-react';
 
 const InventoryManagement = () => {
-    const [inventories, setInventories] = useState([]);
+    const [inventories, setInventories] = useState([
+        { id: 1, type: 'Medicine', name: 'Paracetamol', quantity: 100 },
+        { id: 2, type: 'Blood', name: 'O- Blood', quantity: 10 },
+        { id: 3, type: 'Medical Equipment', name: 'Stethoscope', quantity: 30 }
+    ]);
     const [newInventory, setNewInventory] = useState({
         type: '',
         name: '',
