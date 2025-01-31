@@ -14,7 +14,6 @@ const AppointmentManagement = () => {
   const [selectedIssue, setSelectedIssue] = useState(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  // Fetch appointments data
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
@@ -25,7 +24,6 @@ const AppointmentManagement = () => {
           { headers: { "Content-Type": "application/json" } }
         );
         setAppointments(response.data);
-        console.log(response)
         setLoading(false);
       } catch (err) {
         console.error(err);
@@ -47,7 +45,6 @@ const AppointmentManagement = () => {
     );
   };
 
-  // Truncate text to a max length
   
   const truncateText = (text, maxLength = 100) => {
     return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
@@ -74,7 +71,7 @@ const AppointmentManagement = () => {
         <CardContent className="p-2 sm:p-4">
           {appointments.map((appointment) => (
             <div
-              key={appointment.id}
+              key={appointments.id}
               className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 sm:p-4 border-b hover:bg-[#f4f4f4] transition-colors"
             >
               <div className="flex-grow mb-2 sm:mb-0 w-full sm:w-auto">
