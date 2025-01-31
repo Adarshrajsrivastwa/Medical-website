@@ -96,7 +96,8 @@ const AppointmentManagement = () => {
                   {appointment.date} | {appointment.timeSlot} Slot
                 </div>
                 <div
-                  className={`text-xs sm:text-sm font-medium mt-1 ${appointment.status === 'Pending'
+                  className={`text-xs sm:text-sm font-medium mt-1 ${
+                    appointment.status === 'Pending'
                       ? 'text-yellow-600'
                       : appointment.status === 'Confirmed'
                         ? 'text-green-600'
@@ -106,7 +107,7 @@ const AppointmentManagement = () => {
                   {appointment.status}
                 </div>
               </div>
-              {appointment.status === 'Pending' && (
+              {appointment.status === 'pending' && (
                 <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 w-full sm:w-auto">
                   <Button
                     variant="outline"
