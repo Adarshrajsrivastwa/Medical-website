@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Search } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -7,45 +7,33 @@ import Cookies from 'js-cookie';
 
 const GetInventory = () => {
     const [searchQuery, setSearchQuery] = useState('');
+    const [inventoryData, setinventoryData] = useState(null); 
+      const [loading, setLoading] = useState(true);
+      const [error, setError] = useState(null);
 
-    const inventoryData = [
-        {
-            id: 1,
-            hospitalName: "St. Mary's Hospital",
-            address: "123 Medical Center Blvd, New York, NY 10001",
-            phone: "(212) 555-0123",
-            email: "contact@stmarys.org",
-            itemName: "Surgical Masks",
-            quantity: 5000
-        },
-        {
-            id: 2,
-            hospitalName: "Memorial Healthcare",
-            address: "456 Healthcare Ave, New York, NY 10002",
-            phone: "(212) 555-0456",
-            email: "info@memorial.org",
-            itemName: "Surgical Masks",
-            quantity: 3000
-        },
-        {
-            id: 3,
-            hospitalName: "City General Hospital",
-            address: "789 Medical Park, New York, NY 10003",
-            phone: "(212) 555-0789",
-            email: "info@citygeneral.org",
-            itemName: "Ventilators",
-            quantity: 50
-        },
-        {
-            id: 4,
-            hospitalName: "Central Medical Center",
-            address: "321 Health Street, New York, NY 10004",
-            phone: "(212) 555-0321",
-            email: "contact@centralmed.org",
-            itemName: "ICU Beds",
-            quantity: 200
-        }
-    ];
+      useEffect(() => {
+        const fetchUser = async () => {
+          try {
+            const response = await axios.post(
+              "http://localhost:3000/medicine/available",
+              {},
+              { headers: { "Content-Type": "application/json", }, }
+            );
+            console.log(response.data);
+            setinventoryData(response.data); // Assuming response.data is the user object
+            setLoading(false);
+          } catch (err) {
+            console.log(err);
+            setError("Something went wrong!");
+            setLoading(false);
+          }
+        };
+    
+        fetchUser();
+      }, []);
+
+      if (loading) return <div>Loading...</div>;
+      if (error) return <div>{error}</div>;
 
     const filteredInventory = inventoryData.filter(item =>
         item.itemName.toLowerCase().includes(searchQuery.toLowerCase())
