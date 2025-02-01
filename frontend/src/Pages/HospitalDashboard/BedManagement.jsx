@@ -35,19 +35,38 @@ const BedManagement = () => {
   if (loading) return <div className="loading">Loading appointments...</div>;
   if (error) return <div className="error">{error}</div>;
 
-  const handleAction = (id, action) => {
+  const handleAction = async (id, action) => {
+    const approval = action === 'accept' ? 'confirmed' : 'Declined';
+  
     setBeds(prevBeds =>
-      prevBeds.map(bed => {
-        if (bed.id === id) {
-          return {
-            ...bed,
-            status: action === 'accept' ? 'Accepted' : 'Declined'
-          };
-        }
-        return bed;
-      })
+      prevBeds.map(bed =>
+        bed.id === id
+          ? { ...bed, status: approval }
+          : bed
+      )
     );
+  
+    const unique = beds[0]._id;
+    console.log(unique,approval);
+  
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/list/updatebed", 
+        { unique, approval },
+        { headers: { "Content-Type": "application/json" } }
+      );
+      console.log(unique,approval);
+      if (response.status === 200) {
+        alert("Bed status updated successfully");
+      } else {
+        alert("Failed to update bed status");
+      }
+    } catch (error) {
+      console.error("Error updating bed status", error);
+      alert("Error updating bed status");
+    }
   };
+  
 
   return (
     <Card className="w-full rounded-none shadow-none bg-white">
