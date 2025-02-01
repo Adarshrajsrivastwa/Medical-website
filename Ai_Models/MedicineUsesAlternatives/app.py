@@ -1,62 +1,41 @@
-
-import streamlit as st
+import os
 import pandas as pd
-from datetime import datetime
+from flask import Flask, request, jsonify
+from flask_cors import CORS
 
-# Load Data
-@st.cache_data
-def load_data():
-    return pd.read_csv(r"C:\Users\HP\OneDrive\Desktop\uses_alternatives\model3\ANN-ML-MODEL\medicines_50.csv")
+app = Flask(__name__)
+CORS(app)  # Enable CORS for frontend requests
 
-df = load_data()
+# Load CSV file
+file_path = r"medicines_50.csv"
+df = pd.read_csv(file_path)
 
-# Title
-st.title("💊 Medicine Guidelines & Alternatives")
+@app.route("/")
+def home():
+    return {"message": "Welcome to the Medicine API!"}
 
-# Medicine Search
-medicine_name = st.text_input("Enter Medicine Name :", "").strip()
+@app.route("/search", methods=["GET"])
+def search_medicine():
+    """Search for medicines based on Medicine Name, Ingredients, Side Effects, or Usage"""
+    query = request.args.get("query", "").strip().lower()
 
-if medicine_name:
-    # Search Medicine
-    medicine_info = df[df["Medicine Name"].str.lower() == medicine_name.lower()]
+    if not query:
+        return jsonify({"error": "Please provide a search query."}), 400
 
+    # Check in all relevant fields
+    results = df[
+        (df["Medicine Name"].str.lower().str.contains(query, na=False)) |
+        (df["Active Ingredients"].str.lower().str.contains(query, na=False)) |
+        (df["Usage"].str.lower().str.contains(query, na=False)) |
+        (df["Side Effects"].str.lower().str.contains(query, na=False))
+    ]
 
-    if not medicine_info.empty:
-        # Show Medicine Details
-        
-        st.subheader("Medicine Information")
-        # medicine usage 
-        medicineusage = medicine_info.iloc[0]["Usage"]
-        st.subheader("🔄 Medicine Usege")
-        st.write(f"*Usage :* {medicine_info.iloc[0]['Usage']}")
-        
-        # expiry dates
-        expirydate=medicine_info.iloc[0]["Expiry Date"]
-        st.subheader("🔄 Expiry Date")
-        st.write(f"Side effects of Medicine : *{expirydate}*.")
-        
-        
-        
-        # Active ingredients
-        ActiveIngredients=medicine_info.iloc[0]["Active Ingredients"]
-        st.subheader("🔄 Active Ingredients")
-        st.write(f"Side effects of Medicine : *{ActiveIngredients}*.")
-        # Expiry Date Checkstrea
-        expiry_date = datetime.strptime(medicine_info.iloc[0]['Expiry Date'], "%Y-%m-%d")
-        today = datetime.today()
+    if results.empty:
+        return jsonify({"error": "No matching results found."}), 404
 
-        if expiry_date < today:
-            st.error("⚠ This medicine has EXPIRED. Do not use it!")
-        
-        #Side Effects
-        sideeffects=medicine_info.iloc[0]["Side Effects"]
-        st.subheader("🔄 Side Effects")
-        st.write(f"Side effects of Medicine : *{sideeffects}*.")
-        
-        # Alternative Medicine
-        alternative = medicine_info.iloc[0]["Alternatives"]
-        st.subheader("🔄 Alternative Medicine")
-        st.write(f"If unavailable, you can use *{alternative}*.")
+    # Convert results to list of dictionaries
+    response = results.to_dict(orient="records")
+    return jsonify(response)
 
-    else:
-        st.warning("Medicine not found. Please check the spelling.")
+if __name__ == "__main__":
+    app.run(debug=True)

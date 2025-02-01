@@ -28,13 +28,13 @@ const Chatbot = () => {
       // Ensure response is added to UI
       setMessages((prevMessages) => [
         ...prevMessages,
-        { sender: "Bot", text: data.response || "No response received" },
+        { sender: "Dr. Chat", text: data.response || "No response received" },
       ]);
     } catch (error) {
       console.error("Error fetching response:", error);
       setMessages((prevMessages) => [
         ...prevMessages,
-        { sender: "Bot", text: "Error connecting to server" },
+        { sender: "Dr. Chat", text: "Error connecting to server" },
       ]);
     }
 
