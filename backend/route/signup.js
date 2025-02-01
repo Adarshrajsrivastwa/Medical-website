@@ -168,7 +168,7 @@ app.post('/login', async (req, res) => {
     let otp = req.body.otp;
     let email = req.body.email;
 
-    console.log(email);
+    console.log(req.body);
 
     if (!otp || !email) {
       return res.status(400).json({ message: 'OTP and Email are required' });
@@ -183,6 +183,8 @@ app.post('/login', async (req, res) => {
     else if(req.body.role==='admin')
       user =await Admin.findOne({ email: email });
 
+    console.log(user);
+
 
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
@@ -194,7 +196,7 @@ app.post('/login', async (req, res) => {
         return res.status(401).json({ message: 'Invalid OTP' });
       }
     }
-    else if (user.otp === otp   && user.status === 'approved') {
+   if (user.otp === otp   && user.status === 'confirmed') {
       return res.status(200).send(user);
     } else {
       return res.status(401).json({ message: 'Invalid OTP' });
