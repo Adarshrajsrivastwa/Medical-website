@@ -73,7 +73,7 @@ const BookHospitalBed = ({ hospitals }) => {
   const handleBookBed = (hospital) => {
     setSelectedHospital(hospital);
     Cookies.set('Charges', hospital.charges);
-    Cookies.set('hospital', hospital.name);
+    Cookies.set('hospital', hospital.email);
     setIsModalOpen(true);
   };
 

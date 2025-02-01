@@ -52,8 +52,10 @@ const History = () => {
             headers: {
               "Content-Type": "application/json",
             },
+    
           }
         );
+        console.log(response);
         setBedBookings(response.data);
       } catch (err) {
         console.log(err);
@@ -114,17 +116,19 @@ const History = () => {
           <CardContent className="flex-grow p-4">
             <div className="flex justify-between items-center">
               <div>
-                {type === 'appointments' && (
-                  <>
-                    <p className="font-semibold text-[#563393]">{item.doctor}</p>
-                    <p className="text-sm text-gray-600">{item.date} | {item.timeSlot}</p>
-                    <p className="text-sm text-gray-500">{item.location}</p>
-                  </>
-                )}
+              {type === 'appointments' && (
+  <>
+    <p className="font-semibold text-[#563393]">{item.doctor}</p>
+    <p className="text-sm text-gray-600">{item.date} | {item.timeSlot}</p>
+    {/* <p className="text-sm text-gray-500">{item.city},{item.state
+      },{item.country}</p> */}
+  </>
+)}
+
                 {type === 'bedBookings' && (
                   <>
-                    <p className="font-semibold text-[#563393]">{item.hospitalName}</p>
-                    <p className="text-sm text-gray-500">{item.location}</p>
+                    <p className="font-semibold text-[#563393]">{item.hospitalname}</p>
+                    {/* <p className="text-sm text-gray-500">{item.location}</p> */}
                   </>
                 )}
                 {/* {type === 'medicines' && (

@@ -1,29 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Check, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import axios from 'axios';
+import Cookie from 'js-cookie';
 
 const BedManagement = () => {
-  const [beds, setBeds] = useState([
-    {
-      id: 1,
-      patientName: 'Sarah Johnson',
-      issue: 'Acute Appendicitis',
-      status: 'Pending'
-    },
-    {
-      id: 2,
-      patientName: 'John Doe',
-      issue: 'Fractured Leg',
-      status: 'Pending'
-    },
-    {
-      id: 3,
-      patientName: 'Mary Smith',
-      issue: 'Pneumonia',
-      status: 'Pending'
-    },
-  ]);
+  const [beds, setBeds] = useState([]);
+   const [loading, setLoading] = useState(true);
+     const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchbed = async () => {
+      try {
+        const email = Cookie.get('email');
+        const response = await axios.post(
+          "http://localhost:3000/list/bed",
+          { email },
+          { headers: { "Content-Type": "application/json" } }
+        );
+        console.log(response);
+        setBeds(response.data);
+        setLoading(false);
+      } catch (err) {
+        console.error(err);
+        setError("Something went wrong while fetching the appointments.");
+        setLoading(false);
+      }
+    };
+
+    fetchbed();
+  }, []);
+
+  if (loading) return <div className="loading">Loading appointments...</div>;
+  if (error) return <div className="error">{error}</div>;
 
   const handleAction = (id, action) => {
     setBeds(prevBeds =>
@@ -52,7 +62,7 @@ const BedManagement = () => {
           >
             <div className="flex-grow mb-2 sm:mb-0">
               <div className="text-sm font-medium text-[#563393]">
-                Patient: {bed.patientName}
+                Patient: {bed.patient}
               </div>
               <div className="text-sm text-[#563393]/70">
                 Issue: {bed.issue}

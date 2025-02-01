@@ -1,17 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect} from 'react';
 import { Building2, Mail, Phone, MapPin, Stethoscope, Bed, LinkIcon } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import axios from "axios";
+import Cookies from 'js-cookie';
 
 const Profile = () => {
-  const [hospital, setHospital] = useState({
-    name: "City Care Hospital",
-    email: "contact@citycarehosp.com",
-    phone: "+91 98765 43210",
-    website: "www.citycarehosp.com",
-    bedCharges: 2500,
-    specializations: ["Cardiology", "Orthopedics", "Neurology", "Pediatrics", "General Surgery"],
-    location: "123 Healthcare Avenue, Mumbai, Maharashtra - 400001"
-  });
+  const [hospital, setHospital] = useState([]);
+  const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        let email = Cookies.get('email');
+        const response = await axios.post(
+          "http://localhost:3000/profile/hospital",
+          { email },
+          { headers: { "Content-Type": "application/json", }, }
+        );
+        console.log(response);
+        setHospital(response.data[0]); 
+        setLoading(false);
+      } catch (err) {
+        console.log(err);
+        setError("Something went wrong!");
+        setLoading(false);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
+
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
 
   const [isEditing, setIsEditing] = useState(false);
   const [editedValues, setEditedValues] = useState({

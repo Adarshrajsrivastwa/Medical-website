@@ -1,10 +1,10 @@
-const nodemailer = require('nodemailer');
 let express = require('express');
 const bodyParser = require('body-parser');
 const User = require('../models/user');
 const Hospital = require('../models/hospital');
 const Doctor = require('../models/doctor');
 const appointment = require('../models/appointment');
+const bed=require('../models/bed');
 
 let app = express();
 
@@ -21,6 +21,28 @@ app.post('/appointment', async (req, res) => {
         res.status(500).send('Error retrieving appointments');
     }
 });
+
+app.post('/bed', async (req, res) => {
+    let email = req.body.email;
+    try {
+        let users = await bed.find({ 
+            Hospital: email 
+        });
+
+        // Filter out the users with a status of 'pending'
+        let pendingUsers = users.filter(user => user.status === 'pending');
+
+        if (pendingUsers.length > 0) {
+            res.json(pendingUsers);
+        } else {
+            res.status(404).send('No pending users found');
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Error retrieving appointments');
+    }
+});
+
 
 
 app.post('/update', async (req, res) => {

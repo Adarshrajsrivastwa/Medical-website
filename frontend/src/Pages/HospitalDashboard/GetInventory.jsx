@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Search } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import axios from "axios";
+import Cookies from 'js-cookie';
 
 const GetInventory = () => {
     const [searchQuery, setSearchQuery] = useState('');

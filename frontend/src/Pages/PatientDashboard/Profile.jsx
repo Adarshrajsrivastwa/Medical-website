@@ -5,7 +5,7 @@ import axios from "axios";
 import Cookies from 'js-cookie';
 
 const Profile = () => {
-  const [user, setUser] = useState(null); // Initialize user as null
+  const [user, setUser] = useState(null); 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -15,7 +15,6 @@ const Profile = () => {
     height: ''
   });
 
-  // Fetch user data on component mount
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -38,7 +37,6 @@ const Profile = () => {
     fetchUser();
   }, []);
 
-  // Update editedValues state when user data changes
   useEffect(() => {
     if (user) {
       setEditedValues({

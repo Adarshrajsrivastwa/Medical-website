@@ -24,7 +24,7 @@ app.post('/user',async(req,res)=>{
 app.post('/bed',async(req,res)=>{
     let email=req.body.email;
     let user=await bed.find({email:email})
-    console.log(user);
+    console.log(user)
     if(user){
         res.status(200).send(user);
     }
