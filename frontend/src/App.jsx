@@ -26,7 +26,7 @@ import DoctorManagement from "./Pages/AdminDashboard/DoctorManagement";
 import HospitalManagement from "./Pages/AdminDashboard/HospitalManagement";
 
 function App() {
-  const [userRole, setUserRole] = useState("admin");
+  const [userRole, setUserRole] = useState("hospital");
 
   return (
     <Router>

@@ -7,36 +7,36 @@ import Cookies from 'js-cookie';
 
 const GetInventory = () => {
     const [searchQuery, setSearchQuery] = useState('');
-    const [inventoryData, setinventoryData] = useState(null); 
-      const [loading, setLoading] = useState(true);
-      const [error, setError] = useState(null);
+    const [inventoryData, setinventoryData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-      useEffect(() => {
+    useEffect(() => {
         const fetchUser = async () => {
-          try {
-            const response = await axios.post(
-              "http://localhost:3000/medicine/available",
-              {},
-              { headers: { "Content-Type": "application/json", }, }
-            );
-            console.log(response.data);
-            setinventoryData(response.data); // Assuming response.data is the user object
-            setLoading(false);
-          } catch (err) {
-            console.log(err);
-            setError("Something went wrong!");
-            setLoading(false);
-          }
+            try {
+                const response = await axios.post(
+                    "http://localhost:3000/medicine/available",
+                    {},
+                    { headers: { "Content-Type": "application/json", }, }
+                );
+                console.log(response.data);
+                setinventoryData(response.data); // Assuming response.data is the user object
+                setLoading(false);
+            } catch (err) {
+                console.log(err);
+                setError("Something went wrong!");
+                setLoading(false);
+            }
         };
-    
-        fetchUser();
-      }, []);
 
-      if (loading) return <div>Loading...</div>;
-      if (error) return <div>{error}</div>;
+        fetchUser();
+    }, []);
+
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>{error}</div>;
 
     const filteredInventory = inventoryData.filter(item =>
-        item.itemName.toLowerCase().includes(searchQuery.toLowerCase())
+        item.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
     return (
@@ -60,12 +60,12 @@ const GetInventory = () => {
                 {/* Results Section */}
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                     {filteredInventory.map(item => (
-                        <Card key={item.id} className="shadow-lg bg-white border border-[#563393] border-opacity-10">
+                        <Card key={item._id} className="shadow-lg bg-white border border-[#563393] border-opacity-10">
                             <CardContent className="p-6">
                                 {/* Hospital Information */}
                                 <div className="mb-4">
                                     <h2 className="text-xl font-bold text-[#563393] mb-2">
-                                        {item.hospitalName}
+                                        {item.Hospital}
                                     </h2>
                                     <div className="space-y-2 text-sm">
                                         <p className="text-[#563393] text-opacity-70">{item.address}</p>
@@ -75,7 +75,7 @@ const GetInventory = () => {
                                         </p>
                                         <p>
                                             <span className="text-[#563393] text-opacity-60">Email: </span>
-                                            <span className="text-[#563393] text-opacity-80">{item.email}</span>
+                                            <span className="text-[#563393] text-opacity-80">{item.Hospital}</span>
                                         </p>
                                     </div>
                                 </div>
