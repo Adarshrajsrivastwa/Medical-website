@@ -24,6 +24,7 @@ import GetInventory from "./Pages/HospitalDashboard/GetInventory";
 import BedManagement from "./Pages/HospitalDashboard/BedManagement";
 import DoctorManagement from "./Pages/AdminDashboard/DoctorManagement";
 import HospitalManagement from "./Pages/AdminDashboard/HospitalManagement";
+import Chatbot from "./Components/Chatbot";
 
 function App() {
   const [userRole, setUserRole] = useState("hospital");
@@ -43,6 +44,7 @@ function App() {
               <Routes>
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/chatbot" element={<Chatbot/>} />
                 {/* Details Form */}
                 <Route path="/doctor-detail-form" element={<DoctorDetails />} />
                 <Route path="/patient-detail-form" element={<PatientDetails />} />
