@@ -63,7 +63,7 @@ function Login() {
         Cookies.set('country', res.data.country);
 
         Cookies.set('isLoggedIn', true);
-        Cookies.set('name', res.data.name);  
+        Cookies.set('name', res.data.name);
         Cookies.set('role', formData.role);
 
         alert("OTP verified successfully");
@@ -79,8 +79,8 @@ function Login() {
         else if (formData.role == 'doctor') {
           navigate("/doctor-profile");
         }
-        else if(formData.role == 'admin') {
-          alert("Please select a role!");
+        else if (formData.role == 'admin') {
+          navigate("/doctor-management");
         }
         else {
           navigate("/hospital-profile");

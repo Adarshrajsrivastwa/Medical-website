@@ -25,6 +25,8 @@ import BedManagement from "./Pages/HospitalDashboard/BedManagement";
 import DoctorManagement from "./Pages/AdminDashboard/DoctorManagement";
 import HospitalManagement from "./Pages/AdminDashboard/HospitalManagement";
 import MedicineOverview from "./Components/MedicineOverview";
+import Chatbot from "./Components/Chatbot";
+import Cookies from "js-cookie";
 
 function App() {
   const [userRole, setUserRole] = useState("");
@@ -34,7 +36,7 @@ function App() {
     const role = Cookies.get("role");
     setUserRole(role);
   }, []);
-  
+
   return (
     <Router>
       <div className="h-screen flex flex-col">
@@ -52,7 +54,7 @@ function App() {
             <div className="">
               <Routes>
                 <Route path="/signup" element={<SignUp />} />
-                 <Route path="/" element={<Home />} />
+                {userRole == null && (<Route path="/" element={<Home />} />)}
                 <Route path="/login" element={<Login />} />
                 <Route path="/medicine-overview" element={<MedicineOverview />} />
                 <Route path="/chat-support" element={<Chatbot />} />
