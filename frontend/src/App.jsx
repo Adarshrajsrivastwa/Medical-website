@@ -55,7 +55,7 @@ function App() {
                 {/* Doctor Dashboard */}
                 <Route path="/doctor-profile" element={<DoctorProfile />} />
                 <Route path="/appointment-management" element={<AppointmentManagement />} />
-                <Route path="/chat-with-patient" element={<ChatWithPatient />} />
+                {/* <Route path="/chat-with-patient" element={<ChatWithPatient />} /> */}
                 {/* Hospital Dashboard */}
                 <Route path="/hospital-profile" element={<HospitalProfile />} />
                 <Route path="/inventory-management" element={<InventoryManagement />} />
