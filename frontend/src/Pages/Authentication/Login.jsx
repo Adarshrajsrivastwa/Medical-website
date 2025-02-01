@@ -55,14 +55,24 @@ function Login() {
           },
         }
       );
-      console.log(res);
       if (res.status !== 200) {
         alert("OTP wrong");
       } else {
         Cookies.set('city', res.data.city);
         Cookies.set('state', res.data.state);
         Cookies.set('country', res.data.country);
+
+        Cookies.set('isLoggedIn', true);
+        Cookies.set('name', res.data.name);  
+        Cookies.set('role', formData.role);
+
         alert("OTP verified successfully");
+
+        // Cookies.set('isLoggedIn', true);
+        // Cookies.set('name', res.data.name);
+
+
+
         if (formData.role == 'patient') {
           navigate("/patient-profile");
         }

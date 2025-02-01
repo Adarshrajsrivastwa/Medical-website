@@ -10,7 +10,7 @@ import Cookies from 'js-cookie';
 import axios from 'axios';
 import { DatePicker } from "@/Components/DatePicker";
 import { useNavigate } from 'react-router-dom';
-// Assume this is the new DatePicker component
+
 
 function PatientDetails() {
   const [phone, setPhone] = useState("");
@@ -93,12 +93,13 @@ function PatientDetails() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const emailFromCookie = Cookies.get('email');
-    const roleFromCookie = Cookies.get('role');  // Ensure 'role' is fetched correctly
+    const roleFromCookie = Cookies.get('role');  
+    Cookies.set('isLoggedIn', true);
 
     const submissionData = {
       ...formData,
       email: emailFromCookie,
-      role: roleFromCookie,  // Ensure role is passed
+      role: roleFromCookie, 
       phone: phone,
       date: date,
     };
