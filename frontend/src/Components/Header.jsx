@@ -1,8 +1,24 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { User, Bell, LogIn, UserPlus } from 'lucide-react'
 import Chatbot from './Chatbot'
+import Cookies from "js-cookie";
 
-function Header({ isLoggedIn, user }) {
+function Header() {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [user, setUser] = useState(null);
+
+    // Use useEffect to set state when component mounts
+    useEffect(() => {
+        const loggedIn = Cookies.get('isLoggedIn');
+         setUser (Cookies.get('name'));
+
+        console.log(Cookies.get('name'));
+        
+        if (loggedIn) {
+            setIsLoggedIn(true);
+        }
+    }, []);  // Empty dependency array means this only runs on mount
+
     return (
         <div className='flex justify-between items-center bg-white text-[#563393] p-4 shadow-md'>
             {/* Left - Logo Section */}
@@ -22,26 +38,26 @@ function Header({ isLoggedIn, user }) {
                         {/* Hide notification and profile on mobile */}
                         <div className='hidden md:flex items-center space-x-3'>
                             {/* Notification Icon */}
-                            <div className='cursor-pointer hover:bg-purple-100 p-2 rounded-full relative'>
+                            {/* <div className='cursor-pointer hover:bg-purple-100 p-2 rounded-full relative'>
                                 <Bell className='w-6 h-6' />
                                 <span className='absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center'>
                                     3
                                 </span>
-                            </div>
+                            </div> */}
 
                             {/* Profile */}
-                            {user.profilePhoto ? (
+                            {user && user.profilePhoto ? (
                                 <img
                                     src={user.profilePhoto}
                                     alt="Profile"
                                     className='w-10 h-10 rounded-full object-cover'
-                                />
+                                    />
                             ) : (
                                 <div className='bg-purple-200 text-[#563393] rounded-full w-10 h-10 flex items-center justify-center'>
                                     <User className='w-6 h-6' />
                                 </div>
                             )}
-                            <span className='font-medium'>{user.name}</span>
+                            <span className='font-medium'>{user}</span>
                         </div>
                     </div>
                 ) : (
@@ -61,7 +77,7 @@ function Header({ isLoggedIn, user }) {
                 <Chatbot />
             </div>
         </div>
-    )
+    );
 }
 
-export default Header
+export default Header;

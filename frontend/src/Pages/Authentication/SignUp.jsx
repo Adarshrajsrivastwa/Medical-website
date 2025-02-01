@@ -57,8 +57,8 @@ function SignUp() {
       alert("Please enter your email!");
       return;
     }
-    Cookies.set('email', formData.email, { expires: 1 / 24 });
-    Cookies.set('role', formData.role, { expires: 1 / 24 });
+    Cookies.set('email', formData.email);
+    Cookies.set('role', formData.role);
     setLoading(true);
     try {
       const res = await axios.post("http://localhost:3000/sign/signup", formData, {

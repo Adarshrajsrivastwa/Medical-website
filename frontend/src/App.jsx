@@ -24,10 +24,17 @@ import GetInventory from "./Pages/HospitalDashboard/GetInventory";
 import BedManagement from "./Pages/HospitalDashboard/BedManagement";
 import DoctorManagement from "./Pages/AdminDashboard/DoctorManagement";
 import HospitalManagement from "./Pages/AdminDashboard/HospitalManagement";
+import Cookies from "js-cookie";
 
 function App() {
   const [userRole, setUserRole] = useState("");
 
+  useEffect(() => {
+    // Setting userRole once when component mounts
+    const role = Cookies.get("role");
+    setUserRole(role);
+  }, []);
+  
   return (
     <Router>
       <div className="h-screen flex flex-col">
