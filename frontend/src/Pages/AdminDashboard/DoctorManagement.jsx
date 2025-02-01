@@ -1,9 +1,122 @@
-import React from 'react'
+import React, { useState } from 'react';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Check, X, FileText, Loader2 } from 'lucide-react';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 function DoctorManagement() {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const doctors = [
+    {
+      id: 1,
+      name: "Dr. Sarah Johnson",
+      specialization: "Cardiologist",
+      pending: true,
+      documents: "/path/to/certificate.pdf"
+    },
+    {
+      id: 2,
+      name: "Dr. Michael Chen",
+      specialization: "Pediatrician",
+      pending: true,
+      documents: "/path/to/certificate.pdf"
+    },
+    {
+      id: 3,
+      name: "Dr. Emily Williams",
+      specialization: "Neurologist",
+      pending: true,
+      documents: "/path/to/certificate.pdf"
+    }
+  ];
+
+  const handleDocumentLoad = () => {
+    setIsLoading(false);
+  };
+
+  const handleDocumentError = () => {
+    setIsLoading(false);
+    // Handle error - you might want to show an error message
+  };
+
+  const handleApprove = (doctorId) => {
+    console.log(`Approved doctor with ID: ${doctorId}`);
+  };
+
+  const handleReject = (doctorId) => {
+    console.log(`Rejected doctor with ID: ${doctorId}`);
+  };
+
   return (
-    <div>DoctorManagement</div>
-  )
+    <div className="p-6 bg-white">
+      <h1 className="text-2xl font-bold mb-6 text-[#563393]">Doctor Approval Management</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {doctors.map((doctor) => (
+          <Card key={doctor.id} className="w-full border border-[#563393]/20 shadow-sm">
+            <CardHeader className="border-b border-[#563393]/10">
+              <CardTitle className="text-lg text-[#563393]">{doctor.name}</CardTitle>
+            </CardHeader>
+            <CardContent className="pt-4">
+              <p className="text-[#563393]/70 mb-4">{doctor.specialization}</p>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className="w-full border-[#563393] text-[#563393] hover:bg-[#563393]/10"
+                  >
+                    <FileText className="w-4 h-4 mr-2" />
+                    View Documents
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-4xl h-[80vh]">
+                  <DialogHeader>
+                    <DialogTitle className="text-[#563393]">Medical Documents - {doctor.name}</DialogTitle>
+                  </DialogHeader>
+                  <div className="mt-4 h-full">
+                    {isLoading ? (
+                      <div className="flex items-center justify-center h-full">
+                        <Loader2 className="w-8 h-8 animate-spin text-[#563393]" />
+                      </div>
+                    ) : (
+                      <iframe
+                        src={doctor.documents.certificate}
+                        className="w-full h-full rounded-lg"
+                        onLoad={handleDocumentLoad}
+                        onError={handleDocumentError}
+                      />
+                    )}
+                  </div>
+                </DialogContent>
+              </Dialog>
+            </CardContent>
+            <CardFooter className="flex justify-between gap-2">
+              <Button
+                className="flex-1 bg-[#563393] hover:bg-[#563393]/90 text-white"
+                onClick={() => handleApprove(doctor.id)}
+              >
+                <Check className="w-4 h-4 mr-2" />
+                Approve
+              </Button>
+              <Button
+                className="flex-1 bg-red-600 hover:bg-red-700 text-white"
+                onClick={() => handleReject(doctor.id)}
+              >
+                <X className="w-4 h-4 mr-2" />
+                Reject
+              </Button>
+            </CardFooter>
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
 }
 
-export default DoctorManagement
+export default DoctorManagement;

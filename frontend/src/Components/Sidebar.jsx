@@ -27,7 +27,12 @@ const Sidebar = ({ userRole, onLogout }) => {
             { path: "/inventory-management", label: "Inventory Management", icon: "📦" },
             { path: "/get-inventory", label: "Get Inventory", icon: "📋" },
         ],
+        admin: [
+            { path: "/hospital-management", label: "Hospital Management", icon: "🏥" },
+            { path: "/doctor-management", label: "Doctor Management", icon: "🩺" },
+        ]
     };
+
 
     const toggleSidebar = () => {
         setIsOpen(!isOpen);

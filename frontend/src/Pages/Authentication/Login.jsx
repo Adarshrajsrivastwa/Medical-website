@@ -25,7 +25,7 @@ function Login() {
   const [formData, setFormData] = useState({
     email: "",
     otp: "",
-    role:"",
+    role: "",
   });
 
   const [showModal, setShowModal] = useState(false);
@@ -59,14 +59,14 @@ function Login() {
       if (res.status !== 200) {
         alert("OTP wrong");
       } else {
-        Cookies.set('city', res.data.city, { expires: 1/24 });
-        Cookies.set('state', res.data.state, { expires:1/24});
-        Cookies.set('country', res.data.country, { expires:1/24});
+        Cookies.set('city', res.data.city, { expires: 1 / 24 });
+        Cookies.set('state', res.data.state, { expires: 1 / 24 });
+        Cookies.set('country', res.data.country, { expires: 1 / 24 });
         alert("OTP verified successfully");
-        if(formData.role == 'patient') {
+        if (formData.role == 'patient') {
           navigate("/patient-profile");
         }
-        else if(formData.role == 'doctor') {
+        else if (formData.role == 'doctor') {
           navigate("/doctor-profile");
         }
         else {
@@ -78,8 +78,8 @@ function Login() {
       alert(error.message);
     }
   };
-  
-  
+
+
 
   const handleOtpChange = (otpValue) => {
     setFormData((prevData) => ({
@@ -94,10 +94,10 @@ function Login() {
       alert("Please enter your email!");
       return;
     }
-    Cookies.set('email', formData.email, { expires: 1/24 });  
+    Cookies.set('email', formData.email, { expires: 1 / 24 });
     try {
-      setShowModal(true); 
-      const res = await axios.post("http://localhost:3000/sign/signin",formData);
+      setShowModal(true);
+      const res = await axios.post("http://localhost:3000/sign/signin", formData);
 
       if (res.status === 200) {
         alert("OTP sent successfully!");
@@ -105,7 +105,7 @@ function Login() {
     } catch (error) {
       const errorMessage = error.response ? error.response.data.message : error.message;
       alert(errorMessage || "Failed to send OTP");
-    } 
+    }
   };
 
   return (
@@ -133,25 +133,26 @@ function Login() {
         </div>
 
         <div className="flex flex-col gap-1">
-                  <Label htmlFor="role" className="text-base font-normal">
-                    Select Your Role
-                  </Label>
-                  <Select
-                    required
-                    onValueChange={(value) =>
-                      setFormData((prevData) => ({ ...prevData, role: value }))
-                    }
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select Your Role" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="doctor">Doctor</SelectItem>
-                      <SelectItem value="patient">Patient</SelectItem>
-                      <SelectItem value="hospital">Hospital</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+          <Label htmlFor="role" className="text-base font-normal">
+            Select Your Role
+          </Label>
+          <Select
+            required
+            onValueChange={(value) =>
+              setFormData((prevData) => ({ ...prevData, role: value }))
+            }
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Select Your Role" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="doctor">Doctor</SelectItem>
+              <SelectItem value="patient">Patient</SelectItem>
+              <SelectItem value="hospital">Hospital</SelectItem>
+              <SelectItem value="admin">Admin</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
 
         <Button
           type="button"

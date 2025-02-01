@@ -22,9 +22,11 @@ import HospitalProfile from "./Pages/HospitalDashboard/Profile";
 import InventoryManagement from "./Pages/HospitalDashboard/InventoryManagement";
 import GetInventory from "./Pages/HospitalDashboard/GetInventory";
 import BedManagement from "./Pages/HospitalDashboard/BedManagement";
+import DoctorManagement from "./Pages/AdminDashboard/DoctorManagement";
+import HospitalManagement from "./Pages/AdminDashboard/HospitalManagement";
 
 function App() {
-  const [userRole, setUserRole] = useState("hospital");
+  const [userRole, setUserRole] = useState("admin");
 
   return (
     <Router>
@@ -61,6 +63,9 @@ function App() {
                 <Route path="/inventory-management" element={<InventoryManagement />} />
                 <Route path="/bed-management" element={<BedManagement />} />
                 <Route path="/get-inventory" element={<GetInventory />} />
+                {/* Admin Dashboard */}
+                <Route path="/doctor-management" element={<DoctorManagement />} />
+                <Route path="/hospital-management" element={<HospitalManagement />} />
               </Routes>
             </div>
           </main>
