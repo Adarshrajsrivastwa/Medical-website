@@ -1,9 +1,131 @@
-import React from 'react'
+import React, { useState } from 'react';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Check, X, FileText, Loader2 } from 'lucide-react';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 function HospitalManagement() {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const hospitals = [
+    {
+      id: 1,
+      name: "City General Hospital",
+      specializations: "Emergency Care, Cardiology, Neurology",
+      documents: {
+        license: "/path/to/license.pdf",
+        accreditation: "/path/to/accreditation.pdf",
+        certification: "/path/to/certification.pdf"
+      }
+    },
+    {
+      id: 2,
+      name: "Medicare Community Hospital",
+      specializations: "Pediatrics, Orthopedics, Oncology",
+      documents: {
+        license: "/path/to/license.pdf",
+        accreditation: "/path/to/accreditation.pdf",
+        certification: "/path/to/certification.pdf"
+      }
+    },
+    {
+      id: 3,
+      name: "Wellness Memorial Center",
+      specializations: "Surgery, Psychiatry, Dermatology",
+      documents: {
+        license: "/path/to/license.pdf",
+        accreditation: "/path/to/accreditation.pdf",
+        certification: "/path/to/certification.pdf"
+      }
+    }
+  ];
+
+  const handleDocumentLoad = () => {
+    setIsLoading(false);
+  };
+
+  const handleDocumentError = () => {
+    setIsLoading(false);
+    // Handle error - you might want to show an error message
+  };
+
+  const handleApprove = (hospitalId) => {
+    console.log(`Approved hospital with ID: ${hospitalId}`);
+  };
+
+  const handleReject = (hospitalId) => {
+    console.log(`Rejected hospital with ID: ${hospitalId}`);
+  };
+
   return (
-    <div>HospitalManagement</div>
-  )
+    <div className="p-6 bg-white">
+      <h1 className="text-2xl font-bold mb-6 text-[#563393]">Hospital Approval Management</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {hospitals.map((hospital) => (
+          <Card key={hospital.id} className="w-full border border-[#563393]/20 shadow-sm">
+            <CardHeader className="border-b border-[#563393]/10">
+              <CardTitle className="text-lg text-[#563393]">{hospital.name}</CardTitle>
+            </CardHeader>
+            <CardContent className="pt-4">
+              <p className="text-[#563393]/70 mb-4">{hospital.specializations}</p>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className="w-full border-[#563393] text-[#563393] hover:bg-[#563393]/10"
+                  >
+                    <FileText className="w-4 h-4 mr-2" />
+                    View Documents
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-4xl h-[80vh]">
+                  <DialogHeader>
+                    <DialogTitle className="text-[#563393]">Hospital Documents - {hospital.name}</DialogTitle>
+                  </DialogHeader>
+                  <div className="mt-4 h-full">
+                    {isLoading ? (
+                      <div className="flex items-center justify-center h-full">
+                        <Loader2 className="w-8 h-8 animate-spin text-[#563393]" />
+                      </div>
+                    ) : (
+                      <iframe
+                        src={hospital.documents.license}
+                        className="w-full h-full rounded-lg"
+                        onLoad={handleDocumentLoad}
+                        onError={handleDocumentError}
+                      />
+                    )}
+                  </div>
+                </DialogContent>
+              </Dialog>
+            </CardContent>
+            <CardFooter className="flex justify-between gap-2">
+              <Button
+                className="flex-1 bg-[#563393] hover:bg-[#563393]/90 text-white"
+                onClick={() => handleApprove(hospital.id)}
+              >
+                <Check className="w-4 h-4 mr-2" />
+                Approve
+              </Button>
+              <Button
+                className="flex-1 bg-red-600 hover:bg-red-700 text-white"
+                onClick={() => handleReject(hospital.id)}
+              >
+                <X className="w-4 h-4 mr-2" />
+                Reject
+              </Button>
+            </CardFooter>
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
 }
 
-export default HospitalManagement
+export default HospitalManagement;
