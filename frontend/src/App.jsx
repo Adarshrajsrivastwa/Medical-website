@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SignUp from "./Pages/Authentication/SignUp";
 import Login from "./Pages/Authentication/Login";
@@ -24,7 +24,6 @@ import GetInventory from "./Pages/HospitalDashboard/GetInventory";
 import BedManagement from "./Pages/HospitalDashboard/BedManagement";
 import DoctorManagement from "./Pages/AdminDashboard/DoctorManagement";
 import HospitalManagement from "./Pages/AdminDashboard/HospitalManagement";
-import Cookies from "js-cookie";
 
 function App() {
   const [userRole, setUserRole] = useState("");
@@ -39,14 +38,14 @@ function App() {
     <Router>
       <div className="h-screen flex flex-col">
         <Header className="h-16 shrink-0 top-0 fixed" />
-        
+
         <div className="flex flex-1 overflow-hidden">
-        {userRole && userRole !== '' && (
-  <Sidebar
-    userRole={userRole}
-    className="w-64 overflow-y-auto border-r"
-  />
-)}
+          {userRole && userRole !== '' && (
+            <Sidebar
+              userRole={userRole}
+              className="w-64 overflow-y-auto border-r"
+            />
+          )}
 
           <main className="flex-1 overflow-y-auto relative">
             <div className="">
@@ -54,6 +53,7 @@ function App() {
                 <Route path="/signup" element={<SignUp />} />
                 {userRole === '' && <Route path="/" element={<Home />} />}
                 <Route path="/login" element={<Login />} />
+                <Route path="/medicine-overview" element={<MedicineOverview />} />
                 {/* Details Form */}
                 <Route path="/doctor-detail-form" element={<DoctorDetails />} />
                 <Route path="/patient-detail-form" element={<PatientDetails />} />
