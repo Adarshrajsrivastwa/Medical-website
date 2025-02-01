@@ -26,7 +26,7 @@ const Profile = () => {
           { headers: { "Content-Type": "application/json", }, }
         );
         console.log(response);
-        setUser(response.data[0]); 
+        setUser(response.data[0]); // Assuming response.data is the user object
         setLoading(false);
       } catch (err) {
         console.log(err);

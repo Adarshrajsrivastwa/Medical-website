@@ -33,6 +33,7 @@ const BookAppointment = ({
         price: "",
         currency: "INR",
         doctor: "",
+        email:"",
 
     });
 
@@ -50,6 +51,7 @@ const BookAppointment = ({
             timeSlot: value,
             price: Cookies.get("price"),
             doctor: Cookies.get("doctor"),
+            email: Cookies.get("email"),
         }));
     };
 

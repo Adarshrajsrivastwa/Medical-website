@@ -24,7 +24,8 @@ const BookBedModal = ({
         reason: "",
         hospital: "",
         price: "",
-        currency: "INR"
+        currency: "INR",
+        email: "",
 
     });
 
@@ -57,6 +58,7 @@ const BookBedModal = ({
  
            formData.price=Cookies.get('Charges');
            formData.hospital=Cookies.get('hospital');
+           formData.email=Cookies.get('email');
         onClose();
 
         console.log(formData);

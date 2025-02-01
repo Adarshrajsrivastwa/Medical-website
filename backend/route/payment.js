@@ -77,6 +77,7 @@ const razorpay = new Razorpay({
           doctor: req.body.formData.doctor,
           date: targetDate, 
           timeSlot: req.body.formData.timeSlot,
+          email: req.body.formData.email,
         });
   
         await appointment.save();
@@ -118,6 +119,7 @@ const razorpay = new Razorpay({
           Hospital: req.body.formData.hospital,
           patient: req.body.formData.patientName,
           issue: req.body.formData.reason,
+          email: req.body.formData.email,
         });
   
         // Save the appointment to the database

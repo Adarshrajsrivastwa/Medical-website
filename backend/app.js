@@ -17,6 +17,7 @@ const chat = require('./route/chat.js');
 const list=require('./route/appointment.js');
 const profile = require('./route/profile.js');
 const inventry = require('./route/inventry.js');
+const history = require('./route/history.js');
 const io = require('socket.io')(server, {
     cors: {
         origin: 'http://localhost:5173',  
@@ -56,6 +57,7 @@ app.use('/history', chat);
 app.use('/list', list);
 app.use('/profile', profile);
 app.use('/add',inventry);
+app.use('/history', history);
 
 
 app.get('/', (req, res) => {

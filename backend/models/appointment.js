@@ -7,6 +7,10 @@ const formSchema = {
         type: 'string',
         required: true,
     },
+    email:{
+        type: 'string',
+        required: true,
+    },
     issue: {
         type: 'string',
         required: true,

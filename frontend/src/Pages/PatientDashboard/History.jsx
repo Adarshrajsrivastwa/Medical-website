@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Calendar,
   Stethoscope,
@@ -10,58 +10,97 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
+import axios from 'axios';
+import Cookies from 'js-cookie';
 
-const mockData = {
-  appointments: [
-    {
-      id: 1,
-      doctor: 'Dr. Smith',
-      date: '2024-01-15',
-      timeSlot: 'Morning',
-      location: 'Cardiology Clinic',
-      status: 'Approved'
-    },
-    {
-      id: 2,
-      doctor: 'Dr. Johnson',
-      date: '2024-02-05',
-      timeSlot: 'Evening',
-      location: 'Orthopedic Center',
-      status: 'Pending'
-    },
-  ],
-  bedBookings: [
-    {
-      id: 1,
-      hospitalName: 'Central City Hospital',
-      location: 'Cardiology Ward',
-      status: 'Approved'
-    },
-    {
-      id: 2,
-      hospitalName: 'Metropolitan Medical Center',
-      location: 'Orthopedics Ward',
-      status: 'Pending'
-    },
-  ],
-  medicines: [
-    { id: 1, name: 'Aspirin', quantity: 30, orderDate: '2024-01-10', status: 'Delivered' },
-    { id: 2, name: 'Antibiotics', quantity: 15, orderDate: '2024-02-01', status: 'Processing' },
-  ]
-};
 
-const getStatusIcon = (status) => {
-  switch (status) {
-    case 'Approved': return <CheckCircle className="text-green-500" />;
-    case 'Pending': return <Clock className="text-yellow-500" />;
-    case 'Delivered': return <CheckCircle className="text-green-500" />;
-    case 'Processing': return <Clock className="text-yellow-500" />;
-    default: return null;
-  }
-};
-
-function History() {
+const History = () => {
+  const [appointments, setAppointments] = useState(null);
+  const [bedBookings, setBedBookings] = useState(null);
+  const [medicines, setMedicines] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState('appointments');
+
+  useEffect(() => {
+    const fetchAppointments = async () => {
+      const email = Cookies.get('email');
+      try {
+        const response = await axios.post(
+          "http://localhost:3000/history/user",
+          { email },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        setAppointments(response.data);
+      } catch (err) {
+        console.log(err);
+        setError("Something went wrong while fetching appointments!");
+      }
+    };
+
+    const fetchBedBookings = async () => {
+      const email = Cookies.get('email');
+      try {
+        const response = await axios.post(
+          "http://localhost:3000/history/bed",
+          { email },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        setBedBookings(response.data);
+      } catch (err) {
+        console.log(err);
+        setError("Something went wrong while fetching bed bookings!");
+      }
+    };
+
+    // const fetchMedicines = async () => {
+    //   const email = Cookies.get('email');
+    //   try {
+    //     const response = await axios.post(
+    //       "http://localhost:3000/history/medicines",
+    //       { email },
+    //       {
+    //         headers: {
+    //           "Content-Type": "application/json",
+    //         },
+    //       }
+    //     );
+    //     setMedicines(response.data);
+    //   } catch (err) {
+    //     console.log(err);
+    //     setError("Something went wrong while fetching medicines!");
+    //   }
+    // };
+
+    fetchAppointments();
+    fetchBedBookings();
+    console.log(bedBookings)
+    // fetchMedicines();
+    setLoading(false);
+  }, []);
+
+  const getStatusIcon = (status) => {
+    switch (status) {
+      case 'Approved':
+        return <CheckCircle className="text-green-500" />;
+      case 'Pending':
+        return <Clock className="text-yellow-500" />;
+      case 'Delivered':
+        return <CheckCircle className="text-green-500" />;
+      case 'Processing':
+        return <Clock className="text-yellow-500" />;
+      default:
+        return null;
+    }
+  };
 
   const renderHistoryCards = (data, type) => (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -88,14 +127,14 @@ function History() {
                     <p className="text-sm text-gray-500">{item.location}</p>
                   </>
                 )}
-                {type === 'medicines' && (
+                {/* {type === 'medicines' && (
                   <>
                     <p className="font-semibold text-[#563393]">{item.name}</p>
                     <p className="text-sm text-gray-600">
                       Quantity: {item.quantity} | Order Date: {item.orderDate}
                     </p>
                   </>
-                )}
+                )} */}
               </div>
               <div className="flex items-center">
                 {getStatusIcon(item.status)}
@@ -108,6 +147,14 @@ function History() {
     </div>
   );
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
+
   return (
     <div className="w-full rounded-none">
       <CardHeader className="">
@@ -117,7 +164,7 @@ function History() {
       </CardHeader>
       <CardContent>
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid grid-cols-3 bg-[#563393]/10 mb-4 w-full md:h-11">
+          <TabsList className="grid grid-cols-2 bg-[#563393]/10 mb-4 w-full md:h-11">
             <TabsTrigger
               value="appointments"
               className="text-[#563393] text-sm sm:text-base font-semibold data-[state=active]:bg-[#563393] data-[state=active]:text-white flex items-center justify-center rounded-sm"
@@ -132,25 +179,25 @@ function History() {
               <Bed className="mr-1 sm:mr-2 w-4 h-4 sm:w-5 sm:h-5" />
               <span className="truncate">Bed Bookings</span>
             </TabsTrigger>
-            <TabsTrigger
+            {/* <TabsTrigger
               value="medicines"
               className="text-[#563393] text-sm sm:text-base font-semibold data-[state=active]:bg-[#563393] data-[state=active]:text-white flex items-center justify-center rounded-sm"
             >
               <Pill className="mr-1 sm:mr-2 w-4 h-4 sm:w-5 sm:h-5" />
               <span className="truncate">Medicine Orders</span>
-            </TabsTrigger>
+            </TabsTrigger> */}
           </TabsList>
 
           <TabsContent value="appointments">
-            {renderHistoryCards(mockData.appointments, 'appointments')}
+            {appointments && renderHistoryCards(appointments, 'appointments')}
           </TabsContent>
 
           <TabsContent value="bedBookings">
-            {renderHistoryCards(mockData.bedBookings, 'bedBookings')}
+            {bedBookings && renderHistoryCards(bedBookings, 'bedBookings')}
           </TabsContent>
 
           <TabsContent value="medicines">
-            {renderHistoryCards(mockData.medicines, 'medicines')}
+            {medicines && renderHistoryCards(medicines, 'medicines')}
           </TabsContent>
         </Tabs>
       </CardContent>

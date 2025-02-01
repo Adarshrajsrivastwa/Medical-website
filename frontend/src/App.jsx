@@ -49,8 +49,8 @@ function App() {
                 <Route path="/patient-profile" element={<PatientProfile />} />
                 <Route path="/doctor-appointment" element={<DoctorAppointment />} />
                 <Route path="/bed-booking" element={<BedBooking />} />
-                <Route path="/order-medicine" element={<OrderMedicine />} />
-                <Route path="/chat-with-doctor" element={<ChatWithDoctor />} />
+                {/* <Route path="/order-medicine" element={<OrderMedicine />} /> */}
+                {/* <Route path="/chat-with-doctor" element={<ChatWithDoctor />} /> */}
                 <Route path="/history" element={<History />} />
                 {/* Doctor Dashboard */}
                 <Route path="/doctor-profile" element={<DoctorProfile />} />
