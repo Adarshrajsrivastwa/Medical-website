@@ -1,4 +1,4 @@
-import React, { useState,useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Building2, Mail, Phone, MapPin, Stethoscope, Bed, LinkIcon } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import axios from "axios";
@@ -7,7 +7,7 @@ import Cookies from 'js-cookie';
 const Profile = () => {
   const [hospital, setHospital] = useState([]);
   const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
 
   useEffect(() => {
@@ -20,7 +20,7 @@ const Profile = () => {
           { headers: { "Content-Type": "application/json", }, }
         );
         console.log(response);
-        setHospital(response.data[0]); 
+        setHospital(response.data[0]);
         setLoading(false);
       } catch (err) {
         console.log(err);
@@ -32,19 +32,17 @@ const Profile = () => {
     fetchUser();
   }, []);
 
-
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
-
   const [isEditing, setIsEditing] = useState(false);
   const [editedValues, setEditedValues] = useState({
     phone: hospital.phone,
     website: hospital.website,
     bedCharges: hospital.bedCharges,
-    specializations: hospital.specializations.join(", "),
+    specializations: hospital.specializations || [],
     location: hospital.location
   });
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -96,7 +94,7 @@ const Profile = () => {
               { icon: Phone, label: 'Phone', value: hospital.phone, editable: true },
               { icon: LinkIcon, label: 'Website', value: hospital.website, editable: true },
               { icon: Bed, label: 'Bed Charges (₹/day)', value: `₹${hospital.bedCharges}`, editable: true, type: 'number', field: 'bedCharges' },
-              { icon: Stethoscope, label: 'Specializations', value: hospital.specializations.join(", "), editable: true, placeholder: "Enter specializations separated by commas" },
+              { icon: Stethoscope, label: 'Specializations', value: (hospital.specializations || []).join(", "), editable: true, placeholder: "Enter specializations separated by commas" },
               { icon: MapPin, label: 'Location', value: hospital.location, editable: true }
             ].map((item, index) => (
               <div key={index} className="flex items-center gap-4 p-4 bg-white rounded-lg border border-purple-100 shadow-sm hover:border-[#563393] transition-colors">
