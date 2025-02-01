@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SignUp from "./Pages/Authentication/SignUp";
 import Login from "./Pages/Authentication/Login";
@@ -26,22 +26,26 @@ import DoctorManagement from "./Pages/AdminDashboard/DoctorManagement";
 import HospitalManagement from "./Pages/AdminDashboard/HospitalManagement";
 
 function App() {
-  const [userRole, setUserRole] = useState("hospital");
+  const [userRole, setUserRole] = useState("");
 
   return (
     <Router>
       <div className="h-screen flex flex-col">
         <Header className="h-16 shrink-0 top-0 fixed" />
-        {/* <Home /> */}
+        
         <div className="flex flex-1 overflow-hidden">
-          <Sidebar
-            userRole={userRole}
-            className="w-64 overflow-y-auto border-r"
-          />
+        {userRole && userRole !== '' && (
+  <Sidebar
+    userRole={userRole}
+    className="w-64 overflow-y-auto border-r"
+  />
+)}
+
           <main className="flex-1 overflow-y-auto relative">
             <div className="">
               <Routes>
                 <Route path="/signup" element={<SignUp />} />
+                {userRole === '' && <Route path="/" element={<Home />} />}
                 <Route path="/login" element={<Login />} />
                 {/* Details Form */}
                 <Route path="/doctor-detail-form" element={<DoctorDetails />} />
@@ -52,7 +56,7 @@ function App() {
                 <Route path="/doctor-appointment" element={<DoctorAppointment />} />
                 <Route path="/bed-booking" element={<BedBooking />} />
                 {/* <Route path="/order-medicine" element={<OrderMedicine />} /> */}
-                {/* <Route path="/chat-with-doctor" element={<ChatWithDoctor />} /> */}
+                <Route path="/chat-with-doctor" element={<ChatWithDoctor />} />
                 <Route path="/history" element={<History />} />
                 {/* Doctor Dashboard */}
                 <Route path="/doctor-profile" element={<DoctorProfile />} />
