@@ -67,4 +67,28 @@ app.post('/update', async (req, res) => {
 })
 
 
+app.post('/updatebed', async (req, res) => {
+    try {
+        const { approval, unique } = req.body;
+        const id = unique;
+        const user = await bed.findOne({ _id: id });
+        console.log(user);
+
+        if (!user) {
+            return res.status(404).json({ message: 'bed not found' });
+        }
+
+        console.log(user);
+        user.status = approval;
+        await user.save();
+
+        return res.status(200).json({ message: 'Appointment updated successfully', user });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
+
+
+
 module.exports = app;

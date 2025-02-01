@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Check, X, FileText, Loader2 } from 'lucide-react';
@@ -9,42 +9,38 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import axios from 'axios';
+import Cookie from 'js-cookie';
 
 function HospitalManagement() {
   const [isLoading, setIsLoading] = useState(false);
-
-  const hospitals = [
-    {
-      id: 1,
-      name: "City General Hospital",
-      specializations: "Emergency Care, Cardiology, Neurology",
-      documents: {
-        license: "/path/to/license.pdf",
-        accreditation: "/path/to/accreditation.pdf",
-        certification: "/path/to/certification.pdf"
-      }
-    },
-    {
-      id: 2,
-      name: "Medicare Community Hospital",
-      specializations: "Pediatrics, Orthopedics, Oncology",
-      documents: {
-        license: "/path/to/license.pdf",
-        accreditation: "/path/to/accreditation.pdf",
-        certification: "/path/to/certification.pdf"
-      }
-    },
-    {
-      id: 3,
-      name: "Wellness Memorial Center",
-      specializations: "Surgery, Psychiatry, Dermatology",
-      documents: {
-        license: "/path/to/license.pdf",
-        accreditation: "/path/to/accreditation.pdf",
-        certification: "/path/to/certification.pdf"
-      }
-    }
-  ];
+     const [loading, setLoading] = useState(true);
+      const [error, setError] = useState(null);
+       const [hospitals, sethospitals] = useState([]);
+  
+    useEffect(() => {
+      const fetchAppointments = async () => {
+        try {
+          const response = await axios.post(
+            "http://localhost:3000/admin/hospital",
+            {},
+            { headers: { "Content-Type": "application/json" } }
+          );
+          console.log(response.data);
+          sethospitals(response.data);
+          setLoading(false);
+        } catch (err) {
+          console.error(err);
+          setError("Something went wrong while fetching the appointments.");
+          setLoading(false);
+        }
+      };
+  
+      fetchAppointments();
+    }, []);
+  
+    if (loading) return <div className="loading">Loading appointments...</div>;
+    if (error) return <div className="error">{error}</div>;
 
   const handleDocumentLoad = () => {
     setIsLoading(false);
@@ -55,9 +51,19 @@ function HospitalManagement() {
     // Handle error - you might want to show an error message
   };
 
-  const handleApprove = (hospitalId) => {
-    console.log(`Approved hospital with ID: ${hospitalId}`);
-  };
+  const handleApprove = async(hospitalId) => {
+      let approval='confirmed';
+      let  unique=hospitals[0]._id;
+       const response = await axios.post(
+        "http://localhost:3000/admin/updatehospital",
+        { unique,approval },
+        { headers: { "Content-Type": "application/json" } }
+      );
+      if(response.status==200)
+        alert("Appointment status updated successfully");
+      else
+      alert("Failed to update appointment status");
+    };
 
   const handleReject = (hospitalId) => {
     console.log(`Rejected hospital with ID: ${hospitalId}`);
@@ -88,7 +94,7 @@ function HospitalManagement() {
                   <DialogHeader>
                     <DialogTitle className="text-[#563393]">Hospital Documents - {hospital.name}</DialogTitle>
                   </DialogHeader>
-                  <div className="mt-4 h-full">
+                  {/* <div className="mt-4 h-full">
                     {isLoading ? (
                       <div className="flex items-center justify-center h-full">
                         <Loader2 className="w-8 h-8 animate-spin text-[#563393]" />
@@ -101,7 +107,7 @@ function HospitalManagement() {
                         onError={handleDocumentError}
                       />
                     )}
-                  </div>
+                  </div> */}
                 </DialogContent>
               </Dialog>
             </CardContent>

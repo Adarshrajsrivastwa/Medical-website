@@ -10,7 +10,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import axios from 'axios';
-import Cookie from 'js-cookie';
 
 function DoctorManagement() {
   const [isLoading, setIsLoading] = useState(false);
@@ -26,7 +25,7 @@ function DoctorManagement() {
           {},
           { headers: { "Content-Type": "application/json" } }
         );
-        console.log(response);
+        console.log(response.data);
         setdoctors(response.data);
         setLoading(false);
       } catch (err) {
@@ -40,8 +39,6 @@ function DoctorManagement() {
   }, []);
 
   if (loading) return <div className="loading">Loading appointments...</div>;
-
-  // Render error state
   if (error) return <div className="error">{error}</div>;
 
   const handleDocumentLoad = () => {
@@ -53,8 +50,19 @@ function DoctorManagement() {
     // Handle error - you might want to show an error message
   };
 
-  const handleApprove = (doctorId) => {
-    console.log(`Approved doctor with ID: ${doctorId}`);
+  const handleApprove = async(doctorId) => {
+    let approval='confirmed';
+    let  unique=doctors[0]._id;
+
+     const response = await axios.post(
+      "http://localhost:3000/admin/update",
+      { unique,approval },
+      { headers: { "Content-Type": "application/json" } }
+    );
+    if(response.status==200)
+      alert("Appointment status updated successfully");
+    else
+    alert("Failed to update appointment status");
   };
 
   const handleReject = (doctorId) => {
