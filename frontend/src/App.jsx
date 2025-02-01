@@ -25,6 +25,7 @@ import BedManagement from "./Pages/HospitalDashboard/BedManagement";
 import DoctorManagement from "./Pages/AdminDashboard/DoctorManagement";
 import HospitalManagement from "./Pages/AdminDashboard/HospitalManagement";
 import MedicineOverview from "./Components/MedicineOverview";
+import Chatbot from "./Components/Chatbot";
 
 function App() {
   const [userRole, setUserRole] = useState("");
@@ -49,6 +50,7 @@ function App() {
                 {userRole === '' && <Route path="/" element={<Home />} />}
                 <Route path="/login" element={<Login />} />
                 <Route path="/medicine-overview" element={<MedicineOverview />} />
+                <Route path="/chat-support" element={<Chatbot />} />
                 {/* Details Form */}
                 <Route path="/doctor-detail-form" element={<DoctorDetails />} />
                 <Route path="/patient-detail-form" element={<PatientDetails />} />
