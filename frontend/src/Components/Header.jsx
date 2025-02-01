@@ -1,5 +1,6 @@
 import React from 'react'
 import { User, Bell, LogIn, UserPlus } from 'lucide-react'
+import Chatbot from './Chatbot'
 
 function Header({ isLoggedIn, user }) {
     return (
@@ -55,6 +56,9 @@ function Header({ isLoggedIn, user }) {
                         </button>
                     </div>
                 )}
+            </div>
+            <div className='absolute right-0 bottom-0'>
+                <Chatbot />
             </div>
         </div>
     )
