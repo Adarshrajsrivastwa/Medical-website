@@ -189,14 +189,14 @@ app.post('/login', async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
-    if(user.role==='admin') {
+    if(user.role==='admin' || user.role==='user') {
       if (user.otp === otp ) {
         return res.status(200).send(user);
       } else {
         return res.status(401).json({ message: 'Invalid OTP' });
       }
     }
-   if (user.otp === otp   && user.status === 'confirmed') {
+   else if (user.otp === otp   && user.status === 'confirmed') {
       return res.status(200).send(user);
     } else {
       return res.status(401).json({ message: 'Invalid OTP' });

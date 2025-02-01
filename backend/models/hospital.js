@@ -5,7 +5,7 @@ const { model } = mongoose;
 const HospitalDetailsSchema = new mongoose.Schema({
     name: { type: String, unique: true, default: "hospital" },
     email: { type: String, required: true, unique: true },
-    role: { type: String, default: 'user' },
+    role: { type: String, default: 'hospital' },
     otp: { type: String, default: '' },
     otp_expiry: { type: Date },
     is_verified: { type: Boolean, default: false },

@@ -24,6 +24,8 @@ import GetInventory from "./Pages/HospitalDashboard/GetInventory";
 import BedManagement from "./Pages/HospitalDashboard/BedManagement";
 import DoctorManagement from "./Pages/AdminDashboard/DoctorManagement";
 import HospitalManagement from "./Pages/AdminDashboard/HospitalManagement";
+import MedicineOverview from "./Components/MedicineOverview";
+import Cookies from "js-cookie";
 
 
 function App() {
@@ -52,7 +54,7 @@ function App() {
             <div className="">
               <Routes>
                 <Route path="/signup" element={<SignUp />} />
-                {userRole === '' && <Route path="/" element={<Home />} />}
+                 <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/medicine-overview" element={<MedicineOverview />} />
                 {/* Details Form */}
