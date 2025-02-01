@@ -42,7 +42,7 @@ const Sidebar = ({ userRole, onLogout }) => {
         <>
             {/* Mobile Hamburger Button */}
             <button
-                className="md:hidden fixed top-4 right-4 z-50 p-3 bg-purple-600 text-white rounded-full shadow-lg"
+                className="md:hidden fixed top-4 right-4 z-10 p-3 bg-purple-600 text-white rounded-full shadow-lg"
                 onClick={toggleSidebar}
             >
                 {isOpen ? <X size={24} /> : <Menu size={24} />}

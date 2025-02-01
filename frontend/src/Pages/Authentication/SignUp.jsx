@@ -142,6 +142,7 @@ function SignUp() {
               <SelectItem value="doctor">Doctor</SelectItem>
               <SelectItem value="patient">Patient</SelectItem>
               <SelectItem value="hospital">Hospital</SelectItem>
+              <SelectItem value="admin">Admin</SelectItem>
             </SelectContent>
           </Select>
         </div>

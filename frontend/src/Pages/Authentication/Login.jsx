@@ -59,15 +59,18 @@ function Login() {
       if (res.status !== 200) {
         alert("OTP wrong");
       } else {
-        Cookies.set('city', res.data.city, { expires: 1 / 24 });
-        Cookies.set('state', res.data.state, { expires: 1 / 24 });
-        Cookies.set('country', res.data.country, { expires: 1 / 24 });
+        Cookies.set('city', res.data.city);
+        Cookies.set('state', res.data.state);
+        Cookies.set('country', res.data.country);
         alert("OTP verified successfully");
         if (formData.role == 'patient') {
           navigate("/patient-profile");
         }
         else if (formData.role == 'doctor') {
           navigate("/doctor-profile");
+        }
+        else if(formData.role == 'admin') {
+          alert("Please select a role!");
         }
         else {
           navigate("/hospital-profile");

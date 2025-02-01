@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const User=require('../models/user');
 const Hospital = require('../models/hospital');
 const Doctor=require('../models/doctor');
+const Admin = require('../models/admin');
 
 let app = express();
 app.use(bodyParser.json()); 
@@ -38,6 +39,9 @@ app.post('/signup', async (req, res) => {
       case 'hospital':
         user = await Hospital.findOne({ email });
         break;
+        case 'admin':
+          user = await Admin.findOne({ email });
+          break;
       default:
         return res.status(400).send('Invalid role');
     }
@@ -46,13 +50,14 @@ app.post('/signup', async (req, res) => {
       return res.status(400).send('User already exists');
     }
 
-    // Create a new user based on role
     let newUser;
     if (req.body.role === 'patient') {
       newUser = new User({ email, otp });
     } else if (req.body.role === 'doctor') {
       newUser = new Doctor({ email, otp });
-    } else 
+    }else if (req.body.role === 'admin') {
+      newUser = new Admin({ email, otp });
+    }  else 
      {
       newUser = new Hospital({ email, otp });
     }
@@ -87,7 +92,7 @@ app.post('/signup', async (req, res) => {
 app.post('/signin', async (req, res) => {
   let otp = generateOTP(); 
   let email = req.body.email;
-  console.log(req.body.role)
+  console.log(req.body.email)
   try{
     let user ;
     if(req.body.role==='patient')
@@ -96,6 +101,8 @@ app.post('/signin', async (req, res) => {
       user = await Doctor.findOne({ email: email });
     else if(req.body.role==='hospital')
       user = await Hospital.findOne({ email: email });
+    else if(req.body.role==='admin')
+      user = await Admin.findOne({ email: email });
     
     if (user) {
       user.otp = otp;
@@ -114,7 +121,7 @@ app.post('/signin', async (req, res) => {
     };
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
-        console.error("Error sending OTP email:", error); // Log the error
+        console.error("Error sending OTP email:", error); 
         return res.status(500).send({ message: 'Error sending OTP email. Please try again later.' });
       }
       res.status(200).send({ message: 'OTP sent successfully!' });
@@ -161,6 +168,8 @@ app.post('/login', async (req, res) => {
     let otp = req.body.otp;
     let email = req.body.email;
 
+    console.log(email);
+
     if (!otp || !email) {
       return res.status(400).json({ message: 'OTP and Email are required' });
     }
@@ -171,12 +180,21 @@ app.post('/login', async (req, res) => {
       user = await Doctor.findOne({ email: email });
     else if(req.body.role==='hospital')
       user = await Hospital.findOne({ email: email });
+    else if(req.body.role==='admin')
+      user =await Admin.findOne({ email: email });
+
 
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
-    console.log(user.status)
-    if (user.otp === otp   && user.status === 'approved') {
+    if(user.role==='admin') {
+      if (user.otp === otp ) {
+        return res.status(200).send(user);
+      } else {
+        return res.status(401).json({ message: 'Invalid OTP' });
+      }
+    }
+    else if (user.otp === otp   && user.status === 'approved') {
       return res.status(200).send(user);
     } else {
       return res.status(401).json({ message: 'Invalid OTP' });

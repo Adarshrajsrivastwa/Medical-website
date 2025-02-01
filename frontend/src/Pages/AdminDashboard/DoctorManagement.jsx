@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Check, X, FileText, Loader2 } from 'lucide-react';
@@ -9,33 +9,40 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import axios from 'axios';
+import Cookie from 'js-cookie';
 
 function DoctorManagement() {
   const [isLoading, setIsLoading] = useState(false);
+   const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+     const [doctors, setdoctors] = useState([]);
 
-  const doctors = [
-    {
-      id: 1,
-      name: "Dr. Sarah Johnson",
-      specialization: "Cardiologist",
-      pending: true,
-      documents: "/path/to/certificate.pdf"
-    },
-    {
-      id: 2,
-      name: "Dr. Michael Chen",
-      specialization: "Pediatrician",
-      pending: true,
-      documents: "/path/to/certificate.pdf"
-    },
-    {
-      id: 3,
-      name: "Dr. Emily Williams",
-      specialization: "Neurologist",
-      pending: true,
-      documents: "/path/to/certificate.pdf"
-    }
-  ];
+  useEffect(() => {
+    const fetchAppointments = async () => {
+      try {
+        const response = await axios.post(
+          "http://localhost:3000/admin/doctor",
+          {},
+          { headers: { "Content-Type": "application/json" } }
+        );
+        console.log(response);
+        setdoctors(response.data);
+        setLoading(false);
+      } catch (err) {
+        console.error(err);
+        setError("Something went wrong while fetching the appointments.");
+        setLoading(false);
+      }
+    };
+
+    fetchAppointments();
+  }, []);
+
+  if (loading) return <div className="loading">Loading appointments...</div>;
+
+  // Render error state
+  if (error) return <div className="error">{error}</div>;
 
   const handleDocumentLoad = () => {
     setIsLoading(false);
@@ -79,7 +86,7 @@ function DoctorManagement() {
                   <DialogHeader>
                     <DialogTitle className="text-[#563393]">Medical Documents - {doctor.name}</DialogTitle>
                   </DialogHeader>
-                  <div className="mt-4 h-full">
+                  {/* <div className="mt-4 h-full">
                     {isLoading ? (
                       <div className="flex items-center justify-center h-full">
                         <Loader2 className="w-8 h-8 animate-spin text-[#563393]" />
@@ -92,7 +99,7 @@ function DoctorManagement() {
                         onError={handleDocumentError}
                       />
                     )}
-                  </div>
+                  </div> */}
                 </DialogContent>
               </Dialog>
             </CardContent>
