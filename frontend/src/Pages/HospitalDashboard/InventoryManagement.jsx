@@ -23,8 +23,8 @@ const InventoryManagement = () => {
                     { email },
                     { headers: { "Content-Type": "application/json" } }
                 );
-                console.log(response);
-                setInventories(response.data);
+                console.log(response.data.items[0]);
+                setInventories(response.data.items);
                 setLoading(false);
             } catch (err) {
                 console.error(err);
@@ -35,12 +35,7 @@ const InventoryManagement = () => {
 
         fetchAppointments();
     }, []);
-
-    if (loading) return <div className="loading">Loading appointments...</div>;
-
-    // Render error state
-    if (error) return <div className="error">{error}</div>;
-
+    
 
     const [newInventory, setNewInventory] = useState({
         type: '',
@@ -90,6 +85,11 @@ const InventoryManagement = () => {
     const handleDeleteInventory = (id) => {
         setInventories(inventories.filter(item => item.id !== id));
     };
+    if (loading) return <div className="loading">Loading appointments...</div>;
+
+    // Render error state
+    if (error) return <div className="error">{error}</div>;
+
 
     return (
         <div className="p-2 w-full">

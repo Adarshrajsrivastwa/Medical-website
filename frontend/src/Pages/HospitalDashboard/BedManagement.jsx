@@ -69,7 +69,7 @@ const BedManagement = () => {
               </div>
             </div>
             <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
-              {bed.status === 'Pending' && (
+              {bed.status === 'pending' && (
                 <>
                   <Button
                     variant="outline"
