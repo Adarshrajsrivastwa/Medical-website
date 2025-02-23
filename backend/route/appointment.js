@@ -10,13 +10,12 @@ let app = express();
 
 app.post('/appointment', async (req, res) => {
     let email = req.body.email;
-    console.log(email);
     try {
-        let user = await appointment.find({ doctor: email });
-        if (user.status === 'pending')
-
-            res.json(user);
-    } catch (err) {
+        let user = await appointment.find({ doctor: email, status: 'pending' });
+            res.status(200).send(user);
+        
+    } 
+    catch (err) {
         console.error(err);
         res.status(500).send('Error retrieving appointments');
     }
@@ -29,17 +28,11 @@ app.post('/bed', async (req, res) => {
             Hospital: email 
         });
 
-        // Filter out the users with a status of 'pending'
-        let pendingUsers = users.filter(user => user.status === 'pending');
-
-        if (pendingUsers.length > 0) {
-            res.json(pendingUsers);
-        } else {
-            res.status(404).send('No pending users found');
-        }
-    } catch (err) {
+        res.json(users);
+    }
+    catch (err) {
         console.error(err);
-        res.status(500).send('Error retrieving appointments');
+        res.status(500).send('Error retrieving beds');
     }
 });
 

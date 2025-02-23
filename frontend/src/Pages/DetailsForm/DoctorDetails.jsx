@@ -84,9 +84,13 @@ function DoctorDetails() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSelectChange = (field, selectedOption) => {
-    setFormData((prev) => ({ ...prev, [field]: selectedOption }));
+  const handleSelectChange = (field, selectedOptions) => {
+    setFormData({
+      ...formData,
+      [field]: selectedOptions.map((option) => option.value), 
+    });
   };
+  
 
   const handleFileChange = async (e) => {
     const file = e.target.files[0];

@@ -163,6 +163,8 @@ else
   }
 }
 })
+
+
 app.post('/login', async (req, res) => {
   try {
     let otp = req.body.otp;
@@ -196,7 +198,7 @@ app.post('/login', async (req, res) => {
         return res.status(401).json({ message: 'Invalid OTP' });
       }
     }
-   else if (user.otp === otp   && user.status === 'confirmed') {
+   else if (user.otp === otp ) {
       return res.status(200).send(user);
     } else {
       return res.status(401).json({ message: 'Invalid OTP' });

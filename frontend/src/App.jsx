@@ -32,7 +32,6 @@ function App() {
   const [userRole, setUserRole] = useState("");
 
   useEffect(() => {
-    // Setting userRole once when component mounts
     const role = Cookies.get("role");
     setUserRole(role);
   }, []);

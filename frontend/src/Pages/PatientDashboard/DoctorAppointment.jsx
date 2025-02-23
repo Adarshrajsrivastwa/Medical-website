@@ -78,6 +78,7 @@ const DoctorAppointment = ({ doctors }) => {
     console.log(`${doctor.charges}`);
     Cookies.set('price', doctor.charges);
     Cookies.set('doctor',doctor.email);
+    Cookies.set('doctorname',doctor.name);
     Cookies.set('charges',doctor.charges);
     setIsModalOpen(true);
   };
