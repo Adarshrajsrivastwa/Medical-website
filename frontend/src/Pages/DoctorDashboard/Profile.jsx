@@ -106,7 +106,7 @@ const Profile = () => {
                       className="text-base font-medium text-[#563393] border border-purple-200 rounded px-2 py-1 w-full focus:outline-none focus:border-[#563393]"
                     />
                   ) : (
-                    <p className="text-base font-medium text-[#563393]">{(item.value == null) ? alert("Field can not be empty") : item.value}</p>
+                    <p className="text-base font-medium text-[#563393]">{item.value}</p>
                   )}
                 </div>
               </div>
