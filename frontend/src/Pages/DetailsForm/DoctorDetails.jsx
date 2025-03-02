@@ -52,7 +52,6 @@ function DoctorDetails() {
       ...base,
       zIndex: 5,
     }),
-    // New styles to handle multi-select overflow
     multiValue: (base) => ({
       ...base,
       backgroundColor: "#e6e0f6",
@@ -84,13 +83,19 @@ function DoctorDetails() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSelectChange = (field, selectedOptions) => {
-    setFormData({
-      ...formData,
-      [field]: selectedOptions.map((option) => option.value), 
-    });
+  const handleSelectChange = (field, selectedOption) => {
+    if (field === 'language') {
+      setFormData({
+        ...formData,
+        [field]: selectedOption, // For multi-select, we set the array of selected options
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [field]: selectedOption ? selectedOption : null, // For single-select, we set the selected object (or null)
+      });
+    }
   };
-  
 
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
@@ -104,21 +109,18 @@ function DoctorDetails() {
         return;
       }
       setFormData((prev) => ({ ...prev, certificate: file }));
-
     }
   };
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const emailFromCookie = Cookies.get('email');
-        const role = Cookies.get('role');
-        setFormData({
-          ...formData,
-          email: emailFromCookie,
-          role: role,
-        })
-    console.log(formData.certificate);
+    const role = Cookies.get('role');
+    setFormData({
+      ...formData,
+      email: emailFromCookie,
+      role: role,
+    });
 
     try {
       const res = await axios.post("http://localhost:3000/detail/doctordetail", formData, {
@@ -132,7 +134,7 @@ function DoctorDetails() {
         alert('Failed to send OTP');
       }
       else
-        alert('your profile is under review');
+        alert('Your profile is under review');
     } catch (error) {
       alert(error.message);
     }
@@ -192,7 +194,7 @@ function DoctorDetails() {
                 { value: "female", label: "Female" },
                 { value: "other", label: "Other" },
               ]}
-              value={formData.gender}
+              value={formData.gender} // It should be an object with both value and label
               onChange={(selectedOption) => handleSelectChange("gender", selectedOption)}
               placeholder="Select Gender"
               required
@@ -211,7 +213,7 @@ function DoctorDetails() {
                 { value: "pediatrics", label: "Pediatrics" },
                 { value: "general", label: "General Medicine" },
               ]}
-              value={formData.specialization}
+              value={formData.specialization} // It should be an object with both value and label
               onChange={(selectedOption) => handleSelectChange("specialization", selectedOption)}
               placeholder="Select Specialization"
               required
@@ -235,7 +237,7 @@ function DoctorDetails() {
                 { value: "spanish", label: "Spanish" },
                 { value: "french", label: "French" },
               ]}
-              value={formData.language}
+              value={formData.language} // This should be an array of objects
               onChange={(selectedOptions) => handleSelectChange("language", selectedOptions)}
               placeholder="Select Languages"
               required
