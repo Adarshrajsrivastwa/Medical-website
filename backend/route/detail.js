@@ -44,11 +44,15 @@ app.post('/doctordetail', upload.single('certificate'), async (req, res) => {
         const { phone, gender, specialization, language, charges, hospital, country, state, city, pinCode, role, email } = req.body;
         const certificate = req.file ? req.file.path : null;
 
+        console.log(language);
+
         if (!certificate) {
             return res.status(400).send('No certificate file uploaded');
         }
         if (role === 'doctor') {
             let user = await Doctor.findOne({ email: email });
+
+            console.log(language);
 
             if (!user) {
                 return res.status(404).send('User not found');

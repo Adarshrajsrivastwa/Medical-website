@@ -20,10 +20,11 @@ const Profile = () => {
           { email },
           { headers: { "Content-Type": "application/json" } }
         );
+        console.log(response);
         setDoctor(response.data[0]);
         setEditedValues({
           phone: response.data[0].phone,
-          consultationFee: response.data[0].consultationFee,
+          consultationFee: response.data[0].charges,
           hospital: response.data[0].hospital,
           location: response.data[0].location,
           languages: response.data[0].languages.join(", ")
@@ -45,7 +46,7 @@ const Profile = () => {
     setDoctor(prev => ({
       ...prev,
       ...editedValues,
-      languages: editedValues.languages.split(", ").map(lang => lang.trim()) // Split back into array
+      languages: editedValues.languages.split(", ").map(lang => lang.trim()) 
     }));
     setIsEditing(false);
   };
@@ -82,7 +83,7 @@ const Profile = () => {
               { icon: User, label: 'Gender', value: doctor.gender },
               { icon: Stethoscope, label: 'Specialization', value: doctor.specialization },
               { icon: Languages, label: 'Languages', value: doctor.languages, editable: true, placeholder: "Enter languages separated by commas" },
-              { icon: Coins, label: 'Consultation Fee (₹)', value: `₹${doctor.consultationFee}`, editable: true, type: 'number', field: 'consultationFee' },
+              { icon: Coins, label: 'Consultation Fee (₹)', value: `₹${doctor.charges}`, editable: true, type: 'number', field: 'consultationFee' },
               { icon: Building2, label: 'Hospital/Clinic', value: doctor.hospital, editable: true },
               { icon: MapPin, label: 'Location', value: doctor.location, editable: true }
             ].map((item, index) => (

@@ -34,6 +34,7 @@ const BookAppointment = ({
         currency: "INR",
         doctor: "",
         email:"",
+        doctorname: "",
 
     });
 
@@ -52,6 +53,7 @@ const BookAppointment = ({
             price: Cookies.get("price"),
             doctor: Cookies.get("doctor"),
             email: Cookies.get("email"),
+            doctorname: Cookies.get("doctorname"),  
         }));
     };
 
