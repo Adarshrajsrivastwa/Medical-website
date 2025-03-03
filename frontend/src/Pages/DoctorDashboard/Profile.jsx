@@ -46,7 +46,7 @@ const Profile = () => {
     setDoctor(prev => ({
       ...prev,
       ...editedValues,
-      languages: editedValues.languages.split(", ").map(lang => lang.trim()) 
+      languages: editedValues.languages.split(",  ").map(lang => lang.trim()) 
     }));
     setIsEditing(false);
   };
@@ -85,7 +85,7 @@ const Profile = () => {
               { icon: Languages, label: 'Languages', value: doctor.languages, editable: true, placeholder: "Enter languages separated by commas" },
               { icon: Coins, label: 'Consultation Fee (₹)', value: `₹${doctor.charges}`, editable: true, type: 'number', field: 'consultationFee' },
               { icon: Building2, label: 'Hospital/Clinic', value: doctor.hospital, editable: true },
-              { icon: MapPin, label: 'Location', value: doctor.location, editable: true }
+              { icon: MapPin, label: 'Location', value:`${doctor.city},${doctor.state},${doctor.country}`, editable: true }
             ].map((item, index) => (
               <div key={index} className="flex items-center gap-4 p-4 bg-white rounded-lg border border-purple-100 shadow-sm hover:border-[#563393] transition-colors">
                 <div className="bg-purple-50 p-3 rounded-lg">
