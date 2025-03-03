@@ -91,6 +91,9 @@ app.post('/hospitaldetail', upload.single('certificate'), async (req, res) => {
         // console.log(phone, email, country, state, city, pinCode, role, specializations)
        
         const certificate = req.file? req.file.path : null;
+
+        const labels = specializations.flat().map(item => item.label);
+
         console.log( bedCharge);
         if (!certificate) {
             return res.status(400).send('No certificate file uploaded');
@@ -106,7 +109,7 @@ app.post('/hospitaldetail', upload.single('certificate'), async (req, res) => {
             user.state = state.label;
             user.city = city.label;
             user.pinCode = pinCode;
-            user.specialization = specializations.label;
+            user.specialization = labels;
             user.certificate = certificate;
             user.charges =  bedCharge;
             await user.save();

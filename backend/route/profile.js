@@ -11,7 +11,7 @@ let app = express();
 app.post('/doctor', async (req, res) => {
     try {
         let email = req.body.email;
-        let user = await Doctor.find({ email: email });
+        let user = await Doctor.find({ email: email, status: { $ne: 'pending' } });
         console.log(user);
         if (user.length === 0) {
             return res.status(404).json({ message: 'Doctor not found' });
