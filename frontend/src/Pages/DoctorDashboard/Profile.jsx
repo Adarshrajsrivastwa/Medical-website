@@ -13,6 +13,7 @@ const Profile = () => {
 
   useEffect(() => {
     const fetchDoctorData = async () => {
+      // window.location.reload();
       const email = Cookies.get('email');
       try {
         const response = await axios.post(
