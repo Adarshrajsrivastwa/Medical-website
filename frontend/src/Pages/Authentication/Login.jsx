@@ -67,6 +67,7 @@ function Login() {
         Cookies.set('role', formData.role);
 
         alert("OTP verified successfully");
+        window.location.reload();
 
         // Cookies.set('isLoggedIn', true);
         // Cookies.set('name', res.data.name);
