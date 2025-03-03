@@ -93,9 +93,9 @@ const Profile = () => {
               { icon: Mail, label: 'Email', value: hospital.email },
               { icon: Phone, label: 'Phone', value: hospital.phone, editable: true },
               { icon: LinkIcon, label: 'Website', value: hospital.website, editable: true },
-              { icon: Bed, label: 'Bed Charges (₹/day)', value: `₹${hospital.bedCharges}`, editable: true, type: 'number', field: 'bedCharges' },
+              { icon: Bed, label: 'Bed Charges (₹/day)', value: `₹${hospital.charges}`, editable: true, type: 'number', field: 'bedCharges' },
               { icon: Stethoscope, label: 'Specializations', value: (hospital.specializations || []).join(", "), editable: true, placeholder: "Enter specializations separated by commas" },
-              { icon: MapPin, label: 'Location', value: hospital.location, editable: true }
+              { icon: MapPin, label: 'Location', value:`${hospital.city},${hospital.state}, ${hospital.country} `, editable: true }
             ].map((item, index) => (
               <div key={index} className="flex items-center gap-4 p-4 bg-white rounded-lg border border-purple-100 shadow-sm hover:border-[#563393] transition-colors">
                 <div className="bg-purple-50 p-3 rounded-lg">
