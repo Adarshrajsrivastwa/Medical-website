@@ -44,7 +44,11 @@ app.post('/doctordetail', upload.single('certificate'), async (req, res) => {
         const { phone, gender, specialization, language, charges, hospital, country, state, city, pinCode, role, email } = req.body;
         const certificate = req.file ? req.file.path : null;
 
-        console.log(language);
+
+        const labels = language.flat().map(item => item.label);
+
+        console.log(labels);
+
 
         if (!certificate) {
             return res.status(400).send('No certificate file uploaded');
@@ -52,14 +56,13 @@ app.post('/doctordetail', upload.single('certificate'), async (req, res) => {
         if (role === 'doctor') {
             let user = await Doctor.findOne({ email: email });
 
-            console.log(language);
 
             if (!user) {
                 return res.status(404).send('User not found');
             }
             user.phone = phone;
             user.specialization = specialization.label;
-            user.language = language;
+            user.languages = labels;
             user.charges = charges;
             user.hospital = hospital;
             user.country = country.label;
@@ -70,7 +73,6 @@ app.post('/doctordetail', upload.single('certificate'), async (req, res) => {
             user.certificate = certificate;
 
             await user.save(); 
-            console.log("success");
             return res.status(200).send('Data saved successfully');
         } else {
             return res.status(400).send('Invalid role');
