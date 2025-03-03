@@ -1,17 +1,24 @@
 const express = require('express');
 const inventry = require('../models/inventry');
+const Hospital = require('../models/hospital');
 
 let app = express();
 
 app.use(express.json());
 
 app.post('/inventory', async (req, res) => {
+
+    let email = req.body.newInventory.email;
+
+    let user= await Hospital.find({ email: email });
     try {
         const newItem = new inventry({
-          Hospital: req.body.newInventory.email,
+          Hospital: user[0].name,
+          email: email,
           type: req.body.newInventory.type,
           name: req.body.newInventory.name,
           quantity: req.body.newInventory.quantity,
+          phone:user[0].phone,
         });
 
         await newItem.save();
