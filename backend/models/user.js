@@ -10,14 +10,13 @@ let userschema = new mongoose.Schema({
     otp_expiry: { type: Date },
     is_verified: { type: Boolean, default: false },
     date: { type: Date, default: Date.now },
-      phoneNumber: { type: String },
+      phone: { type: String },
       gender: { type: String, enum: ['male', 'female', 'other'] },
       dob: { type: Date },
       weight: { type: Number },
       height: { type: Number },
       bloodGroup: { 
         type: String, 
-        enum: ['a+', 'b+', 'ab+', 'o+'] 
       },
       status:{
         type: String,

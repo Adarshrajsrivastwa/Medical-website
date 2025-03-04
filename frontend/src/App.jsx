@@ -27,9 +27,10 @@ import HospitalManagement from "./Pages/AdminDashboard/HospitalManagement";
 import MedicineOverview from "./Components/MedicineOverview";
 import Chatbot from "./Components/Chatbot";
 import Cookies from "js-cookie";
+import PatientHistory from "./Pages/DoctorDashboard/PatientHistory";
 
 function App() {
-  const [userRole, setUserRole] = useState("");
+  const [userRole, setUserRole] = useState("doctor");
 
   useEffect(() => {
     const role = Cookies.get("role");
@@ -71,7 +72,9 @@ function App() {
                 {/* Doctor Dashboard */}
                 <Route path="/doctor-profile" element={<DoctorProfile />} />
                 <Route path="/appointment-management" element={<AppointmentManagement />} />
+                <Route path="/patients-history" element={<PatientHistory />} />
                 {/* <Route path="/chat-with-patient" element={<ChatWithPatient />} /> */}
+
                 {/* Hospital Dashboard */}
                 <Route path="/hospital-profile" element={<HospitalProfile />} />
                 <Route path="/inventory-management" element={<InventoryManagement />} />
