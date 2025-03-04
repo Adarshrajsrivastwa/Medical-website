@@ -96,7 +96,7 @@ const Profile = () => {
               { icon: Weight, label: 'Weight(KG)', value: `${user?user.weight : "N/A"} kg`, editable: true, field: 'weight' },
               { icon: Ruler, label: 'Height(CM)', value: `${user?user.height : "N/A"} cm`, editable: true, field: 'height' },
               { icon: Droplet, label: 'Blood Group', value: user?user.bloodGroup : "N/A" },
-              { icon: MapPin, label: 'Location', value: user?user.location : "N/A" }
+              { icon: MapPin, label: 'Location', value:`${user.city},${user.state},${user.country}`}
             ].map((item, index) => (
               <div key={index} className="flex items-center gap-4 p-4 bg-white rounded-lg border border-purple-100 shadow-sm hover:border-[#563393] transition-colors">
                 <div className="bg-purple-50 p-3 rounded-lg">

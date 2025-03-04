@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Search } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
+import { Input } from '@/components/ui/input'; 
 import axios from "axios";
 import Cookies from 'js-cookie';
 
@@ -19,11 +19,9 @@ const GetInventory = () => {
                     {},
                     { headers: { "Content-Type": "application/json", }, }
                 );
-                console.log(response.data);
-                setinventoryData(response.data); // Assuming response.data is the user object
+                setinventoryData(response.data); 
                 setLoading(false);
             } catch (err) {
-                console.log(err);
                 setError("Something went wrong!");
                 setLoading(false);
             }
@@ -42,7 +40,6 @@ const GetInventory = () => {
     return (
         <div className="min-h-screen">
             <div className="container mx-auto p-4">
-                {/* Search Section */}
                 <div className="mb-8">
                     <h1 className="text-3xl font-bold mb-6 text-[#563393]">Get Medical Inventory</h1>
                     <div className="relative">
@@ -57,30 +54,27 @@ const GetInventory = () => {
                     </div>
                 </div>
 
-                {/* Results Section */}
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                     {filteredInventory.map(item => (
                         <Card key={item._id} className="shadow-lg bg-white border border-[#563393] border-opacity-10">
                             <CardContent className="p-6">
-                                {/* Hospital Information */}
                                 <div className="mb-4">
                                     <h2 className="text-xl font-bold text-[#563393] mb-2">
                                         {item.Hospital}
                                     </h2>
                                     <div className="space-y-2 text-sm">
-                                        <p className="text-[#563393] text-opacity-70">{item.address}</p>
+                                        <p className="text-[#563393] text-opacity-70">{`${item.city},{item.state},{item.country}`}</p>
                                         <p>
                                             <span className="text-[#563393] text-opacity-60">Phone: </span>
                                             <span className="text-[#563393] text-opacity-80">{item.phone}</span>
                                         </p>
                                         <p>
                                             <span className="text-[#563393] text-opacity-60">Email: </span>
-                                            <span className="text-[#563393] text-opacity-80">{item.Hospital}</span>
+                                            <span className="text-[#563393] text-opacity-80">{item.email}</span>
                                         </p>
                                     </div>
                                 </div>
 
-                                {/* Inventory Information */}
                                 <div className="pt-4 border-t border-[#563393] border-opacity-20">
                                     <div className="text-lg font-medium mb-2 text-[#563393] text-opacity-90">
                                         {item.itemName}
@@ -94,7 +88,6 @@ const GetInventory = () => {
                     ))}
                 </div>
 
-                {/* No Results Message */}
                 {filteredInventory.length === 0 && (
                     <div className="text-center py-8">
                         <p className="text-[#563393] text-opacity-60">No inventory found for "{searchQuery}"</p>

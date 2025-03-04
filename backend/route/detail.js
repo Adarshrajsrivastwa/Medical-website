@@ -13,6 +13,8 @@ app.use(bodyParser.json());
 app.post('/userdetail', async (req, res) => {
     try {
         const { role, email, phone, country, city, state, pinCode, weight, height, bloodGroup, date,gender } = req.body;
+
+        console.log(req.body);
         if (role === 'patient') {
             let user = await User.findOne({ email: email });
             if (!user) {
@@ -25,7 +27,7 @@ app.post('/userdetail', async (req, res) => {
             user.pincode = pinCode;
             user.weight = weight;
             user.height = height;
-            user.bloodGroup = bloodGroup.value;
+            user.bloodGroup = bloodGroup.label;
             user.dob = date;
             user.gender = gender.value;
             await user.save();
