@@ -13,8 +13,6 @@ app.use(bodyParser.json());
 app.post('/userdetail', async (req, res) => {
     try {
         const { role, email, phone, country, city, state, pinCode, weight, height, bloodGroup, date,gender } = req.body;
-
-        console.log(req.body);
         if (role === 'patient') {
             let user = await User.findOne({ email: email });
             if (!user) {
