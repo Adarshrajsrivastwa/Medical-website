@@ -67,21 +67,24 @@ function Login() {
         Cookies.set('role', formData.role);
 
         alert("OTP verified successfully");
-        window.location.reload();
 
-        // Cookies.set('isLoggedIn', true);
-        // Cookies.set('name', res.data.name);
+
+        Cookies.set('isLoggedIn', true);
+        Cookies.set('name', res.data.name);
 
 
 
         if (formData.role == 'patient') {
           navigate("/patient-profile");
+          window.location.reload();
         }
         else if (formData.role == 'doctor') {
           navigate("/doctor-profile");
+          window.location.reload();
         }
         else if (formData.role == 'admin') {
           navigate("/doctor-management");
+          window.location.reload();
         }
         else {
           navigate("/hospital-profile");
