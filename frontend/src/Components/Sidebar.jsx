@@ -36,7 +36,8 @@ const Sidebar = ({ userRole, onLogout }) => {
             { path: "/patients-history", label: "Patient History", icon: "🧪" },
             { path: "/appointment-management", label: "Appointment Management", icon: "📋" },
             { path: "/medicine-overview", label: "Medicine Overview", icon: "💊" },
-            { path: "/chat-with-patient", label: "Chat with Patient", icon: "💬" },
+            // { path: "/patients-history", label: "Patients History", icon: "📜" },
+            // { path: "/chat-with-patient", label: "Chat with Patient", icon: "💬" },
         ],
         hospital: [
             { path: "/hospital-profile", label: "My Profile", icon: "👤" },

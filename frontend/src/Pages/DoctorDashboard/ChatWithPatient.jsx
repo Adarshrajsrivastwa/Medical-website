@@ -1,37 +1,79 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect} from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { MessageSquare, Menu, X } from 'lucide-react';
 import ChatInterface from "@/Components/ChatInterface";
+import axios from 'axios';
+import Cookies from 'js-cookie';
 
 const ChatWithPatient = () => {
     const [selectedChat, setSelectedChat] = useState(null);
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+    const [patientChats, setpatientChats] = useState([])
+     const [loading, setLoading] = useState(true);
+      const [error, setError] = useState(null);
 
-    // Sample patients data - replace with API call
-    const patientChats = [
-        {
-            id: 1,
-            name: "John Doe",
-            lastMessage: "I have a question about my prescription",
-            timestamp: "10:30 AM",
-            unread: true,
-            avatar: "/api/placeholder/100/100",
-            role: "patient"
-        },
-        {
-            id: 2,
-            name: "Jane Smith",
-            lastMessage: "Thank you for the advice",
-            timestamp: "Yesterday",
-            unread: false,
-            avatar: "/api/placeholder/100/100",
-            role: "patient"
-        }
-    ];
+      useEffect(() => {
+        const fetchHospitals = async () => {
+            let recipient=Cookies.get('email')
+          try {
+            const response = await axios.post(
+              "http://localhost:3000/history/patient", 
+              {recipient},
+              { headers: { "Content-Type": "application/json" } }
+            );
+            console.log(response)
+            let res=await axios.post("http://localhost:3000/history/patientlist",{response},
+                { headers: { "Content-Type": "application/json" } }
+              );
+              console.log(res)
+            setpatientChats(res.data.users);
+            setLoading(false);
+          } catch (err) {
+            setError("Failed to fetch hospitals. Please try again later.");
+            setLoading(false);
+          }
+        };
+        fetchHospitals();
+      }, []);
+    
+    
+      if (loading) return <div>Loading hospitals...</div>;
+      if (error) return <div>{error}</div>;
+    
+    
 
-    const toggleSidebar = () => {
-        setIsSidebarOpen(!isSidebarOpen);
+
+    const toggleSidebar = () => { 
+        setIsSidebarOpen(!isSidebarOpen)
     };
+
+    const handleChatSelection = async(chat) => {
+
+
+        let recipient=chat.email
+        let sender=Cookies.get('email')
+
+        try {
+            const response = await axios.post(
+              "http://localhost:3000/history/chat", 
+              {recipient, sender},
+              { headers: { "Content-Type": "application/json" } }
+            );
+            setSelectedChat(response.data);
+            setLoading(false);
+
+            console.log(response.data);
+          } catch (err) {
+            setError("Failed to fetch hospitals. Please try again later.");
+            setLoading(false);
+          }
+
+
+        if (window.innerWidth < 1024) {
+            setIsSidebarOpen(false);
+        }
+    };
+    
 
     return (
         <div className="relative flex h-[87vh] overflow-hidden p-1">
@@ -64,12 +106,8 @@ const ChatWithPatient = () => {
                             key={chat.id}
                             className={`cursor-pointer hover:shadow-md transition-shadow ${selectedChat?.id === chat.id ? 'ring-2 ring-[#563393]' : ''
                                 }`}
-                            onClick={() => {
-                                setSelectedChat(chat);
-                                if (window.innerWidth < 1024) {
-                                    setIsSidebarOpen(false);
-                                }
-                            }}
+                                onClick={() => handleChatSelection(chat)}
+
                         >
                             <CardContent className="p-4 hover:bg-purple-50">
                                 <div className="flex items-center space-x-4">

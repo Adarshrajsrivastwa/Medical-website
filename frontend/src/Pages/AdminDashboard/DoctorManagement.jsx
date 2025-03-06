@@ -94,20 +94,20 @@ function DoctorManagement() {
                   <DialogHeader>
                     <DialogTitle className="text-[#563393]">Medical Documents - {doctor.name}</DialogTitle>
                   </DialogHeader>
-                  {/* <div className="mt-4 h-full">
+                  {<div className="mt-4 h-full">
                     {isLoading ? (
                       <div className="flex items-center justify-center h-full">
                         <Loader2 className="w-8 h-8 animate-spin text-[#563393]" />
                       </div>
                     ) : (
                       <iframe
-                        src={doctor.documents.certificate}
+                        src={doctor.certificate}
                         className="w-full h-full rounded-lg"
                         onLoad={handleDocumentLoad}
                         onError={handleDocumentError}
                       />
                     )}
-                  </div> */}
+                  </div> }
                 </DialogContent>
               </Dialog>
             </CardContent>
