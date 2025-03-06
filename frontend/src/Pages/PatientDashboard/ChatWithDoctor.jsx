@@ -15,7 +15,7 @@ const ChatWithDoctor = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [chat, setChat] = useState([]);
-    const [chatStatus, setChatStatus] = useState(""); // New state for chat status
+    const [chatStatus, setChatStatus] = useState(""); 
 
     useEffect(() => {
         const fetchDoctors = async () => {

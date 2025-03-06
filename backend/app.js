@@ -20,6 +20,7 @@ const inventry = require('./route/inventry.js');
 const history = require('./route/history.js');
 const medicine=require('./route/medication.js');
 let approval = require('./route/approval.js');
+let search=require('./route/searchhistory.js');
 const io = require('socket.io')(server, {
     cors: {
         origin: 'http://localhost:5173',  
@@ -62,6 +63,7 @@ app.use('/add',inventry);
 app.use('/history', history);
 app.use('/medicine', medicine);
 app.use('/admin',approval)
+app.use('/search', search);
 
 
 app.get('/', (req, res) => {

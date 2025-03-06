@@ -1,73 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Search, User, Calendar, Clock, Stethoscope, FileText, X } from 'lucide-react';
+import axios from 'axios';
 
-// Sample patient data with prescription details
-const initialPatients = [
-  {
-    id: 1,
-    name: "John Doe",
-    email: "john.doe@example.com",
-    appointmentDate: "2024-03-15",
-    appointmentTime: "10:30 AM",
-    doctorName: "Dr. Emily Smith",
-    issue: "Routine Check-up",
-    prescription: {
-      doctorNotes: "Patient shows signs of mild vitamin deficiency. Recommended dietary changes and supplements.",
-      medications: [
-        {
-          name: "Multivitamin Supplement",
-          dosage: "1 tablet daily",
-          startDate: "2024-03-15",
-          endDate: "2024-04-15"
-        },
-        {
-          name: "Vitamin D3",
-          dosage: "2000 IU once daily",
-          startDate: "2024-03-15",
-          endDate: "2024-04-15"
-        }
-      ]
-    }
-  },
-  {
-    id: 2,
-    name: "Jane Smith",
-    email: "jane.smith@example.com",
-    appointmentDate: "2024-03-10",
-    appointmentTime: "02:45 PM",
-    doctorName: "Dr. Michael Johnson",
-    issue: "Respiratory Infection",
-    prescription: {
-      doctorNotes: "Acute bronchitis detected. Prescribed antibiotics and rest.",
-      medications: [
-        {
-          name: "Azithromycin",
-          dosage: "500mg once daily",
-          startDate: "2024-03-10",
-          endDate: "2024-03-15"
-        },
-        {
-          name: "Cough Syrup",
-          dosage: "10ml thrice daily",
-          startDate: "2024-03-10",
-          endDate: "2024-03-20"
-        }
-      ]
-    }
-  }
-];
-
+// PatientHistory component
 const PatientHistory = () => {
+  const [patients, setPatients] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [patients, setPatients] = useState(initialPatients);
   const [selectedPrescription, setSelectedPrescription] = useState(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // Filter patients based on email search
+  useEffect(() => {
+    const fetchPatient = async () => {
+      try {
+        const response = await axios.post(
+          "http://localhost:3000/search/patient",
+          {},
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        setPatients(response.data);
+        setLoading(false);
+      } catch (err) {
+        setError("Something went wrong!");
+        setLoading(false);
+      }
+    };
+
+    fetchPatient();
+  }, []);
+
   const filteredPatients = patients.filter(patient =>
     patient.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Handle prescription modal
   const openPrescriptionModal = (prescription) => {
     setSelectedPrescription(prescription);
   };
@@ -76,7 +45,6 @@ const PatientHistory = () => {
     setSelectedPrescription(null);
   };
 
-  // Prescription Modal Component
   const PrescriptionModal = ({ prescription, onClose }) => {
     return (
       <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
@@ -126,7 +94,6 @@ const PatientHistory = () => {
   return (
     <div className="min-h-screen p-6">
       <div className="max-w-4xl mx-auto">
-        {/* Search Bar */}
         <div className="mb-6 relative">
           <input
             type="text"
@@ -138,69 +105,73 @@ const PatientHistory = () => {
           <Search className="absolute left-3 top-3.5 text-purple-500" />
         </div>
 
-        {/* Patient Cards - Only show when search term is not empty */}
-        {searchTerm && (
-          <div className="space-y-4">
-            {filteredPatients.length > 0 ? (
-              filteredPatients.map(patient => (
-                <div
-                  key={patient.id}
-                  className="bg-white shadow-md rounded-lg p-5 border border-purple-100 hover:shadow-lg transition-shadow"
-                >
-                  <div className="flex justify-between items-center mb-4">
-                    <div className="flex items-center space-x-3">
-                      <User className="text-purple-600" />
-                      <h2 className="text-xl font-semibold text-purple-800">{patient.name}</h2>
-                    </div>
-                    <button
-                      onClick={() => openPrescriptionModal(patient.prescription)}
-                      className="bg-purple-500 text-white px-4 py-2 rounded-md hover:bg-purple-600 transition-colors flex items-center space-x-2"
+        {loading ? (
+          <div className="text-center text-purple-600 py-10">Loading...</div>
+        ) : error ? (
+          <div className="text-center text-red-500 py-10">{error}</div>
+        ) : (
+          <>
+            {searchTerm ? (
+              <div className="space-y-4">
+                {filteredPatients.length > 0 ? (
+                  filteredPatients.map(patient => (
+                    <div
+                      key={patient.id}
+                      className="bg-white shadow-md rounded-lg p-5 border border-purple-100 hover:shadow-lg transition-shadow"
                     >
-                      <FileText size={18} />
-                      <span>Prescription</span>
-                    </button>
-                  </div>
+                      <div className="flex justify-between items-center mb-4">
+                        <div className="flex items-center space-x-3">
+                          <User className="text-purple-600" />
+                          <h2 className="text-xl font-semibold text-purple-800">{patient.patient}</h2>
+                        </div>
+                        <button
+                          onClick={() => openPrescriptionModal(patient.prescription)}
+                          className="bg-purple-500 text-white px-4 py-2 rounded-md hover:bg-purple-600 transition-colors flex items-center space-x-2"
+                          disabled={!patient.prescription}
+                        >
+                          <FileText size={18} />
+                          <span>Prescription</span>
+                        </button>
+                      </div>
 
-                  <div className="grid grid-cols-2 gap-3 text-purple-700">
-                    <div className="flex items-center space-x-2">
-                      <Calendar size={18} className="text-purple-500" />
-                      <span>{patient.appointmentDate}</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Clock size={18} className="text-purple-500" />
-                      <span>{patient.appointmentTime}</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Stethoscope size={18} className="text-purple-500" />
-                      <span>{patient.doctorName}</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <User size={18} className="text-purple-500" />
-                      <span>{patient.email}</span>
-                    </div>
-                  </div>
+                      <div className="grid grid-cols-2 gap-3 text-purple-700">
+                        <div className="flex items-center space-x-2">
+                          <Calendar size={18} className="text-purple-500" />
+                          <span>{patient.date}</span>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Clock size={18} className="text-purple-500" />
+                          <span>{patient.timeSlot}</span>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Stethoscope size={18} className="text-purple-500" />
+                          <span>{patient.doctor}</span>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <User size={18} className="text-purple-500" />
+                          <span>{patient.email}</span>
+                        </div>
+                      </div>
 
-                  <div className="mt-4 bg-purple-50 p-3 rounded-md">
-                    <h3 className="text-purple-700 font-medium">Issue: {patient.issue}</h3>
+                      <div className="mt-4 bg-purple-50 p-3 rounded-md">
+                        <h3 className="text-purple-700 font-medium">Issue: {patient.issue}</h3>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="text-center text-purple-600 py-10">
+                    No patients found matching your search.
                   </div>
-                </div>
-              ))
+                )}
+              </div>
             ) : (
               <div className="text-center text-purple-600 py-10">
-                No patients found matching your search.
+                <p>Start typing an email to search for patient records</p>
               </div>
             )}
-          </div>
+          </>
         )}
 
-        {/* Initial State - When no search has been performed */}
-        {!searchTerm && (
-          <div className="text-center text-purple-600 py-10">
-            <p>Start typing an email to search for patient records</p>
-          </div>
-        )}
-
-        {/* Prescription Modal */}
         {selectedPrescription && (
           <PrescriptionModal
             prescription={selectedPrescription}
