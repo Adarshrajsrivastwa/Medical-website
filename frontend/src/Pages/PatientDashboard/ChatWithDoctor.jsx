@@ -69,6 +69,7 @@ const ChatWithDoctor = () => {
                 headers: {
                     "Content-Type": "application/json",
                 },
+                //jhfvihfiu
             }
         );
         console.log(response.data);
