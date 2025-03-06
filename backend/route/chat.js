@@ -49,6 +49,7 @@ app.post('/doctor', async(req, res) => {
         city: city,
         country: country
       });
+      console.log(user);
       res.json(user);
 })
 
@@ -74,31 +75,16 @@ app.post('/patient', async(req, res) => {
 
 app.post('/patientlist', async (req, res) => {
     try {
-        const data = req.body.response.data;
-        const users = [];
-        const emailSet = new Set();
 
-        const promises = data.map(async (message) => {
-            const email = message.recipient;
+            const user = await User.find({ email: email });
 
-            if (emailSet.has(email)) return;
-
-            const user = await User.findOne({ email: email });
-            if (user && !users.some(existingUser => existingUser.email === email)) {
-
-                users.push(user);
-                emailSet.add(email);
-            }
-        });
-
-        await Promise.all(promises);
-        res.json({ users });
 
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
     }
 });
+
 
 
 

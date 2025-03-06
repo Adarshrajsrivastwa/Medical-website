@@ -25,7 +25,7 @@ const ChatWithPatient = () => {
             let res=await axios.post("http://localhost:3000/history/patientlist",{response},
                 { headers: { "Content-Type": "application/json" } }
               );
-              console.log(res)
+              console.log(res.data.users)
             setpatientChats(res.data.users);
             setLoading(false);
           } catch (err) {
