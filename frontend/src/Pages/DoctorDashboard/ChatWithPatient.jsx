@@ -22,11 +22,14 @@ const ChatWithPatient = () => {
               { headers: { "Content-Type": "application/json" } }
             );
             console.log(response)
-            let res=await axios.post("http://localhost:3000/history/patientlist",{response},
+            const data = response.data;
+
+            const uniqueRecipients = [...new Set(data.map(item => item.sender))]
+            let res=await axios.post("http://localhost:3000/history/patientlist",{uniqueRecipients},
                 { headers: { "Content-Type": "application/json" } }
               );
-              console.log(res.data.users)
-            setpatientChats(res.data.users);
+            setpatientChats(res.data);
+            console.log(res.data)
             setLoading(false);
           } catch (err) {
             setError("Failed to fetch hospitals. Please try again later.");

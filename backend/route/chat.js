@@ -74,16 +74,18 @@ app.post('/patient', async(req, res) => {
 })
 
 app.post('/patientlist', async (req, res) => {
-    try {
+    let user;
+    let users = [];
 
-            const user = await User.find({ email: email });
-
-
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Internal Server Error');
+    for (let i = 0; i < req.body.uniqueRecipients.length; i++) {
+        user = await User.find({ email: req.body.uniqueRecipients[i] });
+        users.push(...user);
     }
+    res.json(users);
 });
+
+
+
 
 
 
