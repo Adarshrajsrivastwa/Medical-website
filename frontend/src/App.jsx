@@ -24,7 +24,7 @@ import GetInventory from "./Pages/HospitalDashboard/GetInventory";
 import BedManagement from "./Pages/HospitalDashboard/BedManagement";
 import DoctorManagement from "./Pages/AdminDashboard/DoctorManagement";
 import HospitalManagement from "./Pages/AdminDashboard/HospitalManagement";
-import MedicineOverview from "./Components/MedicineOverview";
+import MedicineOverview from "./Pages/PatientDashboard/MedicineOverview";
 import Chatbot from "./Components/Chatbot";
 import Cookies from "js-cookie";
 import PatientHistory from "./Pages/DoctorDashboard/PatientHistory";
