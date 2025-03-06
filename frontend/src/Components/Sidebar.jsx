@@ -27,8 +27,8 @@ const Sidebar = ({ userRole, onLogout }) => {
             { path: "/doctor-appointment", label: "Doctor Appointment", icon: "📅" },
             { path: "/bed-booking", label: "Bed Booking", icon: "🏥" },
             // { path: "/order-medicine", label: "Order Medicine", icon: "📦" },
-            // { path: "/chat-with-doctor", label: "Chat with Doctor", icon: "💬" },
-            { path: "/medicine-overview", label: "Medicine Overview", icon: "💊" },
+            { path: "/chat-with-doctor", label: "Chat with Doctor", icon: "💬" },
+            { path: "/medicine-overview", label: "Medicine Guidelines & Alternatives", icon: "💊" },
             { path: "/history", label: "History", icon: "🕰️" },
         ],
         doctor: [
