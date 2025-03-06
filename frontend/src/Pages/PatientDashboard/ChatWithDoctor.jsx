@@ -14,6 +14,8 @@ const ChatWithDoctor = () => {
     const [doctors, setDoctors] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [chat, setChat] = useState([]);
+    const [chatStatus, setChatStatus] = useState(""); // New state for chat status
 
     useEffect(() => {
         const fetchDoctors = async () => {
@@ -21,7 +23,6 @@ const ChatWithDoctor = () => {
                 const city = Cookies.get('city');
                 const state = Cookies.get('state');
                 const country = Cookies.get('country');
-                console.log(city, state, country);
                 const response = await axios.post(
                     "http://localhost:3000/loading/new",
                     { city, state, country },
@@ -31,20 +32,9 @@ const ChatWithDoctor = () => {
                         },
                     }
                 );
-                //   const response = await axios.post(
-                //     "http://localhost:3000/history/chat",
-                //     { sender:"adarsh6205840092@gmail.com" , recipient:"srivastwaadarsh@gmail.com" },
-                //     {
-                //       headers: {
-                //         "Content-Type": "application/json",
-                //       },
-                //     }
-                //   );
-                console.log(response);
                 setDoctors(response.data.doctors);
                 setLoading(false);
             } catch (err) {
-                console.log(err);
                 setError("Something went wrong!");
                 setLoading(false);
             }
@@ -54,57 +44,65 @@ const ChatWithDoctor = () => {
 
         socket.on('message', (newMessage) => {
             setMessages((prevMessages) => [...prevMessages, newMessage]);
+            setChatStatus(""); // Reset chat status when a message is received
+        });
+
+        socket.on('typing', (typingStatus) => {
+            setChatStatus(typingStatus); // Set typing status when received from the server
         });
 
         return () => {
             socket.off('message');
+            socket.off('typing');
         };
     }, []);
 
-
     const handleDoctorClick = async(doctor) => {
         setSelectedDoctor(doctor);
+        const sender = Cookies.get('email');
+        const recipient = doctor.email;
 
-        let sender=Cookies.get('email');
-        let recipient=doctor.email;
-
-        let response = await axios.post(
+        const response = await axios.post(
             "http://localhost:3000/history/chat",
-            {sender,recipient},
+            { sender, recipient },
             {
-              headers: {
-                "Content-Type": "application/json",
-              },
+                headers: {
+                    "Content-Type": "application/json",
+                },
             }
-          );
-          console.log(response);
-    
+        );
+        setChat(response.data);
+        setMessages(chat);
     };
 
     const sendMessage = async(message) => {
-        // console.log(selectedDoctor)
-        // sender: Cookies.get('email');
-        // recipient: selectedDoctor.email;
-        //   console.log(Cookies.get('email'));
-             const newMessage = {
-                text: message,
-                timestamp: new Date().toISOString(),
-            };
+        const newMessage = {
+            text: message,
+            timestamp: new Date().toISOString(),
+        };
 
-            let sender=Cookies.get('email');
-            let recipient=selectedDoctor.email;
+        const sender = Cookies.get('email');
+        const recipient = selectedDoctor.email;
 
-            let response = await axios.post(
-                    "http://localhost:3000/history/save",
-                    {sender,recipient,newMessage},
-                    {
-                      headers: {
-                        "Content-Type": "application/json",
-                      },
-                    }
-                  );
-                  console.log(response);
-            setMessages((prevMessages) => [...prevMessages, newMessage]);
+        const response = await axios.post(
+            "http://localhost:3000/history/save",
+            { sender, recipient, newMessage },
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+        setMessages((prevMessages) => [...prevMessages, newMessage]);
+
+        // Emit message to server
+        socket.emit('message', newMessage);
+    };
+
+    const handleTyping = () => {
+        if (selectedDoctor) {
+            socket.emit('typing', `${Cookies.get('email')} is typing...`);
+        }
     };
 
     if (loading) return <div>Loading...</div>;
@@ -146,17 +144,22 @@ const ChatWithDoctor = () => {
             {/* Chat Area */}
             <div className="flex-1 bg-white">
                 {selectedDoctor ? (
-                    <ChatInterface
-                        recipient={selectedDoctor}
-                        initialMessages={[{
-                            id: 1,
-                            text: `Hello! I'm ${selectedDoctor.name}. How can I help you today?`,
-                            sender: 'doctor',
-                            timestamp: new Date().toISOString(),
-                        }, ...messages]}
-                        onSendMessage={sendMessage}
-
-                    />
+                    <div>
+                        <ChatInterface
+                            recipient={selectedDoctor}
+                            initialMessages={[{
+                                text: `Hello! I'm ${selectedDoctor.name}. How can I help you today?`,
+                                sender: 'doctor',
+                                timestamp: new Date().toISOString(),
+                            }, ...messages]}
+                            onSendMessage={sendMessage}
+                            onTyping={handleTyping} // Call the handleTyping when typing
+                        />
+                        {/* Render chat status if there is one */}
+                        {chatStatus && (
+                            <div className="text-purple-500 text-sm mt-2">{chatStatus}</div>
+                        )}
+                    </div>
                 ) : (
                     <div className="h-full flex items-center justify-center text-purple-400">
                         <div className="text-center">
