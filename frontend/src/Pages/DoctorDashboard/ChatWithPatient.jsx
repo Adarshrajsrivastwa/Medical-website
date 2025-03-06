@@ -14,17 +14,19 @@ const ChatWithPatient = () => {
 
       useEffect(() => {
         const fetchHospitals = async () => {
+            let recipient=Cookies.get('email')
           try {
-            const city = Cookies.get('city');
-            const state = Cookies.get('state');
-            const country = Cookies.get('country');
             const response = await axios.post(
-              "http://localhost:3000/history/doctor", 
-              { city, state, country },
+              "http://localhost:3000/history/patient", 
+              {recipient},
               { headers: { "Content-Type": "application/json" } }
             );
             console.log(response)
-            setpatientChats(response.data);
+            let res=await axios.post("http://localhost:3000/history/patientlist",{response},
+                { headers: { "Content-Type": "application/json" } }
+              );
+              console.log(res)
+            setpatientChats(res.data.users);
             setLoading(false);
           } catch (err) {
             setError("Failed to fetch hospitals. Please try again later.");
@@ -47,6 +49,7 @@ const ChatWithPatient = () => {
 
     const handleChatSelection = async(chat) => {
 
+
         let recipient=chat.email
         let sender=Cookies.get('email')
 
@@ -56,13 +59,16 @@ const ChatWithPatient = () => {
               {recipient, sender},
               { headers: { "Content-Type": "application/json" } }
             );
-            console.log(response)
             setSelectedChat(response.data);
             setLoading(false);
+
+            console.log(response.data);
           } catch (err) {
             setError("Failed to fetch hospitals. Please try again later.");
             setLoading(false);
           }
+
+
         if (window.innerWidth < 1024) {
             setIsSidebarOpen(false);
         }

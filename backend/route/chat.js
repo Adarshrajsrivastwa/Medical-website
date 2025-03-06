@@ -2,6 +2,7 @@ let express = require('express');
 const bodyParser = require('body-parser');
 let chat = require('../models/chat');
 let Doctor=require('../models/doctor');
+let User=require('../models/user');
 
 let app = express();
 
@@ -28,8 +29,6 @@ app.post('/chat', async function(req, res) {
                     sortedMessages
                 };
             });
-
-            console.log(allSortedMessages); 
             res.json(allSortedMessages); 
         }
     } catch (error) {
@@ -55,17 +54,54 @@ app.post('/doctor', async(req, res) => {
 
 app.post('/save', async(req, res) => {
 
-    console.log(req.body)
     let Chat = new chat({
         sender: req.body.sender,
         recipient: req.body.recipient,
-        messages: req.body.messages,
-        timestamp:req.body.timestamp,
+        message: req.body.newMessage.text.text,
+        timestamp:req.body.newMessage.text. timestamp,
     });
     Chat.save();
     res.status(200).json({ message:"Data saved." });
 
 });
+
+app.post('/patient', async(req, res) => {
+    let user = await chat.find({
+        recipient:req.body.recipient,
+      });
+      res.json(user);
+})
+
+app.post('/patientlist', async (req, res) => {
+    try {
+        const data = req.body.response.data;
+        const users = [];
+        const emailSet = new Set();
+
+        const promises = data.map(async (message) => {
+            const email = message.recipient;
+
+            if (emailSet.has(email)) return;
+
+            const user = await User.findOne({ email: email });
+            if (user && !users.some(existingUser => existingUser.email === email)) {
+
+                users.push(user);
+                emailSet.add(email);
+            }
+        });
+
+        await Promise.all(promises);
+        res.json({ users });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+
+
 
 
 

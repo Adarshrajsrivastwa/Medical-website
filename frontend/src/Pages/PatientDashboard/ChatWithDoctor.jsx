@@ -61,19 +61,42 @@ const ChatWithDoctor = () => {
         };
     }, []);
 
+
+    const handleDoctorClick = async(doctor) => {
+        setSelectedDoctor(doctor);
+
+        let sender=Cookies.get('email');
+        let recipient=doctor.email;
+
+        let response = await axios.post(
+            "http://localhost:3000/history/chat",
+            {sender,recipient},
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          console.log(response);
+    
+    };
+
     const sendMessage = async(message) => {
-        if (selectedDoctor) {
-          console.log(Cookies.get('email'));
-            const newMessage = {
+        // console.log(selectedDoctor)
+        // sender: Cookies.get('email');
+        // recipient: selectedDoctor.email;
+        //   console.log(Cookies.get('email'));
+             const newMessage = {
                 text: message,
-                sender: Cookies.get('email'),
-                recipient: selectedDoctor.email,
                 timestamp: new Date().toISOString(),
             };
 
+            let sender=Cookies.get('email');
+            let recipient=selectedDoctor.email;
+
             let response = await axios.post(
-                    "http://localhost:3000/history/chat",
-                    {newMessage},
+                    "http://localhost:3000/history/save",
+                    {sender,recipient,newMessage},
                     {
                       headers: {
                         "Content-Type": "application/json",
@@ -81,10 +104,7 @@ const ChatWithDoctor = () => {
                     }
                   );
                   console.log(response);
-
-            socket.emit('sendMessage', newMessage);
             setMessages((prevMessages) => [...prevMessages, newMessage]);
-        }
     };
 
     if (loading) return <div>Loading...</div>;
@@ -102,7 +122,7 @@ const ChatWithDoctor = () => {
                         <Card
                             key={doctor.id}
                             className={`cursor-pointer hover:shadow-md transition-shadow ${selectedDoctor?.id === doctor.id ? 'ring-2 ring-[#563393]' : ''}`}
-                            onClick={() => setSelectedDoctor(doctor)}
+                            onClick={() => handleDoctorClick(doctor)}
                         >
                             <CardContent className="p-4 hover:bg-purple-50">
                                 <div className="flex items-center space-x-4">
