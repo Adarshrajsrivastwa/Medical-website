@@ -22,6 +22,7 @@ function HospitalDetails() {
     role: "",
     email: "",
     bedCharge: "",
+    bedsAvailable: "", // Added new field for beds available
   });
 
   // Custom styles for Select components
@@ -143,6 +144,12 @@ function HospitalDetails() {
       return;
     }
 
+    // Validate beds available
+    if (formData.bedsAvailable && (isNaN(formData.bedsAvailable) || formData.bedsAvailable <= 0 || !Number.isInteger(Number(formData.bedsAvailable)))) {
+      alert("Please enter a valid number of beds available (must be a positive integer).");
+      return;
+    }
+
     // Get data from cookies
     const emailFromCookie = Cookies.get('email');
     const role = Cookies.get('role');
@@ -198,22 +205,43 @@ function HospitalDetails() {
           />
         </div>
 
-        {/* Bed Charge */}
-        <div className="space-y-2">
-          <Label htmlFor="bedCharge" className="text-sm font-medium">
-            Bed Charge (INR per day)
-          </Label>
-          <Input
-            type="number"
-            name="bedCharge"
-            placeholder="Enter bed charge"
-            value={formData.bedCharge}
-            onChange={handleInputChange}
-            min="0"
-            step="1"
-            className="w-full hover:border-[#6d46af] border-[#824edc] text-[#6d46af]"
-            required
-          />
+        {/* Bed Information Section */}
+        <div className="flex flex-col sm:grid sm:grid-cols-2 gap-4">
+          {/* Beds Available */}
+          <div className="space-y-2">
+            <Label htmlFor="bedsAvailable" className="text-sm font-medium">
+              Number of Beds Available
+            </Label>
+            <Input
+              type="number"
+              name="bedsAvailable"
+              placeholder="Enter number of beds"
+              value={formData.bedsAvailable}
+              onChange={handleInputChange}
+              min="1"
+              step="1"
+              className="w-full hover:border-[#6d46af] border-[#824edc] text-[#6d46af]"
+              required
+            />
+          </div>
+
+          {/* Bed Charge */}
+          <div className="space-y-2">
+            <Label htmlFor="bedCharge" className="text-sm font-medium">
+              Bed Charge (INR per day)
+            </Label>
+            <Input
+              type="number"
+              name="bedCharge"
+              placeholder="Enter bed charge"
+              value={formData.bedCharge}
+              onChange={handleInputChange}
+              min="0"
+              step="1"
+              className="w-full hover:border-[#6d46af] border-[#824edc] text-[#6d46af]"
+              required
+            />
+          </div>
         </div>
 
         {/* Certificate Upload */}
