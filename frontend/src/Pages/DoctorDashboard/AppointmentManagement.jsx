@@ -56,6 +56,8 @@ const AppointmentManagement = () => {
       alert("Appointment status updated successfully");
     else
     alert("Failed to update appointment status");
+
+    window.location.reload();
   };
 
 

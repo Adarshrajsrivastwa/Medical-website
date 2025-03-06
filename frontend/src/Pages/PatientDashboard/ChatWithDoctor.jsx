@@ -61,14 +61,26 @@ const ChatWithDoctor = () => {
         };
     }, []);
 
-    const sendMessage = (message) => {
+    const sendMessage = async(message) => {
         if (selectedDoctor) {
+          console.log(Cookies.get('email'));
             const newMessage = {
                 text: message,
                 sender: Cookies.get('email'),
                 recipient: selectedDoctor.email,
                 timestamp: new Date().toISOString(),
             };
+
+            let response = await axios.post(
+                    "http://localhost:3000/history/chat",
+                    {newMessage},
+                    {
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                    }
+                  );
+                  console.log(response);
 
             socket.emit('sendMessage', newMessage);
             setMessages((prevMessages) => [...prevMessages, newMessage]);
