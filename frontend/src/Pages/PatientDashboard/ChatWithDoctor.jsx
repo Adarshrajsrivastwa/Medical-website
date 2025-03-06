@@ -71,6 +71,7 @@ const ChatWithDoctor = () => {
                 },
             }
         );
+        console.log(response.data);
         setChat(response.data);
         setMessages(chat);
     };
