@@ -28,6 +28,7 @@ import MedicineOverview from "./Pages/PatientDashboard/MedicineOverview";
 import Chatbot from "./Components/Chatbot";
 import Cookies from "js-cookie";
 import PatientHistory from "./Pages/DoctorDashboard/PatientHistory";
+import Prescription from "./Pages/DoctorDashboard/Prescription";
 
 function App() {
   const [userRole, setUserRole] = useState("doctor");
@@ -74,6 +75,7 @@ function App() {
                 <Route path="/appointment-management" element={<AppointmentManagement />} />
                 <Route path="/patients-history" element={<PatientHistory />} />
                 <Route path="/chat-with-patient" element={<ChatWithPatient />} />
+                <Route path="/prescription" element={<Prescription />} />
 
                 {/* Hospital Dashboard */}
                 <Route path="/hospital-profile" element={<HospitalProfile />} />
