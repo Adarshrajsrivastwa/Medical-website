@@ -1,7 +1,7 @@
 import React from 'react'
 
-function Chatbot() {
-    const url = import.meta.env.VITE_AI_Chat_Support;
+function MedicineAnalyzer() {
+    const url = import.meta.env.VITE_Medicine_Analyzer;
 
     return (
         <div className="relative w-full h-[87vh] overflow-hidden">
@@ -14,4 +14,4 @@ function Chatbot() {
     );
 }
 
-export default Chatbot
+export default MedicineAnalyzer

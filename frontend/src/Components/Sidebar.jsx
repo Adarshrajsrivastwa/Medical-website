@@ -30,14 +30,17 @@ const Sidebar = ({ userRole, onLogout }) => {
             { path: "/chat-with-doctor", label: "Chat with Doctor", icon: "💬" },
             { path: "/medicine-overview", label: "Medicine Guidelines & Alternatives", icon: "💊" },
             { path: "/history", label: "History", icon: "🕰️" },
+            { path: "/chat-support", label: "AI Chat Support", icon: "🕰️" },
         ],
         doctor: [
             { path: "/doctor-profile", label: "My Profile", icon: "🩺" },
             { path: "/patients-history", label: "Patient History", icon: "🧪" },
             { path: "/appointment-management", label: "Appointment Management", icon: "📋" },
-            { path: "/medicine-overview", label: "Medicine Overview", icon: "💊" },
+            { path: "/medicine-overview", label: "Medicine Guidelines & Alternatives", icon: "💊" },
+            { path: "/medicine-analyzer", label: "Medicine Analyzer", icon: "💊" },
             { path: "/prescription", label: "Add Prescription", icon: "📜" },
             { path: "/chat-with-patient", label: "Chat with Patient", icon: "💬" },
+            { path: "/chat-support", label: "AI Chat Support", icon: "🕰️" },
         ],
         hospital: [
             { path: "/hospital-profile", label: "My Profile", icon: "👤" },

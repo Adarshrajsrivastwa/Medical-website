@@ -24,11 +24,12 @@ import GetInventory from "./Pages/HospitalDashboard/GetInventory";
 import BedManagement from "./Pages/HospitalDashboard/BedManagement";
 import DoctorManagement from "./Pages/AdminDashboard/DoctorManagement";
 import HospitalManagement from "./Pages/AdminDashboard/HospitalManagement";
-import MedicineOverview from "./Pages/PatientDashboard/MedicineOverview";
+import MedicineOverview from "./Pages/MedicineOverview";
 import Chatbot from "./Components/Chatbot";
 import Cookies from "js-cookie";
 import PatientHistory from "./Pages/DoctorDashboard/PatientHistory";
 import Prescription from "./Pages/DoctorDashboard/Prescription";
+import MedicineAnalyzer from "./Pages/DoctorDashboard/MedicineAnalyzer";
 
 function App() {
   const [userRole, setUserRole] = useState("doctor");
@@ -58,6 +59,7 @@ function App() {
                 {userRole == null && (<Route path="/" element={<Home />} />)}
                 <Route path="/login" element={<Login />} />
                 <Route path="/medicine-overview" element={<MedicineOverview />} />
+                <Route path="/medicine-analyzer" element={<MedicineAnalyzer />} />
                 <Route path="/chat-support" element={<Chatbot />} />
                 {/* Details Form */}
                 <Route path="/doctor-detail-form" element={<DoctorDetails />} />

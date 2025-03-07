@@ -65,27 +65,22 @@ function Header() {
                         </div>
                     </div>
                 ) : (
-<div className='flex space-x-4'>
-    <Link to="/login">
-        <button className='flex items-center bg-transparent border border-[#563393] text-[#563393] px-4 py-2 rounded-md hover:bg-purple-50'>
-            <LogIn className='mr-2 w-5 h-5' />
-            Login
-        </button>
-    </Link>
-    <Link to="/signup">
-        <button className='flex items-center bg-[#563393] text-white px-4 py-2 rounded-md hover:bg-purple-700'>
-            <UserPlus className='mr-2 w-5 h-5' />
-            Sign Up
-        </button>
-    </Link>
-</div>
+                    <div className='flex space-x-4'>
+                        <Link to="/login">
+                            <button className='flex items-center bg-transparent border border-[#563393] text-[#563393] px-4 py-2 rounded-md hover:bg-purple-50'>
+                                <LogIn className='mr-2 w-5 h-5' />
+                                Login
+                            </button>
+                        </Link>
+                        <Link to="/signup">
+                            <button className='flex items-center bg-[#563393] text-white px-4 py-2 rounded-md hover:bg-purple-700'>
+                                <UserPlus className='mr-2 w-5 h-5' />
+                                Sign Up
+                            </button>
+                        </Link>
+                    </div>
 
                 )}
-            </div>
-
-            {/* Chatbot */}
-            <div className='absolute right-0 bottom-0'>
-                <Chatbot />
             </div>
         </div>
     );
