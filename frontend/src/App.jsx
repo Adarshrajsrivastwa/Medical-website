@@ -6,7 +6,6 @@ import DoctorDetails from "./Pages/DetailsForm/DoctorDetails";
 import PatientDetails from "./Pages/DetailsForm/PatientDetails";
 import HospitalDetails from "./Pages/DetailsForm/HospitalDetails";
 import Header from "./Components/Header";
-import Footer from "./Components/Footer";
 import Sidebar from "./Components/Sidebar";
 import PatientProfile from "./Pages/PatientDashboard/Profile";
 import DoctorAppointment from "./Pages/PatientDashboard/DoctorAppointment";
