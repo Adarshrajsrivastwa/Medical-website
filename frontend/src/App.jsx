@@ -51,7 +51,7 @@ function App() {
             />
           )}
 
-          <main className="flex-1 overflow-y-auto relative">
+          <main className="flex-1 overflow-y-auto relative bg-[#eef5f5cb]">
             <div className="">
               <Routes>
                 <Route path="/signup" element={<SignUp />} />
