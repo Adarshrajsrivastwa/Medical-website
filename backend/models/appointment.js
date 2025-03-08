@@ -7,7 +7,7 @@ const formSchema = {
         type: 'string',
         required: true,
     },
-    email:{
+    email: {
         type: 'string',
         required: true,
     },
@@ -33,8 +33,38 @@ const formSchema = {
         type: 'string',
         required: true,
     },
+    doctorNotes: { 
+        type: 'string', 
+    },
+    treatment: {
+        type: 'string',
+        default: 'pending', 
+    },
+    prescription: {
+        type: [
+            {
+                name: {
+                    type: 'string',
+                    required: true,
+                },
+                dosage: {
+                    type: 'string',
+                    required: true,
+                },
+                startDate: {
+                    type: 'date',
+                    required: true,
+                },
+                endDate: {
+                    type: 'date',
+                    required: true,
+                },
+            }
+        ],
+        default: [],
+    },
 };
 
-const Form = model('Appointment', formSchema);
+const Form = model('Form', formSchema);
 
 module.exports = Form;
