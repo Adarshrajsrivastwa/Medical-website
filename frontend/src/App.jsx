@@ -69,13 +69,13 @@ function App() {
                 <Route path="/doctor-appointment" element={<DoctorAppointment />} />
                 <Route path="/bed-booking" element={<BedBooking />} />
                 {/* <Route path="/order-medicine" element={<OrderMedicine />} /> */}
-                <Route path="/chat-with-doctor" element={<ChatWithDoctor />} />
+                {/* <Route path="/chat-with-doctor" element={<ChatWithDoctor />} /> */}
                 <Route path="/history" element={<History />} />
                 {/* Doctor Dashboard */}
                 <Route path="/doctor-profile" element={<DoctorProfile />} />
                 <Route path="/appointment-management" element={<AppointmentManagement />} />
                 <Route path="/patients-history" element={<PatientHistory />} />
-                <Route path="/chat-with-patient" element={<ChatWithPatient />} />
+                {/* <Route path="/chat-with-patient" element={<ChatWithPatient />} /> */}
                 <Route path="/prescription" element={<Prescription />} />
 
                 {/* Hospital Dashboard */}

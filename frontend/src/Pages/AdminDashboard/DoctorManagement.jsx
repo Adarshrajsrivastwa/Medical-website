@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Check, X, FileText, Loader2 } from 'lucide-react';
@@ -13,10 +13,12 @@ import axios from 'axios';
 
 function DoctorManagement() {
   const [isLoading, setIsLoading] = useState(false);
-   const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-     const [doctors, setdoctors] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [doctors, setDoctors] = useState([]);
+  const [pdfError, setPdfError] = useState(false);  // Track PDF loading errors
 
+  // Fetch doctor data from the backend
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
@@ -26,7 +28,7 @@ function DoctorManagement() {
           { headers: { "Content-Type": "application/json" } }
         );
         console.log(response.data);
-        setdoctors(response.data);
+        setDoctors(response.data);
         setLoading(false);
       } catch (err) {
         console.error(err);
@@ -41,30 +43,42 @@ function DoctorManagement() {
   if (loading) return <div className="loading">Loading appointments...</div>;
   if (error) return <div className="error">{error}</div>;
 
+  // Handle when the PDF document is loaded
   const handleDocumentLoad = () => {
     setIsLoading(false);
+    setPdfError(false);  // Reset error if the document loads successfully
   };
 
+  // Handle document loading error
   const handleDocumentError = () => {
     setIsLoading(false);
-    // Handle error - you might want to show an error message
+    setPdfError(true);  // Set error if the document fails to load
   };
 
-  const handleApprove = async(doctorId) => {
-    let approval='confirmed';
-    let  unique=doctors[0]._id;
+  // Approve doctor
+  const handleApprove = async (doctorId) => {
+    const approval = 'confirmed';
+    const unique = doctorId;
 
-     const response = await axios.post(
-      "http://localhost:3000/admin/update",
-      { unique,approval },
-      { headers: { "Content-Type": "application/json" } }
-    );
-    if(response.status==200)
-      alert("Appointment status updated successfully");
-    else
-    alert("Failed to update appointment status");
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/admin/update",
+        { unique, approval },
+        { headers: { "Content-Type": "application/json" } }
+      );
+
+      if (response.status === 200) {
+        alert("Appointment status updated successfully");
+      } else {
+        alert("Failed to update appointment status");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error updating appointment status");
+    }
   };
 
+  // Reject doctor
   const handleReject = (doctorId) => {
     console.log(`Rejected doctor with ID: ${doctorId}`);
   };
@@ -94,20 +108,23 @@ function DoctorManagement() {
                   <DialogHeader>
                     <DialogTitle className="text-[#563393]">Medical Documents - {doctor.name}</DialogTitle>
                   </DialogHeader>
-                  {<div className="mt-4 h-full">
+                  <div className="mt-4 h-full">
                     {isLoading ? (
                       <div className="flex items-center justify-center h-full">
                         <Loader2 className="w-8 h-8 animate-spin text-[#563393]" />
                       </div>
+                    ) : pdfError ? (
+                      <div className="text-red-500 text-center">Failed to load document.</div>
                     ) : (
                       <iframe
-                        src={doctor.certificate}
+                         src={`http://localhost:3000/upload/${doctor.certificate}`} 
+                      // src=`C:\Users\sriva\Desktop\Medical-website-1\backend\upload\1741246717764.pdf`
                         className="w-full h-full rounded-lg"
                         onLoad={handleDocumentLoad}
                         onError={handleDocumentError}
                       />
                     )}
-                  </div> }
+                  </div>
                 </DialogContent>
               </Dialog>
             </CardContent>
