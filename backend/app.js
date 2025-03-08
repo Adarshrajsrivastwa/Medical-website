@@ -12,21 +12,21 @@ let payment = require('./route/payment');
 const hospital = require('./route/bed');
 const http = require('http');
 const server = http.createServer(app);
-const Chart=require('./models/chat.js');
+const Chart = require('./models/chat.js');
 const chat = require('./route/chat.js');
-const list=require('./route/appointment.js');
+const list = require('./route/appointment.js');
 const profile = require('./route/profile.js');
 const inventry = require('./route/inventry.js');
 const history = require('./route/history.js');
-const medicine=require('./route/medication.js');
+const medicine = require('./route/medication.js');
 let approval = require('./route/approval.js');
-let search=require('./route/searchhistory.js');
+let search = require('./route/searchhistory.js');
 const io = require('socket.io')(server, {
     cors: {
-        origin: 'http://localhost:5173',  
+        origin: 'http://localhost:5173',
         methods: ['GET', 'POST'],
         allowedHeaders: ['Content-Type'],
-        credentials: true, 
+        credentials: true,
     },
 });
 
@@ -45,7 +45,7 @@ app.use(session({
 app.use(cookieParser());
 
 var corsOptions = {
-    origin: 'http://localhost:5173',
+    origin: process.env.FRONTEND_URL,
     optionsSuccessStatus: 200,
 };
 
@@ -59,10 +59,10 @@ app.use('/hospital', hospital);
 app.use('/history', chat);
 app.use('/list', list);
 app.use('/profile', profile);
-app.use('/add',inventry);
+app.use('/add', inventry);
 app.use('/history', history);
 app.use('/medicine', medicine);
-app.use('/admin',approval)
+app.use('/admin', approval)
 app.use('/search', search);
 
 
@@ -78,7 +78,7 @@ io.on('connection', (socket) => {
         try {
             const { sender, recipient, timestamp, text } = msg;
             console.log(text);
-            
+
             const newMessage = new Chart({
                 sender,
                 recipient,
