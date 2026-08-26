@@ -42,6 +42,7 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(formData);
     try {
       const res = await axios.post(
         `${backendURL}/sign/login`,
@@ -114,10 +115,10 @@ function Login() {
     }
     Cookies.set('email', formData.email, { expires: 1 / 24 });
     try {
-      setShowModal(true);
       const res = await axios.post(`${backendURL}/sign/signin`, formData);
 
       if (res.status === 200) {
+        setShowModal(true);
         alert("OTP sent successfully!");
       }
     } catch (error) {

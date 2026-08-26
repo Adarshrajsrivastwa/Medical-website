@@ -52,6 +52,8 @@ function SignUp() {
   };
 
   const handleSendOtp = async () => {
+
+    console.log(formData);
     if (!formData.email) {
       alert("Please enter your email!");
       return;
@@ -80,6 +82,7 @@ function SignUp() {
 
 
   const handleSubmit = async (e) => {
+    console.log(formData);
     e.preventDefault();
     try {
       const res = await axios.post(`${backendURL}/sign/verify-otp`, formData, {

@@ -31,12 +31,19 @@ import Prescription from "./Pages/DoctorDashboard/Prescription";
 import MedicineAnalyzer from "./Pages/DoctorDashboard/MedicineAnalyzer";
 
 function App() {
-  const [userRole, setUserRole] = useState("doctor");
+  const [userRole, setUserRole] = useState(null);
 
   useEffect(() => {
     const role = Cookies.get("role");
-    setUserRole(role);
+    const isLoggedIn = Cookies.get("isLoggedIn") === "true";
+    if (isLoggedIn && role) {
+      setUserRole(role);
+    } else {
+      setUserRole(null);
+    }
   }, []);
+
+  const isLoggedIn = Cookies.get("isLoggedIn") === "true";
 
   return (
     <Router>
@@ -44,7 +51,7 @@ function App() {
         <Header className="h-16 shrink-0 top-0 fixed" />
 
         <div className="flex flex-1 overflow-hidden">
-          {userRole && userRole !== '' && (
+          {isLoggedIn && userRole && userRole !== '' && (
             <Sidebar
               userRole={userRole}
               className="w-64 overflow-y-auto border-r"
@@ -55,7 +62,7 @@ function App() {
             <div className="">
               <Routes>
                 <Route path="/signup" element={<SignUp />} />
-                {userRole == null && (<Route path="/" element={<Home />} />)}
+                {!isLoggedIn && (<Route path="/" element={<Home />} />)}
                 <Route path="/login" element={<Login />} />
                 <Route path="/medicine-overview" element={<MedicineOverview />} />
                 <Route path="/medicine-analyzer" element={<MedicineAnalyzer />} />

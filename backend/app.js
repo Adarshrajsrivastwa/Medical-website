@@ -1,9 +1,13 @@
+// ─── Load env FIRST before any other require ──────────────
+const dotenv = require('dotenv');
+dotenv.config();
+// ──────────────────────────────────────────────────────────
+
 let express = require('express');
 let app = express();
 let sign = require('./route/signup');
 let cors = require('cors');
 const cookieParser = require('cookie-parser');
-let dotenv = require('dotenv');
 let session = require('express-session');
 let connectdb = require('./config/db.js');
 let details = require('./route/detail');
@@ -21,16 +25,16 @@ const history = require('./route/history.js');
 const medicine = require('./route/medication.js');
 let approval = require('./route/approval.js');
 let search = require('./route/searchhistory.js');
+
 const io = require('socket.io')(server, {
     cors: {
-        origin: 'http://localhost:5173',
+        origin: process.env.FRONTEND_URL || 'http://localhost:5173',
         methods: ['GET', 'POST'],
         allowedHeaders: ['Content-Type'],
         credentials: true,
     },
 });
 
-dotenv.config();
 connectdb();
 
 app.use(express.urlencoded({ extended: true }));
@@ -45,14 +49,18 @@ app.use(session({
 app.use(cookieParser());
 
 var corsOptions = {
-    origin: process.env.FRONTEND_URL,
+    origin: process.env.FRONTEND_URL || 'http://localhost:5173',
     optionsSuccessStatus: 200,
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
 };
 
 app.use(cors(corsOptions));
+app.options('*', cors(corsOptions)); // Handle preflight for all routes
 
 app.use('/sign', sign);
-app.use('/add',inventry)
+app.use('/add', inventry);
 app.use('/detail', details);
 app.use('/loading', loading);
 app.use('/payment', payment);
@@ -62,7 +70,7 @@ app.use('/list', list);
 app.use('/profile', profile);
 app.use('/history', history);
 app.use('/medicine', medicine);
-app.use('/admin', approval)
+app.use('/admin', approval);
 app.use('/search', search);
 
 
@@ -98,6 +106,6 @@ io.on('connection', (socket) => {
     });
 });
 
-server.listen(3000, () => {
-    console.log('Server is running on port 3000');
+server.listen(process.env.PORT || 3000, () => {
+    console.log(`Server is running on port ${process.env.PORT || 3000}`);
 });
